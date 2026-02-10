@@ -161,9 +161,22 @@ Turn product ideas into testable UI behavior using generated and edited screen i
   - `ui-prototypes/<prototype-name>/viewer/<platform>/<flow>/`
 - Configure each viewer instance to load its matching map file:
   - `../../../flow-maps/<platform>/<flow>.json`
+- In viewer code, always resolve map/image URLs from an absolute base URL:
+  - build map URL with `new URL(mapPath, window.location.href)`
+  - resolve each `screens[].image` against the resolved map URL
 - Serve the workspace root locally and open:
   - `http://localhost:4173/ui-prototypes/<prototype-name>/viewer/<platform>/<flow>/index.html`
 - Use per-platform/per-flow viewers for product/design review so each image set can be reviewed directly.
+
+### 11) Viewer Smoke Test (Required)
+
+- Run syntax check on viewer JavaScript before handoff.
+- Serve the project locally and verify at least:
+  - viewer page loads,
+  - flow-map JSON loads,
+  - one referenced image loads,
+  - start screen renders with no URL-resolution errors.
+- If any check fails, fix viewer path resolution before delivery.
 
 ## Prompt Patterns And Checklists
 
@@ -200,6 +213,7 @@ Turn product ideas into testable UI behavior using generated and edited screen i
 - Ensure accessibility cues (focus visibility, contrast intent, readable hierarchy) are represented in mockups.
 - Ensure each click-through trigger in each flow map points to a valid target screen.
 - Ensure viewer navigation works for each clickable hotspot and start screen in each platform+flow viewer.
+- Ensure viewer smoke tests pass for each platform+flow bundle.
 
 ## Handoff
 

@@ -265,3 +265,18 @@ Use these rules so per-platform/per-flow viewers can load and play each flow cor
 - Keep hotspot coordinates in source-image pixel space.
 - For each image set, keep a viewer bundle at `ui-prototypes/<prototype-name>/viewer/<platform>/<flow>/`.
 - Keep `ui-prototypes/<prototype-name>/viewer/<platform>/<flow>/index.html` configured to load `../../../flow-maps/<platform>/<flow>.json`.
+- Build an absolute map URL first in JS (`new URL(mapPath, window.location.href)`), then resolve `screens[].image` against that map URL.
+
+## 12) Viewer Smoke Test Checklist
+
+Run these checks before considering viewer setup complete:
+
+1. Syntax check:
+   - `node --check ui-prototypes/<prototype-name>/viewer/<platform>/<flow>/viewer.js`
+2. Local serve + fetch sanity:
+   - load viewer `index.html`
+   - load corresponding `flow-maps/<platform>/<flow>.json`
+   - load at least one referenced image
+3. Runtime sanity:
+   - start screen renders
+   - no URL/base-resolution error in browser console
