@@ -38,6 +38,16 @@ Turn product ideas into testable UI behavior using generated and edited screen i
 - Always pass an absolute `output_file_path` for generated/edited images.
 - For edit calls, use absolute paths for source images.
 
+### Prompt Lineage And Update Discipline
+
+- For iterative updates, default to `generate image` with a full updated prompt.
+- Before generating an updated image, read the current prompt from the manifest `Prompt Path` for that image.
+- Create the next prompt by updating the current prompt (preserve unchanged constraints, modify only requested deltas).
+- Save the updated prompt back to the same prompt path as latest source of truth.
+- For replacement updates, write the new image to the same image path unless the user explicitly asks for a new variant.
+- Do not create version-sprawl prompt files (`v2`, `v3`, etc.) unless the user explicitly requests branching.
+- Use `edit image` only when the user explicitly asks for strict localized edits anchored to a specific source image.
+
 ### Aspect Ratio Discipline
 
 - Specify an explicit aspect ratio in every image generation prompt.
@@ -86,6 +96,7 @@ Turn product ideas into testable UI behavior using generated and edited screen i
 ### 5) Edit Interaction States From Baselines
 
 - Derive state variants with the image editing tool so layout and visual identity remain stable.
+- For iterative improvements to an existing image, prefer `generate image` from the latest prompt lineage; use `edit image` only for explicit localized-edit requests.
 - Run edits sequentially: one state update per tool call, then review result before the next.
 - Preserve the source image ratio for every edit call.
 - Use absolute paths for edit inputs and `output_file_path`.
@@ -117,6 +128,7 @@ Turn product ideas into testable UI behavior using generated and edited screen i
   - `Source` (`Generate`/`Edit`)
   - `Parent Image` (for edited states)
 - Ensure every image in `images/` has exactly one matching manifest row.
+- For replacement updates, update the existing manifest row instead of creating a new row.
 - Remove stale/legacy rows when images or prompts are replaced or deleted.
 - Keep only active image/prompt pairs for the current prototype revision.
 
@@ -209,6 +221,7 @@ Turn product ideas into testable UI behavior using generated and edited screen i
 - Ensure no generated image is normalized/stretched in a way that distorts UI geometry.
 - Ensure every image has a corresponding prompt record in `image-prompt-manifest.md`.
 - Ensure manifest contains only latest active artifacts (no stale legacy entries).
+- Ensure each iterative update prompt is derived from the current prompt referenced by manifest `Prompt Path`.
 - Ensure error and empty states include recovery guidance.
 - Ensure accessibility cues (focus visibility, contrast intent, readable hierarchy) are represented in mockups.
 - Ensure each click-through trigger in each flow map points to a valid target screen.

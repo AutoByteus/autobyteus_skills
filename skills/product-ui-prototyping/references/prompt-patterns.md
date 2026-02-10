@@ -90,6 +90,8 @@ Apply base spec exactly:
 
 Use to convert one existing screen image into the next state.
 
+Use this only when strict localized edits are explicitly required. For normal iterative updates, prefer full-prompt `generate image` using the prompt-lineage protocol below.
+
 ```text
 Edit this UI screen for trigger: {trigger}.
 From state: {from_state}
@@ -118,7 +120,23 @@ Tool call path rules:
 - Use absolute filesystem path for tool `output_file_path`.
 ```
 
-## 5) Flow-Step Generation Template
+## 5) Prompt Lineage Update Protocol (Default For Iterative Updates)
+
+Use this protocol when improving an existing image:
+
+1. Find the target image row in `image-prompt-manifest.md`.
+2. Read current prompt from that row's `Prompt Path`.
+3. Produce a full updated prompt by editing the current prompt:
+   - keep unchanged constraints and structure intent,
+   - apply only requested deltas,
+   - avoid unrelated redesign drift.
+4. Save updated prompt back to the same `Prompt Path` (latest-only).
+5. Generate updated image to the same `Image Path` unless user explicitly requests a new variant.
+6. Update the same manifest row (do not create a new row for replacement updates).
+
+Do not create version-sprawl (`v2`, `v3`) prompt/image files unless the user explicitly requests branching.
+
+## 6) Flow-Step Generation Template
 
 Use when a user action should navigate to a new screen/modal/sheet.
 
@@ -136,7 +154,7 @@ Apply base spec exactly:
 {product_base_spec}
 ```
 
-## 6) Cross-Platform Adaptation Template
+## 7) Cross-Platform Adaptation Template
 
 Use to map the same flow across web, iOS, and Android.
 
@@ -157,7 +175,7 @@ Adjust for target platform:
 Output one production-ready adapted screen image.
 ```
 
-## 7) UX Designer Acceptance Checklist
+## 8) UX Designer Acceptance Checklist
 
 Accept output only if all criteria pass:
 
@@ -170,7 +188,7 @@ Accept output only if all criteria pass:
 - Accessibility intent: focus, contrast, legibility, and touch intent are visible.
 - Flow continuity: current screen logically connects to previous/next states.
 
-## 8) Prompting Anti-Patterns
+## 9) Prompting Anti-Patterns
 
 Avoid these patterns because they lower quality:
 
@@ -181,7 +199,7 @@ Avoid these patterns because they lower quality:
 - Requesting too many state changes in one edit operation.
 - Omitting hard constraints that prevent watermarks/device chrome.
 
-## 9) Image/Prompt Manifest Template
+## 10) Image/Prompt Manifest Template
 
 Use this to keep prompt-to-image traceability for every generated or edited artifact.
 
@@ -202,7 +220,7 @@ Logging rules:
 - Treat manifest as latest source of truth; remove stale/legacy rows when artifacts are replaced or deleted.
 - Keep only active image/prompt entries for the current prototype revision.
 
-## 10) Click-Through Flow Map Template
+## 11) Click-Through Flow Map Template
 
 Use this schema to connect static images into a simulated interaction flow.
 
@@ -253,7 +271,7 @@ Validation rules:
 - Keep hotspot rectangles inside image bounds.
 - Use consistent trigger naming (`click:*`, `tap:*`, `system:*`).
 
-## 11) Viewer Compatibility Rules
+## 12) Viewer Compatibility Rules
 
 Use these rules so per-platform/per-flow viewers can load and play each flow correctly:
 
@@ -267,7 +285,7 @@ Use these rules so per-platform/per-flow viewers can load and play each flow cor
 - Keep `ui-prototypes/<prototype-name>/viewer/<platform>/<flow>/index.html` configured to load `../../../flow-maps/<platform>/<flow>.json`.
 - Build an absolute map URL first in JS (`new URL(mapPath, window.location.href)`), then resolve `screens[].image` against that map URL.
 
-## 12) Viewer Smoke Test Checklist
+## 13) Viewer Smoke Test Checklist
 
 Run these checks before considering viewer setup complete:
 
