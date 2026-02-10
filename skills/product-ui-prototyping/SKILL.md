@@ -1,6 +1,6 @@
 ---
 name: product-ui-prototyping
-description: "Design and validate product UI behavior as visual state prototypes before coding. Use when tasks ask how screens should change after user actions (click, tap, submit), when non-developers need to review web/mobile UX flows, or when teams need interaction-state assets and acceptance checks for implementation."
+description: "Design and validate product UI behavior as visual state prototypes before coding. Use when tasks ask how screens should change after user actions (click, tap, submit), when non-developers need to review web/iOS/Android UX flows, or when teams need interaction-state assets and acceptance checks for implementation."
 ---
 
 # Product UI Prototyping
@@ -23,9 +23,28 @@ Turn product ideas into testable UI behavior using generated and edited screen i
 
 ## Workflow
 
+### Tool Execution Discipline
+
+- Execute image tool calls strictly one at a time.
+- Do not run multiple generate/edit image calls in parallel for different screens/states.
+- Wait for each call to finish, inspect the output, then issue the next call.
+- For multi-screen/multi-state batches, process a deterministic queue sequentially.
+- When calling image tools, always use absolute filesystem paths.
+- Always pass an absolute `output_file_path` for generated/edited images.
+- For edit calls, use absolute paths for source images.
+
+### Aspect Ratio Discipline
+
+- Specify an explicit aspect ratio in every image generation prompt.
+- Use only supported ratios: `1:1`, `4:3`, `3:4`, `3:2`, `2:3`, `5:4`, `4:5`, `16:9`, `9:16`, `21:9`.
+- For each platform + flow, keep one fixed ratio across all screens/states to avoid distortion drift.
+- For edits, keep the same ratio as the baseline source image.
+- Do not normalize, stretch, or re-encode generated images unless the user explicitly asks.
+
 ### 1) Define Product Intent And Constraints
 
 - Define target platform (`web`, `ios`, `android`) and viewport assumptions.
+- Define target aspect ratio per platform/flow from the supported ratio list.
 - Define user personas, primary jobs-to-be-done, and critical paths.
 - Define design constraints: brand tone, accessibility needs, component style, and data density.
 - Define fidelity level (`wireframe`, `mid`, `high`) before generating assets.
@@ -50,6 +69,9 @@ Turn product ideas into testable UI behavior using generated and edited screen i
 ### 4) Generate Baseline Screens
 
 - Generate net-new screens with the image generation tool.
+- Run generation sequentially: one screen per tool call, then review result before the next.
+- Include explicit ratio in each generation prompt and keep it constant for that platform + flow.
+- Use absolute `output_file_path` in every generation tool call.
 - Use deterministic style instructions and the shared base spec to keep typography, spacing, iconography, and color consistent across screens.
 - Save outputs in a stable structure:
   - `ui-prototypes/<prototype-name>/images/<platform>/<flow>/<screen>-default.png`
@@ -57,6 +79,9 @@ Turn product ideas into testable UI behavior using generated and edited screen i
 ### 5) Edit Interaction States From Baselines
 
 - Derive state variants with the image editing tool so layout and visual identity remain stable.
+- Run edits sequentially: one state update per tool call, then review result before the next.
+- Preserve the source image ratio for every edit call.
+- Use absolute paths for edit inputs and `output_file_path`.
 - Edit only state-relevant deltas:
   - Hover/focus rings
   - Pressed depth
@@ -131,6 +156,8 @@ Turn product ideas into testable UI behavior using generated and edited screen i
 
 - Ensure every critical trigger produces clear, visible feedback within one state transition.
 - Ensure states are visually consistent across platforms and flows.
+- Ensure aspect ratio is explicitly defined and consistent for each platform + flow.
+- Ensure no generated image is normalized/stretched in a way that distorts UI geometry.
 - Ensure error and empty states include recovery guidance.
 - Ensure accessibility cues (focus visibility, contrast intent, readable hierarchy) are represented in mockups.
 - Ensure each click-through trigger in the flow map points to a valid target screen.

@@ -8,7 +8,8 @@ Encode these criteria in prompts whenever possible:
 
 - User goal: what job the user is trying to complete on this screen.
 - Context: where the user came from and what decision they must make now.
-- Platform rules: web or mobile conventions and viewport dimensions.
+- Platform rules: web, iOS, or Android conventions and viewport dimensions.
+- Aspect ratio: explicit ratio selection per platform/flow from supported set.
 - Information hierarchy: what is primary, secondary, and tertiary.
 - Design system: spacing scale, typography scale, radius, elevation, tokenized colors.
 - Component behavior: button/input/nav states and feedback expectations.
@@ -30,11 +31,12 @@ Brand tone: {professional|friendly|premium|playful|...}
 
 Platform target: {web|ios|android}
 Viewport: {e.g., 1440x1024 web, 390x844 ios, 412x915 android}
+Aspect ratio: {1:1|4:3|3:4|3:2|2:3|5:4|4:5|16:9|9:16|21:9}
 Density mode: {compact|comfortable}
 Localization: {language + region}
 
 Design system constraints:
-- Grid: {12-col web / 4-col mobile}
+- Grid: {12-col web / 4-col iOS/Android}
 - Spacing scale: {4/8/12/16/24/32}
 - Type scale: {sizes + line heights + weights}
 - Radius tokens: {sm/md/lg}
@@ -64,6 +66,7 @@ Screen contract:
 - Secondary actions: {secondary actions}
 - Content blocks with priority: {ordered list}
 - State to render: {default|loading|empty|error|success}
+- Aspect ratio: {one supported ratio; keep constant for this platform + flow}
 
 Behavior expectations:
 - Show clear affordance for all clickable/tappable elements.
@@ -76,6 +79,8 @@ Hard constraints:
 - No device frame
 - No decorative scene outside the app UI
 - No unexplained style drift from base spec
+- Do not normalize/stretch/re-encode the output image unless explicitly requested
+- Use absolute filesystem path for tool `output_file_path`
 
 Apply base spec exactly:
 {product_base_spec}
@@ -96,6 +101,7 @@ Keep unchanged:
 - Typography scale
 - Spacing rhythm
 - Component shapes
+- Aspect ratio (must match source image)
 
 Change only:
 - {delta_1}
@@ -106,6 +112,10 @@ Expected user feedback after trigger:
 {one-sentence outcome}
 
 Output one clean updated screen image.
+
+Tool call path rules:
+- Use absolute paths for edit input images.
+- Use absolute filesystem path for tool `output_file_path`.
 ```
 
 ## 5) Flow-Step Generation Template
@@ -128,7 +138,7 @@ Apply base spec exactly:
 
 ## 6) Cross-Platform Adaptation Template
 
-Use to map the same flow between web and mobile.
+Use to map the same flow across web, iOS, and Android.
 
 ```text
 Adapt this screen from {source_platform} to {target_platform}.
