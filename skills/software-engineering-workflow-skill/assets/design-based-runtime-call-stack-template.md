@@ -20,7 +20,7 @@ This artifact is required for all change sizes; for small changes keep it concis
 - Scope Classification: `Small` / `Medium` / `Large`
 - Source Artifact:
   - `Small`: `tickets/<ticket-name>/implementation-plan.md` (draft solution sketch as lightweight design basis)
-  - `Medium/Large`: `tickets/<ticket-name>/design.md`
+  - `Medium/Large`: `tickets/<ticket-name>/proposed-design.md`
 - Referenced Sections:
 
 ## Use Case Index

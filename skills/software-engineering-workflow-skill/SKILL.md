@@ -1,13 +1,13 @@
 ---
 name: software-engineering-workflow-skill
-description: "Create software-engineering planning artifacts with triaged depth: design-based runtime call stacks + runtime call stack review + implementation planning/progress for all sizes, plus design docs for medium/large scope. Includes requirement clarification, call-stack validation, and iterative refinement."
+description: "Create software-engineering planning artifacts with triaged depth: design-based runtime call stacks + runtime call stack review + implementation planning/progress for all sizes, plus proposed design docs for medium/large scope. Includes requirement clarification, call-stack validation, and iterative refinement."
 ---
 
 # Software Engineering Workflow Skill
 
 ## Overview
 
-Produce a structured planning workflow for software changes: triage scope, build design-based runtime call stacks per use case, verify those call stacks with a dedicated review artifact, and drive implementation with plan + real-time progress tracking. For medium/large scope, include a full design document organized by separation of concerns.
+Produce a structured planning workflow for software changes: triage scope, build design-based runtime call stacks per use case, verify those call stacks with a dedicated review artifact, and drive implementation with plan + real-time progress tracking. For medium/large scope, include a full proposed design document organized by separation of concerns.
 
 ## Workflow
 
@@ -27,21 +27,21 @@ Produce a structured planning workflow for software changes: triage scope, build
   - Multi-layer impact (API + service + persistence + runtime flow) or architectural impact.
 - Choose workflow depth:
   - `Small`: create a draft implementation plan (with a short solution sketch), build per-use-case design-based runtime call stacks from that plan, review them, then refine until review-pass and track progress in real time.
-  - `Medium/Large`: create design doc first, build design-based runtime call stacks from the design doc, review them, then create implementation plan and track progress in real time.
+  - `Medium/Large`: create proposed design doc first, build design-based runtime call stacks from the proposed design doc, review them, then create implementation plan and track progress in real time.
 - Re-evaluate during implementation; if scope expands or smells appear, escalate from `Small` to full workflow.
 
 ### 1) Clarify Requirements And Scope
 
 - Ask for goals, non-goals, primary use cases, and constraints.
 - Confirm the triage result (`Small` vs `Medium/Large`) and why.
-- If scope is ambiguous, ask whether to run medium/large depth (includes full design doc). Otherwise proceed with the triaged depth.
+- If scope is ambiguous, ask whether to run medium/large depth (includes full proposed design doc). Otherwise proceed with the triaged depth.
 
-### 2) Draft The Design Document
+### 2) Draft The Proposed Design Document
 
 - Required for `Medium/Large`. Optional for `Small`.
-- For `Small`, do not require a full design doc; use the draft implementation plan solution sketch as the lightweight design basis for runtime call stacks.
+- For `Small`, do not require a full proposed design doc; use the draft implementation plan solution sketch as the lightweight design basis for runtime call stacks.
 - Follow separation of concerns: each file/module owns a clear responsibility.
-- Make the design doc delta-aware, not only target-state:
+- Make the proposed design doc delta-aware, not only target-state:
   - include current-state summary (as-is),
   - include target-state summary (to-be),
   - include explicit change inventory rows for `Add`, `Modify`, `Rename/Move`, `Remove`.
@@ -50,7 +50,7 @@ Produce a structured planning workflow for software changes: triage scope, build
 - Document dependency flow and cross-reference risk explicitly (including how cycles are avoided or temporarily tolerated).
 - For `Rename/Move` and `Remove`, include decommission/cleanup intent (import cleanup, migration compatibility, dead-code removal).
 - Capture data models and error-handling expectations if relevant.
-- Use the template in `assets/design-template.md` as a starting point.
+- Use the template in `assets/proposed-design-template.md` as a starting point.
 
 ### 3) Build Design-Based Runtime Call Stacks Per Use Case
 
@@ -58,7 +58,7 @@ Produce a structured planning workflow for software changes: triage scope, build
 - For `Small`, keep it concise but still cover each in-scope use case with primary path plus key fallback/error branch when relevant.
 - Basis by scope:
   - `Small`: use the draft implementation plan solution sketch as the design basis.
-  - `Medium/Large`: use the design document as the design basis.
+  - `Medium/Large`: use the proposed design document as the design basis.
 - For each use case, write a design-based runtime call stack from entry point to completion in a debug-trace format.
 - Include file and function names at every frame using `path/to/file.ts:functionName(...)`.
 - Show architectural boundaries explicitly (e.g., controller -> service -> repository -> external API).
@@ -79,7 +79,7 @@ Produce a structured planning workflow for software changes: triage scope, build
   - dependency flow smells,
   - overall verdict (`Pass`/`Fail`).
 - If issues are found:
-  - `Medium/Large`: revise the design document, regenerate runtime call stacks, then rerun review.
+  - `Medium/Large`: revise the proposed design document, regenerate runtime call stacks, then rerun review.
   - `Small`: refine the implementation plan (and add design notes if needed), regenerate runtime call stacks, then rerun review.
 - Repeat until all in-scope use cases are `Pass` and no unresolved critical findings remain.
 - Use the template in `assets/runtime-call-stack-review-template.md`.
@@ -90,18 +90,18 @@ Produce a structured planning workflow for software changes: triage scope, build
 - For each file/module, define unit tests and integration tests as needed.
 - Finalize planning artifacts before kickoff:
   - `Small`: refine the draft implementation plan until runtime call stack review passes.
-  - `Medium/Large`: create implementation plan after runtime call stack review validates the design doc.
-- Create the implementation progress document at implementation kickoff, after required pre-implementation artifacts are ready.
+  - `Medium/Large`: create implementation plan after runtime call stack review validates the proposed design doc.
+- Create the implementation progress document at implementation kickoff, after required pre-implementation artifacts are ready (including the proposed design document for Medium/Large).
 - Implementation plan + real-time progress tracking are required for all sizes (`Small`, `Medium`, `Large`).
 - Treat design-based runtime call stack + review as a pre-implementation verification gate: ensure each use case is represented and reviewed before coding starts.
 - Start implementation only after the review gate says implementation can start and all in-scope use cases are `Pass`.
-- Ensure traceability when a design doc exists: every design change-inventory row (especially `Rename/Move` and `Remove`) maps to implementation tasks and verification steps.
+- Ensure traceability when a proposed design doc exists: every design change-inventory row (especially `Rename/Move` and `Remove`) maps to implementation tasks and verification steps.
 - Use "one file at a time" as the default execution strategy, not an absolute rule.
 - When rare cross-referencing is unavoidable, allow limited parallel/incomplete implementation, but explicitly record:
   - the cross-reference smell,
   - the blocked dependency edge,
   - the condition to unblock,
-  - the required design-document update.
+  - the required proposed-design-document update.
 - Update progress in real time during implementation (immediately after file status changes, test runs, blocker discoveries, and design-feedback-loop updates).
 - Track change IDs and change types in progress (`Add`/`Modify`/`Rename/Move`/`Remove`) so refactor deltas remain explicit through execution.
 - Track file build state explicitly (`Pending`, `In Progress`, `Blocked`, `Completed`, `N/A`).
@@ -121,11 +121,11 @@ If the user does not specify file paths, write to a project-local ticket folder:
 
 For `Medium/Large`, also write in the same ticket folder:
 
-- `tickets/<ticket-name>/design.md`
+- `tickets/<ticket-name>/proposed-design.md`
 
 ## Templates
 
-- `assets/design-template.md`
+- `assets/proposed-design-template.md`
 - `assets/design-based-runtime-call-stack-template.md`
 - `assets/runtime-call-stack-review-template.md`
 - `assets/implementation-plan-template.md`

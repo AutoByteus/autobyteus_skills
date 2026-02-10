@@ -5,8 +5,8 @@
 - Classification: `Small` / `Medium` / `Large`
 - Reasoning:
 - Workflow Depth:
-  - `Small` -> draft implementation plan (solution sketch) -> design-based runtime call stack -> runtime call stack review -> refine until review-pass -> progress tracking (design doc optional)
-  - `Medium/Large` -> design doc -> design-based runtime call stack -> runtime call stack review -> implementation plan -> progress tracking
+  - `Small` -> draft implementation plan (solution sketch) -> design-based runtime call stack -> runtime call stack review -> refine until review-pass -> progress tracking (proposed design doc optional)
+  - `Medium/Large` -> proposed design doc -> design-based runtime call stack -> runtime call stack review -> implementation plan -> progress tracking
 
 ## Plan Maturity
 
@@ -32,7 +32,7 @@
 - Decision: `Go` / `No-Go`
 - If `No-Go`, required refinement target:
   - `Small`: refine implementation plan (and add design notes if needed), then regenerate call stack and re-review.
-  - `Medium/Large`: refine design document, then regenerate call stack and re-review.
+  - `Medium/Large`: refine proposed design document, then regenerate call stack and re-review.
 
 ## Principles
 
@@ -52,7 +52,7 @@
 
 ## Design Delta Traceability (Required For `Medium/Large`)
 
-| Change ID (from design doc) | Change Type | Planned Task ID(s) | Includes Remove/Rename Work | Verification |
+| Change ID (from proposed design doc) | Change Type | Planned Task ID(s) | Includes Remove/Rename Work | Verification |
 | --- | --- | --- | --- | --- |
 | C-001 |  |  | Yes/No |  |
 

@@ -7,7 +7,7 @@ Use this document as the pre-implementation gate for runtime-call-stack quality 
 - Runtime Call Stack Document: `tickets/<ticket-name>/design-based-runtime-call-stack.md`
 - Source Design Basis:
   - `Small`: `tickets/<ticket-name>/implementation-plan.md`
-  - `Medium/Large`: `tickets/<ticket-name>/design.md`
+  - `Medium/Large`: `tickets/<ticket-name>/proposed-design.md`
 
 ## Per-Use-Case Review
 
@@ -25,6 +25,6 @@ Use this document as the pre-implementation gate for runtime-call-stack quality 
 
 - Implementation can start: `Yes` / `No`
 - If `No`, required refinement actions:
-  - Update design doc and/or implementation plan:
+  - Update proposed design doc and/or implementation plan:
   - Regenerate `design-based-runtime-call-stack.md`:
   - Re-run this review:
