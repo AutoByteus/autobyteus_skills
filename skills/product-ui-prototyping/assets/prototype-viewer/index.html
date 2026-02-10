@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UI Prototype Viewer</title>
+  <link rel="stylesheet" href="./viewer.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>UI Prototype Viewer</h1>
+    <div class="controls">
+      <label for="mapPath">Flow map</label>
+      <input id="mapPath" type="text" value="../ui-flow-map.json" spellcheck="false">
+      <button id="loadMapButton" type="button">Load</button>
+      <button id="backButton" type="button">Back</button>
+      <label class="inline">
+        <input id="showHotspots" type="checkbox" checked>
+        Show hotspots
+      </label>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="stage-panel">
+      <div id="status" class="status">Load a flow map to start.</div>
+      <div id="stage" class="stage">
+        <img id="screenImage" alt="Current prototype screen">
+        <div id="hotspots" class="hotspots"></div>
+      </div>
+    </section>
+
+    <aside class="sidebar">
+      <h2>Flow</h2>
+      <dl>
+        <dt>Name</dt>
+        <dd id="flowName">-</dd>
+        <dt>Platform</dt>
+        <dd id="flowPlatform">-</dd>
+        <dt>Screen</dt>
+        <dd id="currentScreen">-</dd>
+      </dl>
+      <h3>Transitions</h3>
+      <div id="transitionList" class="transition-list"></div>
+    </aside>
+  </main>
+
+  <script src="./viewer.js"></script>
+</body>
+</html>
