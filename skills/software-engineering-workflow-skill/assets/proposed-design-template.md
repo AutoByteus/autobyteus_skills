@@ -1,5 +1,15 @@
 # Proposed Design Document
 
+## Design Version
+
+- Current Version: `v1` / `v2` / ...
+
+## Revision History
+
+| Version | Trigger | Summary Of Changes | Related Review Round |
+| --- | --- | --- | --- |
+| v1 | Initial draft |  | 1 |
+
 ## Summary
 
 ## Goals

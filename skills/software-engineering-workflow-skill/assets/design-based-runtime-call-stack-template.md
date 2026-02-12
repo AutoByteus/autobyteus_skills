@@ -19,9 +19,11 @@ This artifact is required for all change sizes; for small changes keep it concis
 ## Design Basis
 
 - Scope Classification: `Small` / `Medium` / `Large`
+- Call Stack Version: `v1` / `v2` / ...
 - Source Artifact:
   - `Small`: `tickets/<ticket-name>/implementation-plan.md` (draft solution sketch as lightweight design basis)
   - `Medium/Large`: `tickets/<ticket-name>/proposed-design.md`
+- Source Design Version: `v1` / `v2` / ...
 - Referenced Sections:
 
 ## Use Case Index

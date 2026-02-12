@@ -6,12 +6,22 @@
 - Reasoning:
 - Workflow Depth:
   - `Small` -> draft implementation plan (solution sketch) -> design-based runtime call stack -> runtime call stack review -> refine until review-pass -> progress tracking (proposed design doc optional)
-  - `Medium/Large` -> proposed design doc -> design-based runtime call stack -> runtime call stack review -> implementation plan -> progress tracking
+  - `Medium/Large` -> proposed design doc -> design-based runtime call stack -> runtime call stack review (minimum 2 rounds, round 1 diagnostic) -> implementation plan -> progress tracking
 
 ## Plan Maturity
 
-- Current Status: `Draft` / `Call-Stack-Review-Validated` / `Ready For Implementation`
+- Current Status: `Draft` / `Blocked By Review Gate` / `Call-Stack-Review-Validated` / `Ready For Implementation`
 - Notes:
+
+## Preconditions (Must Be True Before Finalizing This Plan)
+
+- Runtime call stack review artifact exists:
+- All in-scope use cases reviewed:
+- No unresolved blocking findings:
+- Minimum review rounds satisfied:
+  - `Small`: >= 1
+  - `Medium/Large`: >= 2
+- Final gate decision in review artifact is `Implementation can start: Yes`:
 
 ## Solution Sketch (Required For `Small`, Optional Otherwise)
 
@@ -23,16 +33,23 @@
 
 ## Runtime Call Stack Review Gate (Required Before Implementation)
 
-| Use Case | Call Stack Location | Review Location | Business Flow Completeness | Structure & SoC Check | Dependency Flow Smells | Verdict |
-| --- | --- | --- | --- | --- | --- | --- |
-|  | `tickets/<ticket-name>/design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail |  | Pass/Fail |
+| Round | Use Case | Call Stack Location | Review Location | Business Flow Completeness | Structure & SoC Check | Unresolved Blocking Findings | Verdict |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 |  | `tickets/<ticket-name>/design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail | Yes/No | Pass/Fail |
+| 2 (required for `Medium/Large`) |  | `tickets/<ticket-name>/design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail | Yes/No | Pass/Fail |
+| N (optional) |  | `tickets/<ticket-name>/design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail | Yes/No | Pass/Fail |
 
 ## Go / No-Go Decision
 
 - Decision: `Go` / `No-Go`
+- Evidence:
+  - Review rounds completed:
+  - Final review round:
+  - Final review gate line (`Implementation can start`):
 - If `No-Go`, required refinement target:
   - `Small`: refine implementation plan (and add design notes if needed), then regenerate call stack and re-review.
   - `Medium/Large`: refine proposed design document, then regenerate call stack and re-review.
+- If `No-Go`, do not continue with dependency sequencing or implementation kickoff.
 
 ## Principles
 
