@@ -1,7 +1,8 @@
 # Proposed-Design-Based Runtime Call Stacks (Debug-Trace Style)
 
-Use this document as a design-derived runtime trace. Prefer exact `file:function` frames, explicit branching, and clear state/persistence boundaries.
+Use this document as a future-state (`to-be`) execution model derived from the proposed design. Prefer exact `file:function` frames, explicit branching, and clear state/persistence boundaries.
 This artifact is required for all change sizes; for small changes keep it concise but still cover every in-scope use case.
+Do not treat this document as an as-is trace of current code behavior.
 
 ## Conventions
 
@@ -25,6 +26,11 @@ This artifact is required for all change sizes; for small changes keep it concis
   - `Medium/Large`: `tickets/<ticket-name>/proposed-design.md`
 - Source Design Version: `v1` / `v2` / ...
 - Referenced Sections:
+
+## Future-State Modeling Rule (Mandatory)
+
+- Model target design behavior even when current code diverges.
+- If migration from as-is to to-be requires transition logic, describe that logic in notes; do not replace the to-be call stack with current flow.
 
 ## Use Case Index
 

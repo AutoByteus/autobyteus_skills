@@ -1,6 +1,7 @@
-# Runtime Call Stack Review
+# Proposed-Design-Based Runtime Call Stack Review
 
-Use this document as the pre-implementation gate for runtime-call-stack quality and use-case completeness.
+Use this document as the pre-implementation gate for future-state runtime-call-stack quality and use-case completeness.
+This review validates alignment with target (`to-be`) design behavior, not parity with current (`as-is`) code.
 
 ## Review Meta
 
@@ -23,6 +24,11 @@ Use this document as the pre-implementation gate for runtime-call-stack quality 
   - Design Version:
   - Call Stack Version:
 
+## Review Intent (Mandatory)
+
+- Primary check: Is the proposed-design-based runtime call stack a coherent and implementable future-state model?
+- Not a pass criterion: matching current-code call paths exactly.
+
 ## Round History
 
 | Round | Design Version | Call Stack Version | Focus | Result (`Pass`/`Fail`) | Implementation Gate (`Go`/`No-Go`) |
@@ -36,9 +42,9 @@ Notes:
 
 ## Per-Use-Case Review
 
-| Use Case | Business Flow Completeness (`Pass`/`Fail`) | Gap Findings | Structure & SoC Check (`Pass`/`Fail`) | Dependency Flow Smells | Remove/Decommission Completeness (`Pass`/`Fail`/`N/A`) | No Legacy/Backward-Compat Branches (`Pass`/`Fail`) | Verdict (`Pass`/`Fail`) |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-|  |  |  |  |  |  |  |  |
+| Use Case | Future-State Alignment With Proposed Design (`Pass`/`Fail`) | Business Flow Completeness (`Pass`/`Fail`) | Gap Findings | Structure & SoC Check (`Pass`/`Fail`) | Dependency Flow Smells | Remove/Decommission Completeness (`Pass`/`Fail`/`N/A`) | No Legacy/Backward-Compat Branches (`Pass`/`Fail`) | Verdict (`Pass`/`Fail`) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |  |  |  |
 
 ## Findings
 
@@ -59,6 +65,7 @@ Rule:
 - Minimum rounds satisfied for this scope: `Yes` / `No`
 - Implementation can start: `Yes` / `No`
 - Gate rule checks (all must be `Yes` for `Implementation can start = Yes`):
+  - Future-state alignment with proposed design is `Pass` for all in-scope use cases:
   - All use-case verdicts are `Pass`:
   - No unresolved blocking findings:
   - Remove/decommission checks complete for scoped `Remove`/`Rename/Move` changes:

@@ -1,6 +1,6 @@
 ---
 name: software-engineering-workflow-skill
-description: "Create software-engineering planning artifacts with triaged depth: proposed-design-based runtime call stacks + runtime call stack review + implementation planning/progress for all sizes, plus proposed design docs for medium/large scope. Includes requirement clarification, call-stack validation, and iterative refinement."
+description: "Create software-engineering planning artifacts with triaged depth: proposed-design-based runtime call stacks (future-state), runtime call stack review, and implementation planning/progress for all sizes, plus proposed design docs for medium/large scope. Includes requirement clarification, call-stack validation, and iterative refinement."
 ---
 
 # Software Engineering Workflow Skill
@@ -9,6 +9,7 @@ description: "Create software-engineering planning artifacts with triaged depth:
 
 Produce a structured planning workflow for software changes: triage scope, build proposed-design-based runtime call stacks per use case, verify those call stacks with a dedicated review artifact, and drive implementation with plan + real-time progress tracking. For medium/large scope, include a full proposed design document organized by separation of concerns.
 This workflow is stage-gated. Do not batch-generate all artifacts by default.
+In this skill, proposed-design-based runtime call stacks are future-state (`to-be`) execution models. They are not traces of current (`as-is`) implementation behavior.
 
 ## Workflow
 
@@ -80,6 +81,8 @@ This workflow is stage-gated. Do not batch-generate all artifacts by default.
   - `Small`: use the draft implementation plan solution sketch as the design basis.
   - `Medium/Large`: use the proposed design document as the design basis.
 - For each use case, write a proposed-design-based runtime call stack from entry point to completion in a debug-trace format.
+- Treat this artifact as `to-be` architecture behavior derived from the proposed design (or small-scope solution sketch), not as-is code tracing.
+- If current code differs from target design, model the target design behavior and record migration/transition notes separately.
 - Include file and function names at every frame using `path/to/file.ts:functionName(...)`.
 - Show architectural boundaries explicitly (e.g., controller -> service -> repository -> external API).
 - Include primary path and fallback/error paths, not only happy path.
@@ -90,11 +93,13 @@ This workflow is stage-gated. Do not batch-generate all artifacts by default.
 - Version call stacks to match design revisions from review loops (`v1`, `v2`, ...).
 - Use the template in `assets/proposed-design-based-runtime-call-stack-template.md`.
 
-### 4) Review Runtime Call Stacks (Gap + Cleanliness Gate)
+### 4) Review Proposed-Design-Based Runtime Call Stacks (Future-State Gap + Cleanliness Gate)
 
 - Create `runtime-call-stack-review.md` as a mandatory review artifact.
+- Review focus is future-state correctness and implementability against target design, not parity with current code structure.
 - Run review in explicit rounds and record each round in the same review artifact.
 - Review each use case against these criteria:
+  - future-state alignment with proposed design (`Pass`/`Fail`),
   - business flow completeness (`Pass`/`Fail`),
   - gap findings,
   - structure and separation-of-concerns check (`Pass`/`Fail`),
@@ -106,6 +111,7 @@ This workflow is stage-gated. Do not batch-generate all artifacts by default.
   - `Small`: at least 1 round; iterate until gate passes.
   - `Medium/Large`: at least 2 rounds. Round 1 must be `No-Go` (diagnostic hardening round). Round 2+ may be `Go` only if all gate conditions pass.
 - Gate `Go` criteria (all required):
+  - future-state behavior is consistent with proposed design across all in-scope use cases,
   - all in-scope use cases have overall verdict `Pass`,
   - no unresolved blocking findings (including any required design/call-stack updates),
   - for any `Remove`/`Rename/Move` scope items, decommission/cleanup checks are `Pass`,
