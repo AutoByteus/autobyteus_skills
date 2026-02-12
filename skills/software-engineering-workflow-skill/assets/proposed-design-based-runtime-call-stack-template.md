@@ -1,4 +1,4 @@
-# Design-Based Runtime Call Stacks (Debug-Trace Style)
+# Proposed-Design-Based Runtime Call Stacks (Debug-Trace Style)
 
 Use this document as a design-derived runtime trace. Prefer exact `file:function` frames, explicit branching, and clear state/persistence boundaries.
 This artifact is required for all change sizes; for small changes keep it concise but still cover every in-scope use case.

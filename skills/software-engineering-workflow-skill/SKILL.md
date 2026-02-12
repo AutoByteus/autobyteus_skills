@@ -1,13 +1,13 @@
 ---
 name: software-engineering-workflow-skill
-description: "Create software-engineering planning artifacts with triaged depth: design-based runtime call stacks + runtime call stack review + implementation planning/progress for all sizes, plus proposed design docs for medium/large scope. Includes requirement clarification, call-stack validation, and iterative refinement."
+description: "Create software-engineering planning artifacts with triaged depth: proposed-design-based runtime call stacks + runtime call stack review + implementation planning/progress for all sizes, plus proposed design docs for medium/large scope. Includes requirement clarification, call-stack validation, and iterative refinement."
 ---
 
 # Software Engineering Workflow Skill
 
 ## Overview
 
-Produce a structured planning workflow for software changes: triage scope, build design-based runtime call stacks per use case, verify those call stacks with a dedicated review artifact, and drive implementation with plan + real-time progress tracking. For medium/large scope, include a full proposed design document organized by separation of concerns.
+Produce a structured planning workflow for software changes: triage scope, build proposed-design-based runtime call stacks per use case, verify those call stacks with a dedicated review artifact, and drive implementation with plan + real-time progress tracking. For medium/large scope, include a full proposed design document organized by separation of concerns.
 This workflow is stage-gated. Do not batch-generate all artifacts by default.
 
 ## Workflow
@@ -38,8 +38,8 @@ This workflow is stage-gated. Do not batch-generate all artifacts by default.
   - New/changed public APIs, schema/storage changes, or cross-cutting behavior.
   - Multi-layer impact (API + service + persistence + runtime flow) or architectural impact.
 - Choose workflow depth:
-  - `Small`: create a draft implementation plan (with a short solution sketch), build per-use-case design-based runtime call stacks from that plan, review them, then refine until review-pass and track progress in real time.
-  - `Medium/Large`: create proposed design doc first, build design-based runtime call stacks from the proposed design doc, run iterative review rounds (minimum 2), and only after final review `Go` create implementation plan and track progress in real time.
+  - `Small`: create a draft implementation plan (with a short solution sketch), build per-use-case proposed-design-based runtime call stacks from that plan, review them, then refine until review-pass and track progress in real time.
+  - `Medium/Large`: create proposed design doc first, build proposed-design-based runtime call stacks from the proposed design doc, run iterative review rounds (minimum 2), and only after final review `Go` create implementation plan and track progress in real time.
 - Re-evaluate during implementation; if scope expands or smells appear, escalate from `Small` to full workflow.
 
 ### 1) Clarify Requirements And Scope
@@ -72,14 +72,14 @@ This workflow is stage-gated. Do not batch-generate all artifacts by default.
 - Version the design during review loops (`v1`, `v2`, ...) and record what changed between rounds.
 - Use the template in `assets/proposed-design-template.md` as a starting point.
 
-### 3) Build Design-Based Runtime Call Stacks Per Use Case
+### 3) Build Proposed-Design-Based Runtime Call Stacks Per Use Case
 
 - Required for all sizes (`Small`, `Medium`, `Large`).
 - For `Small`, keep it concise but still cover each in-scope use case with primary path plus key fallback/error branch when relevant.
 - Basis by scope:
   - `Small`: use the draft implementation plan solution sketch as the design basis.
   - `Medium/Large`: use the proposed design document as the design basis.
-- For each use case, write a design-based runtime call stack from entry point to completion in a debug-trace format.
+- For each use case, write a proposed-design-based runtime call stack from entry point to completion in a debug-trace format.
 - Include file and function names at every frame using `path/to/file.ts:functionName(...)`.
 - Show architectural boundaries explicitly (e.g., controller -> service -> repository -> external API).
 - Include primary path and fallback/error paths, not only happy path.
@@ -88,7 +88,7 @@ This workflow is stage-gated. Do not batch-generate all artifacts by default.
 - Capture decision gates and conditions that choose one branch over another.
 - Note key data transformations (input schema -> domain model -> output payload).
 - Version call stacks to match design revisions from review loops (`v1`, `v2`, ...).
-- Use the template in `assets/design-based-runtime-call-stack-template.md`.
+- Use the template in `assets/proposed-design-based-runtime-call-stack-template.md`.
 
 ### 4) Review Runtime Call Stacks (Gap + Cleanliness Gate)
 
@@ -125,7 +125,7 @@ This workflow is stage-gated. Do not batch-generate all artifacts by default.
   - `Medium/Large`: create implementation plan only after runtime call stack review passes final gate and minimum review rounds are complete.
 - Create the implementation progress document at implementation kickoff, after required pre-implementation artifacts are ready (including the proposed design document for Medium/Large).
 - Implementation plan + real-time progress tracking are required for all sizes (`Small`, `Medium`, `Large`).
-- Treat design-based runtime call stack + review as a pre-implementation verification gate: ensure each use case is represented and reviewed before coding starts.
+- Treat proposed-design-based runtime call stack + review as a pre-implementation verification gate: ensure each use case is represented and reviewed before coding starts.
 - Start implementation only after the review gate says implementation can start and all in-scope use cases are `Pass`.
 - Ensure traceability when a proposed design doc exists: every design change-inventory row (especially `Rename/Move` and `Remove`) maps to implementation tasks and verification steps.
 - Enforce clean-cut implementation: do not keep legacy compatibility paths.
@@ -151,7 +151,7 @@ If the user does not specify file paths, write to a project-local ticket folder 
   - `Small`: start/refine `tickets/<ticket-name>/implementation-plan.md` (solution sketch section only for design basis).
   - `Medium/Large`: create/refine `tickets/<ticket-name>/proposed-design.md`.
 - Stage 2 (runtime modeling):
-  - `tickets/<ticket-name>/design-based-runtime-call-stack.md`
+  - `tickets/<ticket-name>/proposed-design-based-runtime-call-stack.md`
 - Stage 3 (review gate, iterative):
   - `tickets/<ticket-name>/runtime-call-stack-review.md`
 - Stage 4 (only after gate `Go`):
@@ -161,7 +161,7 @@ If the user does not specify file paths, write to a project-local ticket folder 
 ## Templates
 
 - `assets/proposed-design-template.md`
-- `assets/design-based-runtime-call-stack-template.md`
+- `assets/proposed-design-based-runtime-call-stack-template.md`
 - `assets/runtime-call-stack-review-template.md`
 - `assets/implementation-plan-template.md`
 - `assets/implementation-progress-template.md`

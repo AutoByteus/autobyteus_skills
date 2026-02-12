@@ -5,8 +5,8 @@
 - Classification: `Small` / `Medium` / `Large`
 - Reasoning:
 - Workflow Depth:
-  - `Small` -> draft implementation plan (solution sketch) -> design-based runtime call stack -> runtime call stack review -> refine until review-pass -> progress tracking (proposed design doc optional)
-  - `Medium/Large` -> proposed design doc -> design-based runtime call stack -> runtime call stack review (minimum 2 rounds, round 1 diagnostic) -> implementation plan -> progress tracking
+  - `Small` -> draft implementation plan (solution sketch) -> proposed-design-based runtime call stack -> runtime call stack review -> refine until review-pass -> progress tracking (proposed design doc optional)
+  - `Medium/Large` -> proposed design doc -> proposed-design-based runtime call stack -> runtime call stack review (minimum 2 rounds, round 1 diagnostic) -> implementation plan -> progress tracking
 
 ## Plan Maturity
 
@@ -35,9 +35,9 @@
 
 | Round | Use Case | Call Stack Location | Review Location | Business Flow Completeness | Structure & SoC Check | Unresolved Blocking Findings | Verdict |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 |  | `tickets/<ticket-name>/design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail | Yes/No | Pass/Fail |
-| 2 (required for `Medium/Large`) |  | `tickets/<ticket-name>/design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail | Yes/No | Pass/Fail |
-| N (optional) |  | `tickets/<ticket-name>/design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail | Yes/No | Pass/Fail |
+| 1 |  | `tickets/<ticket-name>/proposed-design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail | Yes/No | Pass/Fail |
+| 2 (required for `Medium/Large`) |  | `tickets/<ticket-name>/proposed-design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail | Yes/No | Pass/Fail |
+| N (optional) |  | `tickets/<ticket-name>/proposed-design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail | Yes/No | Pass/Fail |
 
 ## Go / No-Go Decision
 

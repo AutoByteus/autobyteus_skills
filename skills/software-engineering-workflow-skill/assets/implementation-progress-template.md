@@ -5,8 +5,8 @@ This document tracks implementation and test progress at file level, including d
 ## When To Use This Document
 
 - Create this file at implementation kickoff after required pre-implementation artifacts are ready:
-  - `Small`: design-based runtime call stack + runtime call stack review complete and implementation plan is review-validated.
-  - `Medium/Large`: proposed design doc + design-based runtime call stack + runtime call stack review complete (minimum 2 rounds, final gate `Implementation can start: Yes`) and implementation plan ready.
+  - `Small`: proposed-design-based runtime call stack + runtime call stack review complete and implementation plan is review-validated.
+  - `Medium/Large`: proposed design doc + proposed-design-based runtime call stack + runtime call stack review complete (minimum 2 rounds, final gate `Implementation can start: Yes`) and implementation plan ready.
 - Update it in real time while implementing.
 - Record every meaningful change immediately: file status transitions, test status changes, blockers, and design feedback-loop actions.
 
@@ -33,7 +33,7 @@ This document tracks implementation and test progress at file level, including d
 
 | Date | Previous Scope | New Scope | Trigger | Required Action |
 | --- | --- | --- | --- | --- |
-| YYYY-MM-DD | Small | Medium | Example: cross-referencing blocker discovered | Deepen `tickets/<ticket-name>/design-based-runtime-call-stack.md`, update `tickets/<ticket-name>/runtime-call-stack-review.md`, and start/update `tickets/<ticket-name>/proposed-design.md`. |
+| YYYY-MM-DD | Small | Medium | Example: cross-referencing blocker discovered | Deepen `tickets/<ticket-name>/proposed-design-based-runtime-call-stack.md`, update `tickets/<ticket-name>/runtime-call-stack-review.md`, and start/update `tickets/<ticket-name>/proposed-design.md`. |
 
 ## Completion Gate
 

@@ -15,7 +15,7 @@ Use this document as the pre-implementation gate for runtime-call-stack quality 
 
 ## Review Basis
 
-- Runtime Call Stack Document: `tickets/<ticket-name>/design-based-runtime-call-stack.md`
+- Runtime Call Stack Document: `tickets/<ticket-name>/proposed-design-based-runtime-call-stack.md`
 - Source Design Basis:
   - `Small`: `tickets/<ticket-name>/implementation-plan.md`
   - `Medium/Large`: `tickets/<ticket-name>/proposed-design.md`
@@ -67,5 +67,5 @@ Rule:
   - If `Current Round = 1`, gate is always `No-Go` even if no findings.
 - If `No`, required refinement actions:
   - Update proposed design doc and/or implementation plan:
-  - Regenerate `design-based-runtime-call-stack.md`:
+  - Regenerate `proposed-design-based-runtime-call-stack.md`:
   - Re-run this review:
