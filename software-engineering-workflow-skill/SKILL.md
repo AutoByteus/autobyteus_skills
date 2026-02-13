@@ -20,11 +20,10 @@ In this skill, proposed-design-based runtime call stacks are future-state (`to-b
 - Write all task planning artifacts into that ticket folder.
 - If the user specifies a different location, follow the user-specified path.
 
-### Audible Notifications (Speak Tool, Optional But Supported)
+### Audible Notifications (Speak Tool, Required)
 
-- If the user asks for spoken updates, enable notification mode for the current task.
 - Use the `Speak` tool to announce completion of meaningful milestones so the user does not need to watch the screen continuously.
-- Minimum speak events when enabled:
+- Required speak events:
   - end of scope triage and chosen depth (`Small`/`Medium`/`Large`),
   - completion of proposed design artifact write (`proposed-design.md`) when that stage is in scope,
   - completion of runtime call stack artifact write (`proposed-design-based-runtime-call-stack.md`),
@@ -61,7 +60,7 @@ In this skill, proposed-design-based runtime call stacks are future-state (`to-b
   - changed sections,
   - which findings were resolved.
 - A review round cannot be considered complete until its required file updates are physically written.
-- If audible notification mode is enabled, announce each completed round only after the round record and required write-backs are physically written.
+- Announce each completed round only after the round record and required write-backs are physically written.
 
 ### 0) Triage Change Size First (Decide Workflow Depth)
 
@@ -122,7 +121,7 @@ In this skill, proposed-design-based runtime call stacks are future-state (`to-b
   - mapped sections in runtime call stack doc.
 - Version the design during review loops (`v1`, `v2`, ...) and record what changed between rounds.
 - Use the template in `assets/proposed-design-template.md` as a starting point.
-- If audible notification mode is enabled, announce completion after `proposed-design.md` is physically written/updated.
+- Announce completion after `proposed-design.md` is physically written/updated.
 
 ### 3) Build Proposed-Design-Based Runtime Call Stacks Per Use Case
 
@@ -145,7 +144,7 @@ In this skill, proposed-design-based runtime call stacks are future-state (`to-b
 - Note key data transformations (input schema -> domain model -> output payload).
 - Version call stacks to match design revisions from review loops (`v1`, `v2`, ...).
 - Use the template in `assets/proposed-design-based-runtime-call-stack-template.md`.
-- If audible notification mode is enabled, announce completion after `proposed-design-based-runtime-call-stack.md` is physically written/updated.
+- Announce completion after `proposed-design-based-runtime-call-stack.md` is physically written/updated.
 
 ### 4) Review Proposed-Design-Based Runtime Call Stacks (Future-State + Naming + Cleanliness Gate)
 
@@ -216,8 +215,8 @@ In this skill, proposed-design-based runtime call stacks are future-state (`to-b
 - If a file is blocked by unfinished dependencies, mark it `Blocked` and record the dependency and unblock condition.
 - Mark a file `Completed` only when implementation is done and required tests are passing.
 - Use `assets/implementation-plan-template.md` and `assets/implementation-progress-template.md`.
-- If audible notification mode is enabled, announce final handoff completion after all required artifacts are written.
-- If audible notification mode is enabled, announce when `implementation-plan.md` is written/updated and when `implementation-progress.md` is created/updated.
+- Announce final handoff completion after all required artifacts are written.
+- Announce when `implementation-plan.md` is written/updated and when `implementation-progress.md` is created/updated.
 
 ## Output Defaults
 

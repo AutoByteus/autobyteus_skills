@@ -16,11 +16,10 @@ Create one canonical artifact, `experience-story.md`, that captures the product 
 
 ## Workflow
 
-### Audible Notifications (Speak Tool, Optional But Supported)
+### Audible Notifications (Speak Tool, Required)
 
-- If the user asks for spoken updates, enable notification mode for the current journey-definition task.
 - Use the `Speak` tool for milestone-level updates so the user does not need to watch the screen continuously.
-- Minimum speak events when enabled:
+- Required speak events:
   - product story + main journey draft completed,
   - screen stories + alternate/error paths completed,
   - transition index completed,
@@ -90,7 +89,7 @@ Columns:
 - `expected_feedback`
 
 Use IDs consistently across the whole document.
-- If audible notification mode is enabled, announce completion after the transition index is physically written.
+- Announce completion after the transition index is physically written.
 
 ### 6) Record Blocking Questions
 
@@ -151,7 +150,7 @@ Use this structure in `experience-story.md`:
 - Screen IDs and transition IDs are consistent.
 - Error and empty states include recovery actions.
 - The document can be directly used by `$product-ui-prototyping`.
-- If audible notification mode is enabled, announce quality-gate result after validation completes.
+- Announce quality-gate result after validation completes.
 
 ## Handoff To Prototyping
 
@@ -161,4 +160,4 @@ When visual prototyping is requested next, invoke `$product-ui-prototyping` with
 - chosen platform (`web`, `ios`, `android`)
 
 Then generate state images, flow maps, and viewer artifacts based on the transition index and screen stories.
-- If audible notification mode is enabled, announce handoff-ready completion after `experience-story.md` is written/updated.
+- Announce handoff-ready completion after `experience-story.md` is written/updated.
