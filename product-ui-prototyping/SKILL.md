@@ -153,6 +153,7 @@ Turn product ideas into testable UI behavior using generated and edited screen i
 - Use deterministic style instructions and the shared base spec to keep typography, spacing, iconography, and color consistent across screens.
 - Save locked shell outputs in a stable structure:
   - `ui-prototypes/<prototype-name>/images/<platform>/<flow>/<screen>-default.png`
+- Announce completion after baseline screen set is physically written for the target platform+flow.
 
 ### 5) Create Interaction States From Baselines
 
@@ -177,6 +178,7 @@ Turn product ideas into testable UI behavior using generated and edited screen i
   - Validation/success/error messages
 - Save outputs as:
   - `ui-prototypes/<prototype-name>/images/<platform>/<flow>/<screen>-<state>.png`
+- Announce completion after interaction-state set is physically written for the target platform+flow.
 
 ### 6) Maintain Image/Prompt Manifest (Required)
 
@@ -205,6 +207,7 @@ Turn product ideas into testable UI behavior using generated and edited screen i
 - Remove stale/legacy rows when images or prompts are replaced or deleted.
 - Keep only active image/prompt pairs for the current prototype revision.
 - When artifacts are deleted or renamed, update/remove rows immediately so manifest and filesystem stay 1:1.
+- Announce completion after manifest synchronization is physically written and consistent with current artifacts.
 
 ### 7) Connect Screens For Click-Through Simulation
 

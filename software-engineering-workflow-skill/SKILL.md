@@ -31,7 +31,7 @@ In this skill, proposed-design-based runtime call stacks are future-state (`to-b
   - final planning gate result (implementation can start: `Yes`/`No`),
   - completion of implementation planning artifact writes (`implementation-plan.md`, `implementation-progress.md`) when those stages are in scope,
   - task completion handoff (which artifacts were produced).
-- Speak trigger policy (recommended):
+- Speak trigger policy:
   - speak only after a milestone is durably completed (file written + gate state known),
   - do not speak for intermediate thinking or partial drafts,
   - if multiple milestone updates happen close together, batch them into one short status message.
@@ -80,6 +80,7 @@ In this skill, proposed-design-based runtime call stacks are future-state (`to-b
   - `Medium`: create proposed design doc first, build proposed-design-based runtime call stacks from the proposed design doc, run iterative review rounds (minimum 3), and only after final review `Go` create implementation plan and track progress in real time.
   - `Large`: create proposed design doc first, build proposed-design-based runtime call stacks from the proposed design doc, run iterative review rounds (minimum 5), and only after final review `Go` create implementation plan and track progress in real time.
 - Re-evaluate during implementation; if scope expands or smells appear, escalate from `Small` to full workflow.
+- Announce completion after triage depth is finalized (`Small`/`Medium`/`Large`).
 
 ### 1) Clarify Requirements And Scope
 

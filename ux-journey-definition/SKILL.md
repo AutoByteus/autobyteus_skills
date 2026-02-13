@@ -42,6 +42,7 @@ Write one short paragraph:
 - what success looks like.
 
 Keep this concrete and product-facing.
+- Announce completion after product story draft is physically written.
 
 ### 2) Write Main Journey (Happy Path)
 
@@ -52,6 +53,7 @@ Each step should include:
 - which `screen_id` is involved.
 
 Prioritize one critical flow first before expanding.
+- Announce completion after main journey draft is physically written.
 
 ### 3) Write Screen Stories
 
@@ -64,6 +66,7 @@ Required shape:
 - user can do (`action_id`)
 - system behavior for each action
 - states to prototype (`default`, `loading`, `success`, `error`, `empty` when applicable)
+- Announce completion after screen stories are physically written.
 
 ### 4) Capture Alternate/Error Paths
 
@@ -76,6 +79,7 @@ For each branch, state:
 - trigger/condition,
 - what user sees,
 - recovery action and destination.
+- Announce completion after alternate/error paths are physically written.
 
 ### 5) Build Transition Index
 
