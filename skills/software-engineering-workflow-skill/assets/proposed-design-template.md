@@ -23,6 +23,15 @@
 
 ## Requirements And Use Cases
 
+## Codebase Understanding Snapshot (Pre-Design Mandatory)
+
+| Area | Findings | Evidence (files/functions) | Open Unknowns |
+| --- | --- | --- | --- |
+| Entrypoints / Boundaries |  |  |  |
+| Current Naming Conventions |  |  |  |
+| Impacted Modules / Responsibilities |  |  |  |
+| Data / Persistence / External IO |  |  |  |
+
 ## Current State (As-Is)
 
 ## Target State (To-Be)
@@ -41,6 +50,12 @@
 | --- | --- | --- | --- | --- | --- |
 |  |  |  |  |  |  |
 
+## Naming Decisions (Natural And Implementation-Friendly)
+
+| Item Type (`File`/`Module`/`API`) | Current Name | Proposed Name | Reason | Notes |
+| --- | --- | --- | --- | --- |
+|  |  |  |  |  |
+
 ## Dependency Flow And Cross-Reference Risk
 
 | Module/File | Upstream Dependencies | Downstream Dependents | Cross-Reference Risk | Mitigation / Boundary Strategy |
@@ -56,6 +71,12 @@
 ## Data Models (If Needed)
 
 ## Error Handling And Edge Cases
+
+## Use-Case Coverage Matrix (Design Gate)
+
+| use_case_id | Use Case | Primary Path Covered (`Yes`/`No`) | Fallback Path Covered (`Yes`/`No`/`N/A`) | Error Path Covered (`Yes`/`No`/`N/A`) | Runtime Call Stack Section |
+| --- | --- | --- | --- | --- | --- |
+| UC-001 |  |  |  |  |  |
 
 ## Performance / Security Considerations
 

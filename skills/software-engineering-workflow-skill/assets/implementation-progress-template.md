@@ -6,7 +6,8 @@ This document tracks implementation and test progress at file level, including d
 
 - Create this file at implementation kickoff after required pre-implementation artifacts are ready:
   - `Small`: proposed-design-based runtime call stack + runtime call stack review complete and implementation plan is review-validated.
-  - `Medium/Large`: proposed design doc + proposed-design-based runtime call stack + runtime call stack review complete (minimum 2 rounds, final gate `Implementation can start: Yes`) and implementation plan ready.
+  - `Medium`: proposed design doc + proposed-design-based runtime call stack + runtime call stack review complete (minimum 3 rounds, final gate `Implementation can start: Yes`) and implementation plan ready.
+  - `Large`: proposed design doc + proposed-design-based runtime call stack + runtime call stack review complete (minimum 5 rounds, final gate `Implementation can start: Yes`) and implementation plan ready.
 - Update it in real time while implementing.
 - Record every meaningful change immediately: file status transitions, test status changes, blockers, and design feedback-loop actions.
 
@@ -15,7 +16,8 @@ This document tracks implementation and test progress at file level, including d
 - Scope classification confirmed (`Small`/`Medium`/`Large`):
 - Runtime review rounds complete for scope:
   - `Small`: >= 1
-  - `Medium/Large`: >= 2
+  - `Medium`: >= 3
+  - `Large`: >= 5
 - Runtime review final gate is `Implementation can start: Yes`:
 - No unresolved blocking findings:
 

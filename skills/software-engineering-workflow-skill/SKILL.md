@@ -25,28 +25,46 @@ In this skill, proposed-design-based runtime call stacks are future-state (`to-b
 - Work in explicit stages and complete each gate before producing downstream artifacts.
 - Do not finalize `implementation-plan.md` or generate `implementation-progress.md` until the runtime call stack review gate is fully satisfied for the current scope.
 - `Small` scope exception: drafting `implementation-plan.md` (solution sketch only) before review is allowed as design input, but this draft does not unlock implementation kickoff.
-- For `Medium/Large`, enforce at least 2 review rounds:
+- For `Medium`, enforce at least 3 review rounds:
   - Round 1 is diagnostic/challenge by design and cannot unlock implementation.
-  - Round 2 (or later) is the first round allowed to make a `Go` decision.
+  - Round 2 is hardening and cannot unlock implementation.
+  - Round 3 (or later) is the first round allowed to make a `Go` decision.
+- For `Large`, enforce at least 5 review rounds:
+  - Rounds 1-4 are mandatory `No-Go` rounds (diagnostic + hardening) and cannot unlock implementation.
+  - Round 5 (or later) is the first round allowed to make a `Go` decision.
 - Any review finding with a required design/call-stack update is blocking; regenerate affected artifacts and re-review before proceeding.
 - If the user asks for all artifacts in one turn, still enforce stage gates within that turn (iterate review rounds first; only then produce implementation artifacts).
+- No mental-only review refinements: if a round finds issues, update the affected artifact files immediately in the same round before starting the next round.
+- For each review round, record explicit write-backs in `runtime-call-stack-review.md`:
+  - updated files,
+  - new artifact versions,
+  - changed sections,
+  - which findings were resolved.
+- A review round cannot be considered complete until its required file updates are physically written.
 
 ### 0) Triage Change Size First (Decide Workflow Depth)
 
-- Do a quick requirement + codebase scan before choosing artifacts.
+- Do a requirement + codebase understanding pass before choosing artifacts.
+- Minimum codebase understanding pass before design:
+  - identify entrypoints and execution boundaries for in-scope flows,
+  - identify touched modules/files and owning concerns,
+  - identify current naming conventions (file/module/API style),
+  - identify unknowns that could invalidate design assumptions.
+- Do not draft proposed design or call stacks until this understanding pass is complete.
 - Classify as `Small`, `Medium`, or `Large` using practical signals:
   - Estimated files touched (roughly <= 3 is usually `Small` if not cross-cutting).
   - New/changed public APIs, schema/storage changes, or cross-cutting behavior.
   - Multi-layer impact (API + service + persistence + runtime flow) or architectural impact.
 - Choose workflow depth:
   - `Small`: create a draft implementation plan (with a short solution sketch), build per-use-case proposed-design-based runtime call stacks from that plan, review them, then refine until review-pass and track progress in real time.
-  - `Medium/Large`: create proposed design doc first, build proposed-design-based runtime call stacks from the proposed design doc, run iterative review rounds (minimum 2), and only after final review `Go` create implementation plan and track progress in real time.
+  - `Medium`: create proposed design doc first, build proposed-design-based runtime call stacks from the proposed design doc, run iterative review rounds (minimum 3), and only after final review `Go` create implementation plan and track progress in real time.
+  - `Large`: create proposed design doc first, build proposed-design-based runtime call stacks from the proposed design doc, run iterative review rounds (minimum 5), and only after final review `Go` create implementation plan and track progress in real time.
 - Re-evaluate during implementation; if scope expands or smells appear, escalate from `Small` to full workflow.
 
 ### 1) Clarify Requirements And Scope
 
 - Ask for goals, non-goals, primary use cases, and constraints.
-- Confirm the triage result (`Small` vs `Medium/Large`) and why.
+- Confirm the triage result (`Small` vs `Medium` vs `Large`) and why.
 - If scope is ambiguous, ask whether to run medium/large depth (includes full proposed design doc). Otherwise proceed with the triaged depth.
 
 ### Core Modernization Policy (Mandatory)
@@ -67,9 +85,20 @@ In this skill, proposed-design-based runtime call stacks are future-state (`to-b
   - include explicit change inventory rows for `Add`, `Modify`, `Rename/Move`, `Remove`.
 - List files/modules and their public APIs.
 - For each file/module, state responsibility, key APIs, inputs/outputs, dependencies, and change type.
+- Include a naming decisions section:
+  - proposed file/module/API names,
+  - rationale for each naming choice,
+  - mapping from old names to new names when renaming.
+- Use natural, unsurprising, implementation-friendly names; naming choices should be understandable without domain-specific insider context.
 - Document dependency flow and cross-reference risk explicitly (including how cycles are avoided or temporarily tolerated).
 - For `Rename/Move` and `Remove`, include decommission/cleanup intent (import cleanup and dead-code removal).
 - Capture data models and error-handling expectations if relevant.
+- Add a use-case coverage matrix in the design doc with at least:
+  - `use_case_id`,
+  - primary path covered (`Yes`/`No`),
+  - fallback path covered (`Yes`/`No`/`N/A`),
+  - error path covered (`Yes`/`No`/`N/A`),
+  - mapped sections in runtime call stack doc.
 - Version the design during review loops (`v1`, `v2`, ...) and record what changed between rounds.
 - Use the template in `assets/proposed-design-template.md` as a starting point.
 
@@ -81,11 +110,13 @@ In this skill, proposed-design-based runtime call stacks are future-state (`to-b
   - `Small`: use the draft implementation plan solution sketch as the design basis.
   - `Medium/Large`: use the proposed design document as the design basis.
 - For each use case, write a proposed-design-based runtime call stack from entry point to completion in a debug-trace format.
+- Use stable `use_case_id` values and ensure IDs match the design coverage matrix and review artifact.
 - Treat this artifact as `to-be` architecture behavior derived from the proposed design (or small-scope solution sketch), not as-is code tracing.
 - If current code differs from target design, model the target design behavior and record migration/transition notes separately.
 - Include file and function names at every frame using `path/to/file.ts:functionName(...)`.
 - Show architectural boundaries explicitly (e.g., controller -> service -> repository -> external API).
 - Include primary path and fallback/error paths, not only happy path.
+- Include explicit use-case coverage status per use case (primary/fallback/error) and mark intentional `N/A` branches.
 - Mark async/event boundaries (`await`, queue enqueue/dequeue, worker loop handoff).
 - Mark state mutations and persistence points (`in-memory state`, `cache write`, `DB/file write`).
 - Capture decision gates and conditions that choose one branch over another.
@@ -93,13 +124,16 @@ In this skill, proposed-design-based runtime call stacks are future-state (`to-b
 - Version call stacks to match design revisions from review loops (`v1`, `v2`, ...).
 - Use the template in `assets/proposed-design-based-runtime-call-stack-template.md`.
 
-### 4) Review Proposed-Design-Based Runtime Call Stacks (Future-State Gap + Cleanliness Gate)
+### 4) Review Proposed-Design-Based Runtime Call Stacks (Future-State + Naming + Cleanliness Gate)
 
 - Create `runtime-call-stack-review.md` as a mandatory review artifact.
 - Review focus is future-state correctness and implementability against target design, not parity with current code structure.
 - Run review in explicit rounds and record each round in the same review artifact.
 - Review each use case against these criteria:
+  - terminology and concept vocabulary is natural and intuitive (`Pass`/`Fail`),
+  - file/API naming is clear and unsurprising for implementation mapping (`Pass`/`Fail`),
   - future-state alignment with proposed design (`Pass`/`Fail`),
+  - use-case coverage completeness (primary/fallback/error coverage) (`Pass`/`Fail`),
   - business flow completeness (`Pass`/`Fail`),
   - gap findings,
   - structure and separation-of-concerns check (`Pass`/`Fail`),
@@ -109,9 +143,19 @@ In this skill, proposed-design-based runtime call stacks are future-state (`to-b
   - overall verdict (`Pass`/`Fail`).
 - Round policy:
   - `Small`: at least 1 round; iterate until gate passes.
-  - `Medium/Large`: at least 2 rounds. Round 1 must be `No-Go` (diagnostic hardening round). Round 2+ may be `Go` only if all gate conditions pass.
+  - `Medium`: at least 3 rounds. Rounds 1-2 must be `No-Go` (diagnostic + hardening rounds). Round 3+ may be `Go` only if all gate conditions pass.
+  - `Large`: at least 5 rounds. Rounds 1-4 must be `No-Go` (diagnostic + hardening rounds). Round 5+ may be `Go` only if all gate conditions pass.
+- Across rounds, track trend quality: issues should decline in count/severity or become more localized; otherwise escalate design refinement before proceeding.
+- Round write-back discipline (mandatory):
+  - Step A: run review and record findings in the current round.
+  - Step B: if findings require updates, immediately modify design/call-stack artifacts and bump versions (`vN -> vN+1`).
+  - Step C: record an "Applied Updates" entry in the review artifact (what changed, where, and why).
+  - Step D: start the next round from updated files only; do not carry unresolved edits in memory.
 - Gate `Go` criteria (all required):
+  - terminology/concept vocabulary is `Pass` for all in-scope use cases,
+  - file/API naming clarity is `Pass` for all in-scope use cases,
   - future-state behavior is consistent with proposed design across all in-scope use cases,
+  - use-case coverage completeness is `Pass` for all in-scope use cases,
   - all in-scope use cases have overall verdict `Pass`,
   - no unresolved blocking findings (including any required design/call-stack updates),
   - for any `Remove`/`Rename/Move` scope items, decommission/cleanup checks are `Pass`,
@@ -119,6 +163,7 @@ In this skill, proposed-design-based runtime call stacks are future-state (`to-b
 - If issues are found:
   - `Medium/Large`: revise the proposed design document, regenerate runtime call stacks, then rerun review.
   - `Small`: refine the implementation plan (and add design notes if needed), regenerate runtime call stacks, then rerun review.
+- Even when a round reports no findings, still complete the round record in-file and continue until minimum required rounds are satisfied for that scope.
 - Repeat until all gate `Go` criteria are satisfied.
 - Use the template in `assets/runtime-call-stack-review-template.md`.
 

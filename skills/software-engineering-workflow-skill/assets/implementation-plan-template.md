@@ -6,7 +6,8 @@
 - Reasoning:
 - Workflow Depth:
   - `Small` -> draft implementation plan (solution sketch) -> proposed-design-based runtime call stack -> runtime call stack review -> refine until review-pass -> progress tracking (proposed design doc optional)
-  - `Medium/Large` -> proposed design doc -> proposed-design-based runtime call stack -> runtime call stack review (minimum 2 rounds, round 1 diagnostic) -> implementation plan -> progress tracking
+  - `Medium` -> proposed design doc -> proposed-design-based runtime call stack -> runtime call stack review (minimum 3 rounds) -> implementation plan -> progress tracking
+  - `Large` -> proposed design doc -> proposed-design-based runtime call stack -> runtime call stack review (minimum 5 rounds) -> implementation plan -> progress tracking
 
 ## Plan Maturity
 
@@ -20,7 +21,8 @@
 - No unresolved blocking findings:
 - Minimum review rounds satisfied:
   - `Small`: >= 1
-  - `Medium/Large`: >= 2
+  - `Medium`: >= 3
+  - `Large`: >= 5
 - Final gate decision in review artifact is `Implementation can start: Yes`:
 
 ## Solution Sketch (Required For `Small`, Optional Otherwise)
@@ -33,11 +35,14 @@
 
 ## Runtime Call Stack Review Gate (Required Before Implementation)
 
-| Round | Use Case | Call Stack Location | Review Location | Business Flow Completeness | Structure & SoC Check | Unresolved Blocking Findings | Verdict |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 |  | `tickets/<ticket-name>/proposed-design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail | Yes/No | Pass/Fail |
-| 2 (required for `Medium/Large`) |  | `tickets/<ticket-name>/proposed-design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail | Yes/No | Pass/Fail |
-| N (optional) |  | `tickets/<ticket-name>/proposed-design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail | Yes/No | Pass/Fail |
+| Round | Use Case | Call Stack Location | Review Location | Naming Naturalness | File/API Naming Clarity | Business Flow Completeness | Structure & SoC Check | Unresolved Blocking Findings | Verdict |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 |  | `tickets/<ticket-name>/proposed-design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail | Pass/Fail | Pass/Fail | Yes/No | Pass/Fail |
+| 2 |  | `tickets/<ticket-name>/proposed-design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail | Pass/Fail | Pass/Fail | Yes/No | Pass/Fail |
+| 3 (required for `Medium`; required hardening round for `Large`) |  | `tickets/<ticket-name>/proposed-design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail | Pass/Fail | Pass/Fail | Yes/No | Pass/Fail |
+| 4 (required hardening round for `Large`) |  | `tickets/<ticket-name>/proposed-design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail | Pass/Fail | Pass/Fail | Yes/No | Pass/Fail |
+| 5 (required gate-eligible round for `Large`) |  | `tickets/<ticket-name>/proposed-design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail | Pass/Fail | Pass/Fail | Yes/No | Pass/Fail |
+| N (optional) |  | `tickets/<ticket-name>/proposed-design-based-runtime-call-stack.md` | `tickets/<ticket-name>/runtime-call-stack-review.md` | Pass/Fail | Pass/Fail | Pass/Fail | Pass/Fail | Yes/No | Pass/Fail |
 
 ## Go / No-Go Decision
 

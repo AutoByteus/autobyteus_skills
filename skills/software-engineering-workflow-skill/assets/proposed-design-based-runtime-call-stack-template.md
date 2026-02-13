@@ -34,8 +34,8 @@ Do not treat this document as an as-is trace of current code behavior.
 
 ## Use Case Index
 
-- Use Case 1: [Name]
-- Use Case 2: [Name]
+- UC-001: [Name]
+- UC-002: [Name]
 
 ## Reference Pattern (Cache-First + Fallback Rebuild)
 
@@ -63,7 +63,7 @@ agent/factory/agent-factory.ts:restoreAgent(agentId, config, memoryDir?)
 
 ---
 
-## Use Case 1: [Name]
+## Use Case: UC-001 [Name]
 
 ### Goal
 
@@ -118,9 +118,15 @@ module/e.ts:persist(...)
 
 - 
 
+### Coverage Status
+
+- Primary Path: `Covered` / `Missing`
+- Fallback Path: `Covered` / `Missing` / `N/A`
+- Error Path: `Covered` / `Missing` / `N/A`
+
 ---
 
-## Use Case 2: [Name]
+## Use Case: UC-002 [Name]
 
 ### Goal
 
@@ -163,3 +169,9 @@ module/y.ts:...
 ### Open Questions
 
 - 
+
+### Coverage Status
+
+- Primary Path: `Covered` / `Missing`
+- Fallback Path: `Covered` / `Missing` / `N/A`
+- Error Path: `Covered` / `Missing` / `N/A`
