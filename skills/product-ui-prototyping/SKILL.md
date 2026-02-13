@@ -7,7 +7,7 @@ description: "Design and validate product UI behavior as visual state prototypes
 
 ## Overview
 
-Turn product ideas into testable UI behavior using generated and edited screen images. Produce state-by-state visuals, click-through transition logic, and a lightweight behavior test matrix that product, design, and engineering can review before implementation.
+Turn product ideas into testable UI behavior using generated and edited screen images. Produce state-by-state visuals, click-through transition logic, and per-platform viewers that teams can navigate end-to-end before implementation.
 
 ## Prototype Folder Convention (Project-Local)
 
@@ -26,6 +26,12 @@ Turn product ideas into testable UI behavior using generated and edited screen i
   - `ui-prototypes/<prototype-name>/prompts/<platform>/<flow>/<screen>-<state>.md`
 - If the user specifies a different location, follow the user-specified path.
 
+## Input Strategy (Flexible)
+
+- If `ui-prototypes/<prototype-name>/experience-story.md` exists, use it as upstream source for screens, actions, and transitions.
+- If it does not exist, proceed directly and define screens/transitions in this workflow.
+- Do not block prototyping on any specific upstream file.
+
 ## Workflow
 
 ### Tool Execution Discipline
@@ -40,13 +46,44 @@ Turn product ideas into testable UI behavior using generated and edited screen i
 
 ### Prompt Lineage And Update Discipline
 
-- For iterative updates, default to `generate image` with a full updated prompt.
-- Before generating an updated image, read the current prompt from the manifest `Prompt Path` for that image.
-- Create the next prompt by updating the current prompt (preserve unchanged constraints, modify only requested deltas).
+- For iterative updates, default to `edit image` anchored to the latest approved source image ("shell").
+- Use `generate image` for first drafts, major structural resets, or when repeated edit attempts cannot recover accuracy.
+- Before updating an image, read the current prompt from manifest `Prompt Path` and identify its `Parent Image` (if any).
+- Create the next prompt by updating the current prompt (preserve unchanged constraints, modify only requested deltas, and explicitly call out unchanged regions).
 - Save the updated prompt back to the same prompt path as latest source of truth.
+- For edit operations, prompt files must document:
+  - Human intent header: `UI Purpose`, `User Can Do`, `Transition Outcome`
+  - Transition metadata: `Trigger`, `From State`, `To State`
+  - I/O linkage: `Input Image`, intended `Output Image`
 - For replacement updates, write the new image to the same image path unless the user explicitly asks for a new variant.
 - Do not create version-sprawl prompt files (`v2`, `v3`, etc.) unless the user explicitly requests branching.
-- Use `edit image` only when the user explicitly asks for strict localized edits anchored to a specific source image.
+- Keep one canonical shell per screen/flow and derive state variants from that shell or its approved descendants.
+
+### Transition Traceability Model
+
+- Treat documentation as four linked layers:
+  - Canonical behavior intent: `ui-behavior-test-matrix.md` (`transition_id`, trigger, from/to state, acceptance checks)
+  - Navigation runtime: `flow-maps/<platform>/<flow>.json` transitions derived from the behavior matrix
+  - Edit execution: prompt file for the target state (exact edit prompt + transition metadata)
+  - Artifact lineage: `image-prompt-manifest.md` (input/output image paths and parent linkage)
+- Use the same `transition_id` across all four layers for one transition.
+- If reusing the same image path across iterations, keep latest output on disk and append an iteration log section in the prompt file (short delta summary + previous input image path).
+
+### Artifact Lifecycle Discipline (Required)
+
+- Keep only active artifacts that match the latest product vision and current valid use cases.
+- When a use case/flow/screen/state becomes invalid, deprecated, or obsolete, delete its files from:
+  - `images/`
+  - `prompts/`
+  - `flow-maps/`
+  - `viewer/` (if the flow is removed)
+- Do not keep deprecated artifacts "just in case" unless the user explicitly asks to archive them.
+- If naming is stale or unclear, rename files/folders to reflect current product language and use-case intent.
+- After any rename or deletion, update all references in the same change:
+  - `image-prompt-manifest.md`
+  - flow-map `screens[].image` paths
+  - viewer map path configuration
+- Prefer stable, descriptive kebab-case names that communicate platform, flow, screen, and state.
 
 ### Aspect Ratio Discipline
 
@@ -63,43 +100,54 @@ Turn product ideas into testable UI behavior using generated and edited screen i
 - Define user personas, primary jobs-to-be-done, and critical paths.
 - Define design constraints: brand tone, accessibility needs, component style, and data density.
 - Define fidelity level (`wireframe`, `mid`, `high`) before generating assets.
-- Define whether each flow is state-only or click-through simulation.
+- Define the platform+flow bundles that must be navigable in local viewers.
 
 ### 2) Map Screens, Actions, And States
 
 - Create a state transition table for each flow:
+  - `transition_id` (stable key, e.g., `gateway_validate_to_success`)
   - `screen`
   - `trigger` (click/tap/submit/navigation/system event)
   - `from_state`
   - `to_state`
   - `expected_feedback` (visual + microcopy)
+- Treat this table as canonical and keep all map/manifest transition IDs aligned to it.
 - Cover at minimum: `default`, `focus`, `pressed`, `disabled`, `loading`, `success`, `error`, and `empty` where applicable.
 - Prioritize one critical flow first, then expand to secondary flows.
 
-### 3) Create One Canonical Product Base Spec
+### 3) Create One Canonical Product Base Spec And Shell Lock
 
 - Build one reusable `product_base_spec` (platform, viewport, typography, spacing, tokens, accessibility intent).
 - Reuse the same base spec in all generate/edit prompts to prevent style drift between screens.
+- For each screen, create and lock a canonical shell image before state branching.
+- If the initial generation is not accurate, iteratively edit the same shell until layout and visual identity are stable.
 
 ### 4) Generate Baseline Screens
 
-- Generate net-new screens with the image generation tool.
-- Run generation sequentially: one screen per tool call, then review result before the next.
+- Generate net-new screen drafts with the image generation tool.
+- If a draft is not accurate enough, refine it with iterative `edit image` passes until the canonical shell is locked.
+- Run baseline work sequentially: one screen per tool call, then review result before the next.
 - Include explicit ratio in each generation prompt and keep it constant for that platform + flow.
-- Use absolute `output_file_path` in every generation tool call.
-- Save the exact prompt used for each generated image to:
+- Use absolute `output_file_path` in every generation/edit tool call.
+- Save the exact prompt used for each baseline image to:
   - `ui-prototypes/<prototype-name>/prompts/<platform>/<flow>/<screen>-default.md`
 - Use deterministic style instructions and the shared base spec to keep typography, spacing, iconography, and color consistent across screens.
-- Save outputs in a stable structure:
+- Save locked shell outputs in a stable structure:
   - `ui-prototypes/<prototype-name>/images/<platform>/<flow>/<screen>-default.png`
 
-### 5) Edit Interaction States From Baselines
+### 5) Create Interaction States From Baselines
 
-- Derive state variants with the image editing tool so layout and visual identity remain stable.
-- For iterative improvements to an existing image, prefer `generate image` from the latest prompt lineage; use `edit image` only for explicit localized-edit requests.
-- Run edits sequentially: one state update per tool call, then review result before the next.
+- For iterative state updates, default to `edit image` from the locked shell (or latest approved state predecessor).
+- Use `generate image` for state creation only when a state requires intentional structural divergence.
+- Preserve layout and visual identity continuity by carrying forward unchanged constraints and fixed shell elements in the updated prompt.
+- Run state updates sequentially: one tool call per update, then review result before the next.
 - Preserve the source image ratio for every edit call.
 - Use absolute paths for edit inputs and `output_file_path`.
+- For each edit call, record tool-call inputs/outputs in the manifest row:
+  - `Input Image` (required)
+  - `Output Image` (same as `Image Path` unless branching)
+- Ensure every edited state maps to one transition tuple:
+  - (`transition_id`, `trigger`, `from_state`, `to_state`)
 - Save the exact prompt used for each edited image to:
   - `ui-prototypes/<prototype-name>/prompts/<platform>/<flow>/<screen>-<state>.md`
 - Edit only state-relevant deltas:
@@ -117,26 +165,35 @@ Turn product ideas into testable UI behavior using generated and edited screen i
 - Treat this manifest as the latest source of truth (current artifact set only).
 - Add one row per image artifact (`default` and each edited state).
 - For each row, record at minimum:
+  - `Transition ID`
   - `Use Case`
   - `Platform`
   - `Flow`
   - `Screen`
   - `State`
+  - `Trigger`
+  - `From State`
+  - `To State`
   - `Situation/Purpose`
   - `Image Path`
+  - `Input Image` (for edits)
   - `Prompt Path`
   - `Source` (`Generate`/`Edit`)
   - `Parent Image` (for edited states)
 - Ensure every image in `images/` has exactly one matching manifest row.
+- Ensure every `Edit` row has a non-empty `Input Image` and transition tuple (`Trigger`, `From State`, `To State`).
 - For replacement updates, update the existing manifest row instead of creating a new row.
 - Remove stale/legacy rows when images or prompts are replaced or deleted.
 - Keep only active image/prompt pairs for the current prototype revision.
+- When artifacts are deleted or renamed, update/remove rows immediately so manifest and filesystem stay 1:1.
 
 ### 7) Connect Screens For Click-Through Simulation
 
-- For click-through flows, create one flow map per platform+flow:
+- Create one flow map per platform+flow:
   - `ui-prototypes/<prototype-name>/flow-maps/<platform>/<flow>.json`
+- Derive map transitions from `ui-behavior-test-matrix.md`; do not maintain an independent transition definition.
 - Include per-link definitions:
+  - `transition_id`
   - `screen`
   - `trigger`
   - `hotspot` (`x`, `y`, `width`, `height`)
@@ -147,10 +204,14 @@ Turn product ideas into testable UI behavior using generated and edited screen i
 ### 8) Assemble Behavior Test Matrix
 
 - Produce `ui-prototypes/<prototype-name>/ui-behavior-test-matrix.md` with one row per transition.
+- Treat this file as the canonical transition source of truth.
 - Include:
+  - `transition_id`
   - `flow`
   - `screen`
   - `trigger`
+  - `from_state`
+  - `to_state`
   - `expected next state image`
   - `acceptance check`
   - `open question / risk`
@@ -159,7 +220,7 @@ Turn product ideas into testable UI behavior using generated and edited screen i
 ### 9) Deliver Review Package For Non-Developers
 
 - Produce a concise review packet:
-  - `ui-prototypes/<prototype-name>/ui-prototype-spec.md` with assumptions, flow summary, and behavior rules
+  - Optional: `ui-prototypes/<prototype-name>/ui-prototype-spec.md` summary if the team requests a narrative overview
   - `ui-prototypes/<prototype-name>/image-prompt-manifest.md` for prompt/image traceability
   - `ui-prototypes/<prototype-name>/flow-maps/<platform>/<flow>.json` for click-through linkage
   - `ui-prototypes/<prototype-name>/viewer/<platform>/<flow>/` local click-through viewer files
@@ -195,17 +256,17 @@ Turn product ideas into testable UI behavior using generated and edited screen i
 - Read and reuse `references/prompt-patterns.md` for:
   - UX criteria coverage and product base spec
   - Production screen generation and state edit templates
+  - Shell-lock and iterative edit prompt patterns
   - Image/prompt manifest template and logging checklist
   - Flow-step and cross-platform adaptation templates
   - Click-through flow map template, viewer compatibility rules, and acceptance checklist
 
 ## Default Outputs
 
-- `ui-prototypes/<prototype-name>/ui-prototype-spec.md`
 - `ui-prototypes/<prototype-name>/ui-behavior-test-matrix.md`
 - `ui-prototypes/<prototype-name>/image-prompt-manifest.md`
 - `ui-prototypes/<prototype-name>/prompts/<platform>/<flow>/*.md`
-- `ui-prototypes/<prototype-name>/flow-maps/<platform>/<flow>.json` (required for click-through simulation)
+- `ui-prototypes/<prototype-name>/flow-maps/<platform>/<flow>.json`
 - `ui-prototypes/<prototype-name>/viewer/<platform>/<flow>/index.html`
 - `ui-prototypes/<prototype-name>/viewer/<platform>/<flow>/viewer.css`
 - `ui-prototypes/<prototype-name>/viewer/<platform>/<flow>/viewer.js`
@@ -222,6 +283,12 @@ Turn product ideas into testable UI behavior using generated and edited screen i
 - Ensure every image has a corresponding prompt record in `image-prompt-manifest.md`.
 - Ensure manifest contains only latest active artifacts (no stale legacy entries).
 - Ensure each iterative update prompt is derived from the current prompt referenced by manifest `Prompt Path`.
+- Ensure each state image preserves shell continuity (layout/frame/spacing/component geometry) unless a deliberate structural change is documented.
+- Ensure each edited image has traceable lineage: `Parent Image` + `Input Image` + (`Trigger`, `From State`, `To State`).
+- Ensure each manifest `Transition ID` exists in `ui-behavior-test-matrix.md`.
+- Ensure each flow-map transition corresponds to a matrix `transition_id` and matching trigger semantics.
+- Ensure no obsolete/deprecated artifacts remain for removed or invalidated use cases.
+- Ensure file/folder names reflect latest product vision and are consistent across images, prompts, maps, and viewers.
 - Ensure error and empty states include recovery guidance.
 - Ensure accessibility cues (focus visibility, contrast intent, readable hierarchy) are represented in mockups.
 - Ensure each click-through trigger in each flow map points to a valid target screen.
@@ -231,4 +298,4 @@ Turn product ideas into testable UI behavior using generated and edited screen i
 ## Handoff
 
 - Hand off approved behavior specs and state assets to implementation.
-- If engineering planning is requested next, invoke `$software-engineering-workflow-skill` with `ui-prototypes/<prototype-name>/ui-prototype-spec.md`, `ui-prototypes/<prototype-name>/ui-behavior-test-matrix.md`, relevant `ui-prototypes/<prototype-name>/flow-maps/<platform>/<flow>.json` files, `ui-prototypes/<prototype-name>/image-prompt-manifest.md`, and viewer behavior notes as inputs.
+- If engineering planning is requested next, invoke `$software-engineering-workflow-skill` with `ui-prototypes/<prototype-name>/ui-behavior-test-matrix.md`, relevant `ui-prototypes/<prototype-name>/flow-maps/<platform>/<flow>.json` files, `ui-prototypes/<prototype-name>/image-prompt-manifest.md`, and viewer behavior notes as inputs.

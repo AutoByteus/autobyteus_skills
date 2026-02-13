@@ -90,9 +90,17 @@ Apply base spec exactly:
 
 Use to convert one existing screen image into the next state.
 
-Use this only when strict localized edits are explicitly required. For normal iterative updates, prefer full-prompt `generate image` using the prompt-lineage protocol below.
+Use this as the default path for iterative state updates after a canonical shell is locked.
+Use full-prompt `generate image` only when intentional structural changes are required.
 
 ```text
+Transition ID: {stable_transition_id}
+Trigger: {click:*|tap:*|submit:*|system:*}
+From State: {from_state}
+To State: {to_state}
+Input Image: {absolute_or_workspace_path_to_source_image}
+Output Image: {absolute_or_workspace_path_to_target_image}
+
 Edit this UI screen for trigger: {trigger}.
 From state: {from_state}
 To state: {to_state}
@@ -104,6 +112,7 @@ Keep unchanged:
 - Spacing rhythm
 - Component shapes
 - Aspect ratio (must match source image)
+- Stable shell anchors (sidebar/header/frame geometry)
 
 Change only:
 - {delta_1}
@@ -120,18 +129,49 @@ Tool call path rules:
 - Use absolute filesystem path for tool `output_file_path`.
 ```
 
+Suggested prompt file shape (`prompts/<platform>/<flow>/<screen>-<state>.md`):
+
+```markdown
+# {screen} - {state}
+
+## Human Intent
+- UI Purpose: {what this screen/state is for right now}
+- User Can Do: {primary and secondary actions available}
+- Transition Outcome: {what happens next after trigger}
+- Output Image Path: {path}
+
+## Transition Metadata
+- Transition ID: {stable_transition_id}
+- Trigger: {trigger}
+- From State: {from_state}
+- To State: {to_state}
+- Input Image: {path}
+- Output Image: {path}
+
+## Edit Prompt
+{final prompt text used in tool call}
+
+## Iteration Log (append-only, latest at bottom)
+- Iteration: {n}
+- Previous Input Image: {path}
+- Output Image: {path}
+- Delta Summary: {1-2 lines}
+```
+
 ## 5) Prompt Lineage Update Protocol (Default For Iterative Updates)
 
 Use this protocol when improving an existing image:
 
 1. Find the target image row in `image-prompt-manifest.md`.
-2. Read current prompt from that row's `Prompt Path`.
+2. Read current prompt from that row's `Prompt Path` and check `Parent Image`.
 3. Produce a full updated prompt by editing the current prompt:
    - keep unchanged constraints and structure intent,
    - apply only requested deltas,
    - avoid unrelated redesign drift.
 4. Save updated prompt back to the same `Prompt Path` (latest-only).
-5. Generate updated image to the same `Image Path` unless user explicitly requests a new variant.
+5. Update image to the same `Image Path` unless user explicitly requests a new variant:
+   - default: `edit image` anchored to `Parent Image` (or latest approved source),
+   - exception: `generate image` for structural resets or branch redesigns.
 6. Update the same manifest row (do not create a new row for replacement updates).
 
 Do not create version-sprawl (`v2`, `v3`) prompt/image files unless the user explicitly requests branching.
@@ -208,17 +248,23 @@ File location:
 
 Recommended table:
 
-| Artifact ID | Use Case | Platform | Flow | Screen | State | Situation/Purpose | Source (`Generate`/`Edit`) | Parent Image | Image Path | Prompt Path | Notes |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| A-001 | Checkout happy path | web | checkout | cart | default | Cart view before submit | Generate | N/A | `ui-prototypes/<prototype-name>/images/web/checkout/cart-default.png` | `ui-prototypes/<prototype-name>/prompts/web/checkout/cart-default.md` |  |
-| A-002 | Checkout happy path | web | checkout | checkout | loading | Show pending payment processing | Edit | `.../cart-default.png` | `ui-prototypes/<prototype-name>/images/web/checkout/checkout-loading.png` | `ui-prototypes/<prototype-name>/prompts/web/checkout/checkout-loading.md` |  |
+| Artifact ID | Transition ID | Use Case | Platform | Flow | Screen | State | Trigger | From State | To State | Situation/Purpose | Source (`Generate`/`Edit`) | Parent Image | Input Image | Image Path | Prompt Path | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| A-001 | `checkout_default_load` | Checkout happy path | web | checkout | cart | default | `system:load` | `none` | `default` | Cart view before submit | Generate | N/A | N/A | `ui-prototypes/<prototype-name>/images/web/checkout/cart-default.png` | `ui-prototypes/<prototype-name>/prompts/web/checkout/cart-default.md` |  |
+| A-002 | `checkout_submit_loading` | Checkout happy path | web | checkout | checkout | loading | `click:checkout-button` | `default` | `loading` | Show pending payment processing | Edit | `.../cart-default.png` | `.../cart-default.png` | `ui-prototypes/<prototype-name>/images/web/checkout/checkout-loading.png` | `ui-prototypes/<prototype-name>/prompts/web/checkout/checkout-loading.md` |  |
 
 Logging rules:
 - Add/refresh the manifest row immediately after each image tool call.
 - Ensure each image has exactly one matching manifest row.
 - Ensure `Prompt Path` stores the exact prompt text used for the final image.
+- Ensure prompt files include a short `Human Intent` section (`UI Purpose`, `User Can Do`, `Transition Outcome`, `Output Image Path`) for review readability.
+- Ensure each `Edit` row has non-empty: `Transition ID`, `Trigger`, `From State`, `To State`, and `Input Image`.
+- Ensure `Transition ID` matches the corresponding row in `ui-behavior-test-matrix.md`.
+- When reusing the same output image path, update manifest row in place and append one short entry to prompt-file iteration log.
 - Treat manifest as latest source of truth; remove stale/legacy rows when artifacts are replaced or deleted.
 - Keep only active image/prompt entries for the current prototype revision.
+- When use cases/screens/flows are removed, delete obsolete files from `images/`, `prompts/`, `flow-maps/`, and `viewer/` (if flow removed).
+- When names become stale, rename assets to latest product language and update manifest/map/viewer references in the same change.
 
 ## 11) Click-Through Flow Map Template
 
@@ -248,6 +294,7 @@ File location:
   ],
   "transitions": [
     {
+      "transition_id": "checkout_submit_loading",
       "from_screen": "cart-default",
       "trigger": "click:checkout-button",
       "hotspot": { "x": 1024, "y": 820, "width": 220, "height": 56 },
@@ -255,6 +302,7 @@ File location:
       "transition": "instant"
     },
     {
+      "transition_id": "checkout_loading_success",
       "from_screen": "checkout-loading",
       "trigger": "system:success",
       "to_screen": "checkout-success",
@@ -270,6 +318,8 @@ Validation rules:
 - Ensure each interactive trigger has one deterministic target.
 - Keep hotspot rectangles inside image bounds.
 - Use consistent trigger naming (`click:*`, `tap:*`, `system:*`).
+- Ensure every transition has a unique `transition_id`.
+- Ensure each `transition_id` exists in `ui-behavior-test-matrix.md`.
 
 ## 12) Viewer Compatibility Rules
 
@@ -298,3 +348,22 @@ Run these checks before considering viewer setup complete:
 3. Runtime sanity:
    - start screen renders
    - no URL/base-resolution error in browser console
+
+## 14) Obsolete Artifact Cleanup + Rename Protocol
+
+Run this protocol after each major prototype update:
+
+1. Detect invalid artifacts:
+   - compare active use cases/flows/screens/states against manifest and filesystem.
+2. Delete obsolete artifacts:
+   - remove no-longer-valid files from `images/`, `prompts/`, and `flow-maps/`.
+   - remove platform+flow viewer bundle if the flow no longer exists.
+3. Rename stale artifacts:
+   - rename files/folders whose names no longer reflect latest product vision.
+4. Repair references atomically:
+   - update `image-prompt-manifest.md`,
+   - update `flow-maps/<platform>/<flow>.json` `screens[].image`,
+   - update viewer map path config for renamed flow files/folders.
+5. Re-validate:
+   - ensure manifest-to-filesystem mapping is exact (`1:1`),
+   - ensure viewer smoke test still passes for every remaining platform+flow set.
