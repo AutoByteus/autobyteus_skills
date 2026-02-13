@@ -30,7 +30,12 @@ In this skill, proposed-design-based runtime call stacks are future-state (`to-b
   - completion of runtime call stack artifact write (`proposed-design-based-runtime-call-stack.md`),
   - end of each review round (with `Go`/`No-Go` and whether write-backs were applied),
   - final planning gate result (implementation can start: `Yes`/`No`),
+  - completion of implementation planning artifact writes (`implementation-plan.md`, `implementation-progress.md`) when those stages are in scope,
   - task completion handoff (which artifacts were produced).
+- Speak trigger policy (recommended):
+  - speak only after a milestone is durably completed (file written + gate state known),
+  - do not speak for intermediate thinking or partial drafts,
+  - if multiple milestone updates happen close together, batch them into one short status message.
 - Keep each spoken message short (1-2 sentences), status-first, with one clear next-step statement.
 - If the `Speak` tool fails or is unavailable, continue the workflow and provide the same update in text.
 - Do not speak secrets, tokens, or full sensitive payloads.
@@ -212,6 +217,7 @@ In this skill, proposed-design-based runtime call stacks are future-state (`to-b
 - Mark a file `Completed` only when implementation is done and required tests are passing.
 - Use `assets/implementation-plan-template.md` and `assets/implementation-progress-template.md`.
 - If audible notification mode is enabled, announce final handoff completion after all required artifacts are written.
+- If audible notification mode is enabled, announce when `implementation-plan.md` is written/updated and when `implementation-progress.md` is created/updated.
 
 ## Output Defaults
 
