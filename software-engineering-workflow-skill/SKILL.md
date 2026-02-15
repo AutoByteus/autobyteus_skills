@@ -167,7 +167,9 @@ In this skill, proposed-design-based runtime call stacks are future-state (`to-b
   - gap findings,
   - structure and separation-of-concerns check (`Pass`/`Fail`),
   - dependency flow smells,
-  - remove/decommission completeness for impacted changes (`Pass`/`Fail`),
+  - redundancy/duplication check (`Pass`/`Fail`),
+  - simplification opportunity check (`Pass`/`Fail`),
+  - remove/decommission and obsolete/deprecated/dead-path cleanup completeness for impacted changes (`Pass`/`Fail`),
   - no-legacy/no-backward-compat check (`Pass`/`Fail`),
   - overall verdict (`Pass`/`Fail`).
 - Round policy:
@@ -185,9 +187,11 @@ In this skill, proposed-design-based runtime call stacks are future-state (`to-b
   - file/API naming clarity is `Pass` for all in-scope use cases,
   - future-state behavior is consistent with proposed design across all in-scope use cases,
   - use-case coverage completeness is `Pass` for all in-scope use cases,
+  - redundancy/duplication check is `Pass` for all in-scope use cases,
+  - simplification opportunity check is `Pass` for all in-scope use cases,
   - all in-scope use cases have overall verdict `Pass`,
   - no unresolved blocking findings (including any required design/call-stack updates),
-  - for any `Remove`/`Rename/Move` scope items, decommission/cleanup checks are `Pass`,
+  - for any impacted `Add`/`Modify`/`Rename/Move`/`Remove` scope items, decommission/cleanup and obsolete/deprecated/dead-path checks are `Pass`,
   - minimum required round count satisfied for the scope.
 - If issues are found:
   - `Medium/Large`: revise the proposed design document, regenerate runtime call stacks, then rerun review.
