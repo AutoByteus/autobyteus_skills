@@ -5,9 +5,9 @@
 - Classification: `Small` / `Medium` / `Large`
 - Reasoning:
 - Workflow Depth:
-  - `Small` -> draft implementation plan (solution sketch) -> future-state runtime call stack -> future-state runtime call stack review (iterative deep rounds until `Go Confirmed`) -> finalize implementation plan -> progress tracking
-  - `Medium` -> proposed design doc -> future-state runtime call stack -> future-state runtime call stack review (iterative deep rounds until `Go Confirmed`) -> implementation plan -> progress tracking
-  - `Large` -> proposed design doc -> future-state runtime call stack -> future-state runtime call stack review (iterative deep rounds until `Go Confirmed`) -> implementation plan -> progress tracking
+  - `Small` -> draft implementation plan (solution sketch) -> future-state runtime call stack -> future-state runtime call stack review (iterative deep rounds until `Go Confirmed`) -> finalize implementation plan -> implementation progress tracking -> aggregated system validation -> docs sync
+  - `Medium` -> proposed design doc -> future-state runtime call stack -> future-state runtime call stack review (iterative deep rounds until `Go Confirmed`) -> implementation plan -> implementation progress tracking -> aggregated system validation -> docs sync
+  - `Large` -> proposed design doc -> future-state runtime call stack -> future-state runtime call stack review (iterative deep rounds until `Go Confirmed`) -> implementation plan -> implementation progress tracking -> aggregated system validation -> docs sync
 
 ## Upstream Artifacts (Required)
 
@@ -34,6 +34,8 @@
 ## Solution Sketch (Required For `Small`, Optional Otherwise)
 
 - Use Cases In Scope:
+- Requirement Coverage Guarantee (all requirements mapped to at least one use case):
+- Design-Risk Use Cases (if any, with risk/objective):
 - Target Architecture Shape (for `Small`, mandatory):
 - New Layers/Modules/Boundary Interfaces To Introduce:
 - Touched Files/Modules:
@@ -80,15 +82,15 @@
 
 ## Requirement And Design Traceability
 
-| Requirement | Design Section | Use Case / Call Stack | Planned Task ID(s) | Verification |
-| --- | --- | --- | --- | --- |
-| R-001 |  | UC-001 |  | Unit/Integration/E2E |
+| Requirement | Design Section | Use Case / Call Stack | Planned Task ID(s) | Stage 5 Verification (Unit/Integration) | Stage 6 Scenario ID(s) |
+| --- | --- | --- | --- | --- | --- |
+| R-001 |  | UC-001 |  | Unit/Integration | SV-001 |
 
 ## Design Delta Traceability (Required For `Medium/Large`)
 
 | Change ID (from proposed design doc) | Change Type | Planned Task ID(s) | Includes Remove/Rename Work | Verification |
 | --- | --- | --- | --- | --- |
-| C-001 |  |  | Yes/No |  |
+| C-001 |  |  | Yes/No | Unit/Integration + SV-Scenario |
 
 ## Decommission / Rename Execution Tasks
 
@@ -104,22 +106,29 @@
 
 ## Per-File Definition Of Done
 
-| File | Implementation Done Criteria | Unit Test Criteria | Integration Test Criteria | E2E Criteria | Notes |
-| --- | --- | --- | --- | --- | --- |
-|  |  |  |  |  |  |
+| File | Implementation Done Criteria | Unit Test Criteria | Integration Test Criteria | Notes |
+| --- | --- | --- | --- | --- |
+|  |  |  |  |  |
 
 ## Test Strategy
 
 - Unit tests:
 - Integration tests:
-- E2E feasibility: `Feasible` / `Not Feasible`
-- If E2E is not feasible, concrete reason and current constraints:
-- Best-available non-E2E verification evidence when E2E is not feasible:
-- Residual risk notes:
+- Stage 5 boundary: file/module/service-level verification only (unit + integration).
+- Stage 6 handoff notes for aggregated validation:
+  - critical flows to validate (API/E2E/System):
+  - expected scenario count:
+  - known environment constraints:
 
-## Test Feedback Escalation Policy (Execution Guardrail)
+## Aggregated System Validation Scenario Catalog (Stage 6 Input)
 
-- Classification rules for failing integration/E2E tests:
+| Scenario ID | Source Type (`Requirement`/`Design-Risk`) | Requirement ID(s) | Use Case ID(s) | Validation Level (`API`/`E2E`/`System`) | Expected Outcome |
+| --- | --- | --- | --- | --- | --- |
+| SV-001 | Requirement | R-001 | UC-001 | API |  |
+
+## Aggregated Validation Escalation Policy (Stage 6 Guardrail)
+
+- Classification rules for failing aggregated validation scenarios:
   - choose exactly one classification for the current failure event: `Local Fix`, `Design Impact`, or `Requirement Gap`.
   - First run investigation screen:
     - if issue is cross-cutting, root cause is unclear, or confidence is low, set `Investigation Required = Yes`, pause implementation, and update `tickets/in-progress/<ticket-name>/investigation-notes.md` before classification write-back.
@@ -128,11 +137,11 @@
   - `Design Impact`: responsibility boundaries drift, architecture change needed, or patch-on-patch complexity appears.
   - `Requirement Gap`: missing/ambiguous requirement or newly discovered requirement-level constraint.
 - Required action:
-  - `Local Fix` -> implement fix and keep structure clean.
+  - `Local Fix` -> implement fix and rerun affected scenarios.
   - `Design Impact` -> set `Investigation Required = Yes` (mandatory checkpoint), update `investigation-notes.md`, then decide next path.
   - if requirement-level gaps are discovered during the design-impact investigation checkpoint -> reclassify as `Requirement Gap` and follow the requirement-gap path.
-  - `Design Impact` (after checkpoint, still design impact) -> update design basis; regenerate call stacks; re-run review to `Go Confirmed`.
-  - `Requirement Gap` -> stop implementation; update `requirements.md` to `Refined`; update design basis; regenerate call stacks; re-run review to `Go Confirmed`.
+  - `Design Impact` (after checkpoint, still design impact) -> update design basis; regenerate call stacks; re-run review to `Go Confirmed`; rerun affected scenarios.
+  - `Requirement Gap` -> stop implementation; update `requirements.md` to `Refined`; update design basis; regenerate call stacks; re-run review to `Go Confirmed`; rerun affected scenarios.
   - when `Investigation Required = Yes`, understanding-stage re-entry is mandatory before design/requirements updates.
 
 ## Cross-Reference Exception Protocol

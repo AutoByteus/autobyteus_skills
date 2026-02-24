@@ -39,10 +39,11 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - future-state runtime call stack stage (`started`, then `future-state-runtime-call-stack.md` written/updated),
   - review loop (each round `started`, then round result with `No-Go`/`Candidate Go`/`Go Confirmed` and write-back status),
   - implementation planning stage (`started`, then `implementation-plan.md` finalized + `implementation-progress.md` initialized),
-  - implementation execution stage (`started`, then implementation completion + verification result),
-  - implementation feedback escalation stage (when failing tests are classified as `Local Fix`/`Design Impact`/`Requirement Gap`, with next-step decision),
+  - implementation execution stage (`started`, then implementation completion + file-level verification result),
+  - aggregated system validation stage (`started`, then API/E2E/system scenario execution result),
+  - validation feedback escalation stage (when failing aggregated validation scenarios are classified as `Local Fix`/`Design Impact`/`Requirement Gap`, with next-step decision),
   - re-investigation stage (when escalation indicates deeper understanding is required; `started`, then `investigation-notes.md` updated and unknowns reduced),
-  - post-implementation docs sync stage (`started`, then `docs/` synchronization completed or explicit no-impact decision recorded),
+  - post-validation docs sync stage (`started`, then `docs/` synchronization completed or explicit no-impact decision recorded),
   - final handoff (`started`, then completed artifact summary).
 - Speak trigger policy:
   - do not skip required stage-boundary speak events,
@@ -61,9 +62,11 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 - Do not draft design artifacts (`proposed-design.md` or small-scope design basis in `implementation-plan.md`) until deep understanding pass is complete and `requirements.md` reaches `Design-ready`.
 - Do not finalize `implementation-plan.md` or generate `implementation-progress.md` until the future-state runtime call stack review gate is fully satisfied for the current scope.
 - Do not start implementation execution until `implementation-plan.md` is finalized and `implementation-progress.md` is initialized.
-- Do not close the task until post-implementation `docs/` synchronization is completed (or explicit no-impact decision is recorded with rationale).
+- Do not start aggregated system validation until implementation execution is complete with required unit/integration verification.
+- Do not start post-validation `docs/` synchronization until aggregated system validation is complete (or explicit infeasibility and residual risk are recorded).
+- Do not close the task until post-validation `docs/` synchronization is completed (or explicit no-impact decision is recorded with rationale).
 - Keep the ticket folder under `tickets/in-progress/` until explicit user completion confirmation is received.
-- Treat technical completion and ticket archival as separate gates: technical completion ends at validated implementation + docs sync; archival to `tickets/done/` requires explicit user confirmation.
+- Treat technical completion and ticket archival as separate gates: technical completion ends at validated implementation + aggregated validation + docs sync; archival to `tickets/done/` requires explicit user confirmation.
 - `Small` scope exception: drafting `implementation-plan.md` (solution sketch only) before review is allowed as design input, but this draft does not unlock implementation kickoff.
 - Future-state runtime call stack review must run as iterative deep-review rounds (not one-pass review).
 - `Go Confirmed` cannot be declared immediately after write-backs from a blocking round.
@@ -71,12 +74,12 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 - First clean round is provisional (`Candidate Go`), second consecutive clean round is confirmation (`Go Confirmed`).
 - Any review finding with a required design/call-stack update is blocking; regenerate affected artifacts and re-review before proceeding.
 - If design/review reveals missing understanding or requirement ambiguity, return to understanding + requirements stages, update `requirements.md`, then continue design/review.
-- If implementation-time integration/E2E feedback reveals design-impacting issues, pause implementation and run an investigation checkpoint first: update `investigation-notes.md` with new evidence and root-cause confidence before any design/requirements write-backs.
+- If aggregated validation feedback reveals design-impacting issues, pause implementation and run an investigation checkpoint first: update `investigation-notes.md` with new evidence and root-cause confidence before any design/requirements write-backs.
 - After the design-impact investigation checkpoint:
   - if requirement-level gaps are discovered, reclassify to `Requirement Gap` and update `requirements.md` first,
   - otherwise continue with design basis update -> call-stack regeneration -> review re-entry.
-- If implementation-time integration/E2E feedback reveals missing requirements, pause implementation and return to requirements/design/future-state-runtime-call-stack/review stages before continuing implementation.
-- If implementation-time integration/E2E feedback is large, cross-cutting, or root cause is unclear, pause implementation and return to understanding stage first: update `investigation-notes.md`, then refine requirements/design/future-state runtime call stacks/review before resuming implementation.
+- If aggregated validation feedback reveals missing requirements, pause implementation and return to requirements/design/future-state-runtime-call-stack/review stages before continuing implementation.
+- If aggregated validation feedback is large, cross-cutting, or root cause is unclear, pause implementation and return to understanding stage first: update `investigation-notes.md`, then refine requirements/design/future-state runtime call stacks/review before resuming implementation.
 - If the user asks for all artifacts in one turn, still enforce stage gates within that turn (iterate review rounds first; only then produce implementation artifacts).
 - No mental-only review refinements: if a round finds issues, update the affected artifact files immediately in the same round before starting the next round.
 - For each review round, record explicit write-backs in `future-state-runtime-call-stack-review.md`:
@@ -132,6 +135,10 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - constraints/dependencies,
   - assumptions,
   - open questions/risks.
+- Requirements quality rule (mandatory): requirements must be verifiable behavior specifications, not only descriptive narratives.
+- For each requirement, include a stable `requirement_id` and explicit expected outcome.
+- Acceptance criteria must be testable and cover primary behavior plus relevant edge/error behavior.
+- Include a requirement coverage map to call-stack use cases (all requirements must map to at least one use case).
 - Confirm the triage result (`Small` vs `Medium` vs `Large`) and rationale in the requirements doc.
 - Refine requirements from the latest `investigation-notes.md`; do not derive requirements from memory-only investigation.
 - Design-ready requirement gate must make expected behavior clear enough to draft design and runtime call stacks.
@@ -207,6 +214,11 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - `Medium/Large`: use the proposed design document as the design basis.
 - For each use case, write a future-state runtime call stack from entry point to completion in a debug-trace format.
 - Use stable `use_case_id` values and ensure IDs match the design coverage matrix and review artifact.
+- Use two allowed use-case source types:
+  - `Requirement`: derived from explicit requirement behavior.
+  - `Design-Risk`: derived from architecture or technical risk that must be validated.
+- Coverage rule (mandatory): every in-scope requirement must be covered by at least one `Requirement` use case.
+- For each `Design-Risk` use case, record the technical objective/risk justification and expected observable outcome.
 - Treat this artifact as `to-be` architecture behavior derived from the proposed design (or small-scope solution sketch), not as-is code tracing.
 - If current code differs from target design, model the target design behavior and record migration/transition notes separately.
 - Include file and function names at every frame using `path/to/file.ts:functionName(...)`.
@@ -239,6 +251,9 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - name-to-responsibility alignment under scope drift (`Pass`/`Fail`),
   - future-state alignment with target design basis (`Pass`/`Fail`),
   - use-case coverage completeness (primary/fallback/error coverage) (`Pass`/`Fail`),
+  - use-case source traceability (`Pass`/`Fail`) (`Requirement` or `Design-Risk`, with source reference),
+  - requirement coverage closure (`Pass`/`Fail`) (all requirements mapped to at least one use case),
+  - design-risk use-case justification quality (`Pass`/`Fail`) (clear objective/risk and expected outcome),
   - business flow completeness (`Pass`/`Fail`),
   - gap findings,
   - layer-appropriate structure and separation-of-concerns check (`Pass`/`Fail`) (frontend/UI: view/component boundary; non-UI: file/module/service boundary),
@@ -273,6 +288,9 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - future-state behavior is consistent with target design basis across all in-scope use cases,
   - layer-appropriate structure and separation-of-concerns check is `Pass` for all in-scope use cases,
   - use-case coverage completeness is `Pass` for all in-scope use cases,
+  - use-case source traceability is `Pass` for all in-scope use cases,
+  - requirement coverage closure is `Pass` for the full in-scope requirement set,
+  - design-risk use-case justification quality is `Pass` for all design-risk use cases,
   - redundancy/duplication check is `Pass` for all in-scope use cases,
   - simplification opportunity check is `Pass` for all in-scope use cases,
   - all in-scope use cases have overall verdict `Pass`,
@@ -289,7 +307,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 - Repeat until all gate `Go Confirmed` criteria are satisfied.
 - Use the template in `assets/future-state-runtime-call-stack-review-template.md`.
 
-### 5) Produce Implementation Plan And Progress Tracker
+### 5) Produce Implementation Plan And Progress Tracker (Implementation + File-Level Verification)
 
 - Use a bottom-up, test-driven approach: implement foundational dependencies first.
 - Sequence is mandatory:
@@ -298,35 +316,12 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - then keep `implementation-progress.md` updated continuously during execution.
 - In `implementation-plan.md`, include a verification strategy for each use case:
   - unit tests,
-  - integration tests across module/service boundaries,
-  - end-to-end (E2E) test feasibility.
+  - integration tests across module/service boundaries.
+- Stage separation rule (mandatory):
+  - Stage 5 verifies implementation quality at file/module/service boundary level (unit/integration).
+  - Stage 6 verifies aggregated multi-module behavior (API/E2E/system).
 - Include requirement traceability in plan/progress (`requirement -> design section -> call stack/use_case -> implementation tasks/tests`).
 - Integration test coverage is required for behavior that crosses module boundaries, process boundaries, storage boundaries, or external API boundaries. If any such behavior is not covered, record a concrete rationale.
-- E2E policy:
-  - if E2E is feasible in the current environment, include and run at least one representative E2E scenario per critical user flow before marking implementation complete,
-  - if E2E is not feasible (for example missing secrets/tokens, third-party environment dependency, or partner-system access limits), record a concrete infeasibility reason and current constraint details in both plan and progress tracker.
-  - when E2E is infeasible, record best-available non-E2E verification evidence (integration/manual) and residual risk notes.
-- Test feedback escalation policy (mandatory):
-  - classify each failing integration/E2E result as exactly one of `Local Fix`, `Design Impact`, or `Requirement Gap` for the current failure event,
-  - before final classification, run an investigation screen:
-    - if issue scope is cross-cutting, touches unknown runtime paths, or root cause confidence is low, mark `Investigation Required` and reopen understanding stage first (`investigation-notes.md` must be updated before design/requirements write-backs),
-    - if issue is clearly bounded with high root-cause confidence, continue classification directly.
-  - `Local Fix` is allowed only when responsibility boundaries stay intact, no new use case/acceptance criterion is needed, and no requirement/design changes are needed,
-  - if a fix works functionally but degrades layering/separation-of-concerns, it is **not** `Local Fix`; classify as `Design Impact`,
-  - classify as `Design Impact` when any of these apply:
-    - fix adds new responsibility to an existing file/component/module,
-    - file/component naming or responsibility drifts from current behavior,
-    - implementation starts accumulating patch-on-patch complexity or duplication,
-    - fix requires cross-layer architectural change not captured in current design basis.
-  - classify as `Requirement Gap` when any of these apply:
-    - failing behavior reveals missing functionality/use case not captured in current requirements,
-    - acceptance criteria are missing/ambiguous for the observed behavior,
-    - newly discovered technical or integration constraints require requirement-level updates.
-  - for `Design Impact`, stop implementation work and always run an investigation checkpoint first (`Investigation Required = Yes` for design impact): update `investigation-notes.md` with evidence, root-cause confidence, and boundary impact before any design write-backs.
-  - if the design-impact investigation checkpoint discovers requirement-level gaps, reclassify to `Requirement Gap` and follow the requirement-gap path below.
-  - for `Design Impact` (after investigation checkpoint, and still classified as design impact), update design basis, regenerate runtime call stacks, rerun review until stability gate `Go Confirmed`, then resume implementation.
-  - for `Requirement Gap`, stop implementation work, update `requirements.md` first (status `Refined`), then update design basis, regenerate runtime call stacks, rerun review until stability gate `Go Confirmed`, then resume implementation.
-  - do not keep appending fixes that make files/components bigger without re-evaluating separation of concerns and design intent.
 - Finalize planning artifacts before kickoff:
   - `Small`: refine the draft implementation plan until future-state runtime call stack review passes final stability gate (`Go Confirmed`).
   - `Medium/Large`: create implementation plan only after future-state runtime call stack review passes final stability gate (`Go Confirmed`).
@@ -345,24 +340,64 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 - Update progress in real time during implementation (immediately after file status changes, test runs, blocker discoveries, and design-feedback-loop updates).
 - Track change IDs and change types in progress (`Add`/`Modify`/`Rename/Move`/`Remove`) so refactor deltas remain explicit through execution.
 - Track file build state explicitly (`Pending`, `In Progress`, `Blocked`, `Completed`, `N/A`).
-- Track unit/integration/E2E test state separately (`Not Started`, `In Progress`, `Passed`, `Failed`, `Blocked`, `N/A`).
-- For each failed integration/E2E test, record classification (`Local Fix`/`Design Impact`/`Requirement Gap`) and the action path taken.
-- For each failed integration/E2E test, record whether re-investigation was required and where `investigation-notes.md` was updated.
-- For each `Design Impact`, record the mandatory investigation checkpoint (`investigation-notes.md` update) before design write-backs.
-- When classification is `Design Impact`, record the escalation checkpoint (design update, call-stack regeneration, review re-entry) before coding resumes.
-- When classification is `Requirement Gap`, record the escalation checkpoint (requirements refinement, design update, call-stack regeneration, review re-entry) before coding resumes.
+- Track unit/integration test state separately (`Not Started`, `In Progress`, `Passed`, `Failed`, `Blocked`, `N/A`).
 - If a file is blocked by unfinished dependencies, mark it `Blocked` and record the dependency and unblock condition.
 - Mark a file `Completed` only when implementation is done and required tests are passing.
 - Mark implementation execution complete only when:
   - implementation plan scope is delivered (or deviations are explicitly documented),
-  - required unit/integration tests pass,
-  - feasible E2E scenarios pass, or E2E infeasibility is documented with concrete reason/constraints plus best-available non-E2E verification evidence.
+  - required unit/integration tests pass.
 - Use `assets/implementation-plan-template.md` and `assets/implementation-progress-template.md`.
 - Speak when `implementation-plan.md` is written/updated, when `implementation-progress.md` is created/updated, and when implementation execution completes.
 
-### 6) Synchronize Project Documentation (Mandatory Post-Implementation)
+### 6) Run Aggregated System Validation (API/E2E/System, Mandatory)
 
-- After implementation execution is complete, update project documentation under the project `docs/` folder (and other canonical architecture docs such as `ARCHITECTURE.md` when impacted) so docs reflect the latest codebase behavior.
+- Run this stage after implementation execution completes with required unit/integration tests passing.
+- Aggregated validation is scenario-level verification of broader interactions, not file-level checks.
+- Create/update `tickets/in-progress/<ticket-name>/system-validation.md` as the canonical scenario + result artifact.
+- Scenario sources (mandatory):
+  - requirement-driven scenarios (must cover all critical requirements and flows),
+  - design-risk-driven scenarios (must cover technical risks introduced by architecture/design choices).
+- For each scenario, record at minimum:
+  - `scenario_id`,
+  - mapped `requirement_id` and `use_case_id` values,
+  - source type (`Requirement`/`Design-Risk`),
+  - validation level (`API`/`E2E`/`System`),
+  - expected outcome,
+  - execution command/harness,
+  - result (`Passed`/`Failed`/`Blocked`/`N/A`).
+- Manual testing policy: do not include manual testing in the default workflow.
+- Feasibility policy:
+  - if a scenario is not executable in current environment (missing secrets/tokens, unavailable partner system, infra limit), record concrete infeasibility reasons and constraints in `system-validation.md` and `implementation-progress.md`,
+  - record compensating automated evidence and residual risk notes for each infeasible critical scenario.
+- Test feedback escalation policy (mandatory):
+  - classify each failing aggregated validation scenario as exactly one of `Local Fix`, `Design Impact`, or `Requirement Gap`,
+  - before final classification, run an investigation screen:
+    - if issue scope is cross-cutting, touches unknown runtime paths, or root-cause confidence is low, mark `Investigation Required` and reopen understanding stage first (`investigation-notes.md` must be updated before design/requirements write-backs),
+    - if issue is clearly bounded with high root-cause confidence, continue classification directly.
+  - `Local Fix` is allowed only when responsibility boundaries stay intact, no new use case/acceptance criterion is needed, and no requirement/design changes are needed.
+  - if a fix works functionally but degrades layering/separation-of-concerns, it is **not** `Local Fix`; classify as `Design Impact`.
+  - classify as `Design Impact` when any of these apply:
+    - fix adds new responsibility to an existing file/component/module,
+    - file/component naming or responsibility drifts from current behavior,
+    - implementation starts accumulating patch-on-patch complexity or duplication,
+    - fix requires cross-layer architectural change not captured in current design basis.
+  - classify as `Requirement Gap` when any of these apply:
+    - failing behavior reveals missing functionality/use case not captured in current requirements,
+    - acceptance criteria are missing/ambiguous for observed behavior,
+    - newly discovered technical or integration constraints require requirement-level updates.
+  - for `Design Impact`, stop implementation and always run an investigation checkpoint first (`Investigation Required = Yes`): update `investigation-notes.md` with evidence, root-cause confidence, and boundary impact before any design write-backs.
+  - if the design-impact investigation checkpoint discovers requirement-level gaps, reclassify to `Requirement Gap` and follow the requirement-gap path.
+  - for `Design Impact` (after checkpoint, still design impact): update design basis, regenerate runtime call stacks, rerun review until stability gate `Go Confirmed`, then resume implementation and rerun affected validation scenarios.
+  - for `Requirement Gap`: stop implementation, update `requirements.md` first (status `Refined`), then update design basis, regenerate runtime call stacks, rerun review until stability gate `Go Confirmed`, then resume implementation and rerun affected validation scenarios.
+  - do not keep appending fixes that make files/components bigger without re-evaluating separation of concerns and design intent.
+- Stage completion gate:
+  - critical aggregated scenarios pass, or infeasible critical scenarios have concrete constraints + compensating evidence + residual risk explicitly documented.
+- Use `assets/system-validation-template.md`.
+- Speak when `system-validation.md` is created/updated and when aggregated validation stage completes.
+
+### 7) Synchronize Project Documentation (Mandatory Post-Validation)
+
+- After aggregated system validation is complete, update project documentation under the project `docs/` folder (and other canonical architecture docs such as `ARCHITECTURE.md` when impacted) so docs reflect the latest codebase behavior.
 - Treat `docs/` as the long-lived canonical source of truth for the current codebase.
 - Treat ticket artifacts under `tickets/` as task-local, time-bound records; they are not the long-term source of truth.
 - If relevant docs do not exist yet, create new docs in `docs/` with clear natural names that match current functionality.
@@ -376,12 +411,12 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 - Docs synchronization is complete only when docs content aligns with the final implemented behavior.
 - Speak completion after docs synchronization result is recorded (`Updated`/`No impact`).
 
-### 7) Final Handoff
+### 8) Final Handoff
 
-- Complete handoff only after implementation execution and docs synchronization are complete.
+- Complete handoff only after implementation execution, aggregated system validation, and docs synchronization are complete.
 - Handoff summary must include:
   - delivered scope vs planned scope,
-  - verification summary (unit/integration/E2E, documented E2E infeasibility reasons/constraints, and compensating non-E2E verification evidence),
+  - verification summary (unit/integration plus API/E2E/system aggregated validation, documented infeasibility reasons/constraints, and compensating automated evidence),
   - docs files updated (or explicit no-impact rationale).
 - Ticket state transition:
   - keep ticket under `tickets/in-progress/<ticket-name>/` by default after handoff,
@@ -408,11 +443,14 @@ These defaults list file-producing stages; gating and handoff rules still follow
 - Stage 5 (only after gate `Go Confirmed`):
   - finalize/update `tickets/in-progress/<ticket-name>/implementation-plan.md`
   - `tickets/in-progress/<ticket-name>/implementation-progress.md`
-- Stage 6 (post-implementation documentation sync):
+- Stage 6 (aggregated system validation):
+  - create/update `tickets/in-progress/<ticket-name>/system-validation.md`
+  - record scenario execution results and any escalation decisions in `tickets/in-progress/<ticket-name>/implementation-progress.md`
+- Stage 7 (post-validation documentation sync):
   - update existing impacted docs in place (for example `docs/**/*.md`, `ARCHITECTURE.md`)
   - create missing relevant docs in `docs/` when no existing doc covers the implemented functionality
   - record docs sync result in `tickets/in-progress/<ticket-name>/implementation-progress.md` (`Updated`/`No impact` + rationale)
-- Stage 7 (ticket state transition):
+- Stage 8 (ticket state transition):
   - keep ticket in `tickets/in-progress/<ticket-name>/` unless user explicitly confirms completion/verification or asks to move it
   - on explicit user completion/verification instruction, move ticket folder to `tickets/done/<ticket-name>/`
   - if user reopens later, move it back to `tickets/in-progress/<ticket-name>/` before new updates
@@ -424,3 +462,4 @@ These defaults list file-producing stages; gating and handoff rules still follow
 - `assets/future-state-runtime-call-stack-review-template.md`
 - `assets/implementation-plan-template.md`
 - `assets/implementation-progress-template.md`
+- `assets/system-validation-template.md`

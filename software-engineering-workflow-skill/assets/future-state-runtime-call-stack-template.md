@@ -35,10 +35,14 @@ Do not treat this document as an as-is trace of current code behavior.
 
 ## Use Case Index (Stable IDs)
 
-| use_case_id | Requirement | Use Case Name | Coverage Target (Primary/Fallback/Error) |
-| --- | --- | --- | --- |
-| UC-001 | R-001 |  | Yes/Yes/Yes |
-| UC-002 | R-002 |  | Yes/N/A/Yes |
+| use_case_id | Source Type (`Requirement`/`Design-Risk`) | Requirement ID(s) | Design-Risk Objective (if source=`Design-Risk`) | Use Case Name | Coverage Target (Primary/Fallback/Error) |
+| --- | --- | --- | --- | --- | --- |
+| UC-001 | Requirement | R-001 | N/A |  | Yes/Yes/Yes |
+| UC-002 | Design-Risk | R-002 | Queue retry/idempotency risk |  | Yes/N/A/Yes |
+
+Rules:
+- Every in-scope requirement must map to at least one use case in this index.
+- `Design-Risk` use cases are allowed only when the technical objective/risk is explicit and testable.
 
 ## Transition Notes
 
