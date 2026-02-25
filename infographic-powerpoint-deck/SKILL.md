@@ -22,6 +22,8 @@ description: Create image-based PowerPoint decks by (1) designing a slide plan, 
    - Paste exact required text (verbatim).
    - Add slide-specific scene layer details and icons.
 5. Generate each slide as one **16:9 image**.
+   - In the slide prompt text, explicitly include a ratio lock sentence (e.g., `画布比例硬约束：16:9 横版（宽屏），禁止方图。`).
+   - In the tool call, explicitly set ratio config when supported (e.g., `generation_config` with `aspect_ratio: "16:9"`).
 6. QA readability + text accuracy; regenerate only failed slides.
    - If any slide is not 16:9 or has text defects, regenerate the image directly.
    - Do **not** crop, pad, resize, or post-process generated images unless the user explicitly asks.
@@ -103,6 +105,7 @@ Common failure fixes:
 - Too busy: force “背景低对比、仅右侧画面、左侧纯净面板”.
 - Deck too dark: switch to `editorial-light` or `airy-relaxed`, disable vignette, force daylight scene IDs, and add brightness override.
 - Ratio mismatch: regenerate that slide with stricter 16:9 constraint in prompt; do not crop or otherwise post-process.
+  - Ensure both prompt text and tool-call config specify 16:9 in the same retry.
 
 ## Operating mode (be patient; avoid “probe images”)
 

@@ -6,10 +6,16 @@ Copy this template and fill in the bracketed parts. Keep it explicit and verbose
 
 - Output: a **single 16:9 widescreen PPT slide image** (flat image), no separate layers.
 - Keep the generated image as the final artifact by default; no crop/pad/resize/post-processing unless user explicitly requests it.
+- Ratio lock sentence must be present in each concrete prompt: `画布比例硬约束：16:9 横版（宽屏），禁止方图。`
 - Language: **Simplified Chinese** (or specify bilingual).
 - Must be **print-sharp** and readable; no tiny fonts.
 - **No watermark, no logo, no random characters; no English unless it is explicitly included in “必须出现文字”.**
 - **Do not add any text** beyond the “必须出现文字” section.
+
+## 0b) Tool-call ratio lock (required)
+
+- When calling image generation, explicitly pass ratio config when supported (for example: `generation_config` includes `aspect_ratio: "16:9"`).
+- If output still is not 16:9, regenerate the same slide with stricter ratio wording in prompt and ratio config in tool call.
 
 ## 1) Global style profile (required: select one style block first)
 
