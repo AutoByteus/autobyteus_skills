@@ -29,6 +29,9 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 ### Audible Notifications (Speak Tool, Required)
 
 - Use the `Speak` tool for key stage-boundary updates so the user does not need to watch the screen continuously.
+- Playback rule (mandatory): for required audible notifications, call `Speak` with `play=true` explicitly.
+- Do not set `play=false` by default for required stage notifications.
+- Exception: set `play=false` only when the user explicitly requests silent mode.
 - Hard rule: speak at both stage start and stage completion for each key stage below (no selective skipping).
 - Required speak stages:
   - workflow kickoff (`task accepted`, `next stage`),
@@ -47,6 +50,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - final handoff (`started`, then completed artifact summary).
 - Speak trigger policy:
   - do not skip required stage-boundary speak events,
+  - required stage-boundary `Speak` calls must use `play=true` unless user-requested silent mode is active,
   - for completion events, speak only after the milestone is durably completed (file written + gate state known),
   - do not speak for intermediate thinking or partial drafts between required stage-boundary events,
   - if multiple milestone updates happen close together, batch them into one short status message.
