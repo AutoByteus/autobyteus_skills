@@ -5,6 +5,7 @@ Copy this template and fill in the bracketed parts. Keep it explicit and verbose
 ## 0) Output + hard constraints
 
 - Output: a **single 16:9 widescreen PPT slide image** (flat image), no separate layers.
+- Keep the generated image as the final artifact by default; no crop/pad/resize/post-processing unless user explicitly requests it.
 - Language: **Simplified Chinese** (or specify bilingual).
 - Must be **print-sharp** and readable; no tiny fonts.
 - **No watermark, no logo, no random characters; no English unless it is explicitly included in “必须出现文字”.**

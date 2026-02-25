@@ -23,6 +23,8 @@ description: Create image-based PowerPoint decks by (1) designing a slide plan, 
    - Add slide-specific scene layer details and icons.
 5. Generate each slide as one **16:9 image**.
 6. QA readability + text accuracy; regenerate only failed slides.
+   - If any slide is not 16:9 or has text defects, regenerate the image directly.
+   - Do **not** crop, pad, resize, or post-process generated images unless the user explicitly asks.
 7. Assemble images-only PPTX with `scripts/build_images_only_pptx.py`.
 
 Outputs to produce in the user’s workspace:
@@ -100,12 +102,14 @@ Common failure fixes:
 - Text too small: reduce bullet count; split into two slides; demand “大字号、舒适行距”.
 - Too busy: force “背景低对比、仅右侧画面、左侧纯净面板”.
 - Deck too dark: switch to `editorial-light` or `airy-relaxed`, disable vignette, force daylight scene IDs, and add brightness override.
+- Ratio mismatch: regenerate that slide with stricter 16:9 constraint in prompt; do not crop or otherwise post-process.
 
 ## Operating mode (be patient; avoid “probe images”)
 
 - Image generation can be **slow**. Prefer generating the real slides directly.
 - Avoid generating test/probe images (e.g. blank backgrounds) unless the user explicitly asks for diagnostics.
 - If an image call fails intermittently, retry the same slide prompt after a brief pause; do not change multiple variables at once.
+- Default delivery mode is **raw outputs**: keep generated images as-is and assemble the PPT directly from them.
 
 ## Tooling constraints (important)
 
