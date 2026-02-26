@@ -27,9 +27,9 @@
 
 ## Requirements And Use Cases
 
-| Requirement | Description | Acceptance Criteria | Use Case IDs |
-| --- | --- | --- | --- |
-| R-001 |  |  | UC-001 |
+| Requirement ID | Description | Acceptance Criteria ID(s) | Acceptance Criteria Summary | Use Case IDs |
+| --- | --- | --- | --- | --- |
+| R-001 |  | AC-001 |  | UC-001 |
 
 ## Codebase Understanding Snapshot (Pre-Design Mandatory)
 

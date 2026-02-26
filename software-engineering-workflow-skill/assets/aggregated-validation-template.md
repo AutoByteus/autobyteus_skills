@@ -15,16 +15,24 @@ Stage 6 may start only after `Stage 5.5` internal code review gate result is `Pa
 ## Coverage Rules
 
 - Every critical requirement must map to at least one scenario.
+- Every in-scope acceptance criterion (`AC-*`) must map to at least one executable scenario.
 - Every in-scope use case must map to at least one scenario, or explicitly `N/A` with rationale.
 - `Design-Risk` scenarios must include explicit technical objective/risk and expected outcome.
 - Use stable scenario IDs with `AV-` prefix (for example: `AV-001`).
 - Manual testing is not part of the default workflow.
+- Stage 6 cannot close while any acceptance criterion is `Unmapped`, `Not Run`, `Failed`, or `Blocked` unless explicitly marked `Waived` by user decision for infeasible cases.
+
+## Acceptance Criteria Coverage Matrix (Mandatory)
+
+| Acceptance Criteria ID | Requirement ID | Criterion Summary | Scenario ID(s) | Current Status (`Unmapped`/`Not Run`/`Passed`/`Failed`/`Blocked`/`Waived`) | Last Updated |
+| --- | --- | --- | --- | --- | --- |
+| AC-001 | R-001 |  | AV-001 | Not Run | YYYY-MM-DD |
 
 ## Scenario Catalog
 
-| Scenario ID | Source Type (`Requirement`/`Design-Risk`) | Requirement ID(s) | Use Case ID(s) | Level (`API`/`E2E`) | Objective/Risk | Expected Outcome | Command/Harness | Status (`Not Started`/`In Progress`/`Passed`/`Failed`/`Blocked`/`N/A`) |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| AV-001 | Requirement | R-001 | UC-001 | API | N/A |  |  | Not Started |
+| Scenario ID | Source Type (`Requirement`/`Design-Risk`) | Acceptance Criteria ID(s) | Requirement ID(s) | Use Case ID(s) | Level (`API`/`E2E`) | Objective/Risk | Expected Outcome | Command/Harness | Status (`Not Started`/`In Progress`/`Passed`/`Failed`/`Blocked`/`N/A`) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| AV-001 | Requirement | AC-001 | R-001 | UC-001 | API | N/A |  |  | Not Started |
 
 ## Failure Escalation Log
 
@@ -36,6 +44,7 @@ Rules:
 - Before final classification, run an investigation screen:
   - if issue scope is cross-cutting, root cause is unclear, or confidence is low, set `Investigation Required = Yes` and update `investigation-notes.md` first.
   - if issue is clearly bounded with high confidence, classification can proceed directly.
+- For each failing scenario, update acceptance-criteria matrix statuses before and after re-entry.
 - `Local Fix` requires artifact update first, then fix, then rerun `Stage 5` + `Stage 5.5` before rerunning affected scenarios.
 - `Design Impact` requires `Investigation Required = Yes` and investigation checkpoint before design write-backs.
 - If requirement-level gaps are found during design-impact investigation, reclassify to `Requirement Gap`.
@@ -51,11 +60,16 @@ Rules:
 - Environment constraints (secrets/tokens/access limits/dependencies):
 - Compensating automated evidence:
 - Residual risk notes:
+- User waiver for infeasible acceptance criteria recorded (`Yes`/`No`):
+- If `Yes`, waiver reference (date/user decision):
 
 ## Stage 6 Gate Decision
 
 - Stage 6 complete: `Yes` / `No`
-- Critical scenarios passed: `Yes` / `No`
-- Infeasibility + compensating evidence documented (if applicable): `Yes` / `No` / `N/A`
+- All in-scope acceptance criteria mapped to scenarios: `Yes` / `No`
+- All executable in-scope acceptance criteria status = `Passed`: `Yes` / `No`
+- Critical executable scenarios passed: `Yes` / `No`
+- Any infeasible acceptance criteria: `Yes` / `No`
+- Explicit user waiver recorded for each infeasible acceptance criterion (if any): `Yes` / `No` / `N/A`
 - Unresolved escalation items: `Yes` / `No`
 - Notes:

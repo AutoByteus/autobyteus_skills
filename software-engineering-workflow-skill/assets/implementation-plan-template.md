@@ -26,6 +26,7 @@
 ## Preconditions (Must Be True Before Finalizing This Plan)
 
 - `requirements.md` is at least `Design-ready` (`Refined` allowed):
+- Acceptance criteria use stable IDs (`AC-*`) with measurable expected outcomes:
 - Runtime call stack review artifact exists and is current:
 - All in-scope use cases reviewed:
 - No unresolved blocking findings:
@@ -82,9 +83,15 @@
 
 ## Requirement And Design Traceability
 
-| Requirement | Design Section | Use Case / Call Stack | Planned Task ID(s) | Stage 5 Verification (Unit/Integration) | Stage 6 Scenario ID(s) |
+| Requirement | Acceptance Criteria ID(s) | Design Section | Use Case / Call Stack | Planned Task ID(s) | Stage 5 Verification (Unit/Integration) | Stage 6 Scenario ID(s) |
+| --- | --- | --- | --- | --- | --- | --- |
+| R-001 | AC-001 |  | UC-001 |  | Unit/Integration | AV-001 |
+
+## Acceptance Criteria To Stage 6 Mapping (Mandatory)
+
+| Acceptance Criteria ID | Requirement ID | Expected Outcome | Stage 6 Scenario ID(s) | Validation Level (`API`/`E2E`) | Initial Status (`Planned`/`Blocked`) |
 | --- | --- | --- | --- | --- | --- |
-| R-001 |  | UC-001 |  | Unit/Integration | AV-001 |
+| AC-001 | R-001 |  | AV-001 | API | Planned |
 
 ## Design Delta Traceability (Required For `Medium/Large`)
 
@@ -131,20 +138,22 @@
   - predicted design-impact hotspots:
   - files likely to exceed size/SoC thresholds:
 - Stage 6 handoff notes for aggregated validation:
+  - expected acceptance criteria count:
   - critical flows to validate (API/E2E):
   - expected scenario count:
   - known environment constraints:
 
 ## Aggregated API/E2E Validation Scenario Catalog (Stage 6 Input)
 
-| Scenario ID | Source Type (`Requirement`/`Design-Risk`) | Requirement ID(s) | Use Case ID(s) | Validation Level (`API`/`E2E`) | Expected Outcome |
-| --- | --- | --- | --- | --- | --- |
-| AV-001 | Requirement | R-001 | UC-001 | API |  |
+| Scenario ID | Source Type (`Requirement`/`Design-Risk`) | Acceptance Criteria ID(s) | Requirement ID(s) | Use Case ID(s) | Validation Level (`API`/`E2E`) | Expected Outcome |
+| --- | --- | --- | --- | --- | --- | --- |
+| AV-001 | Requirement | AC-001 | R-001 | UC-001 | API |  |
 
 ## Aggregated Validation Escalation Policy (Stage 6 Guardrail)
 
 - Classification rules for failing aggregated validation scenarios:
   - choose exactly one classification for the current failure event: `Local Fix`, `Design Impact`, or `Requirement Gap`.
+  - do not allow any in-scope acceptance criterion to remain `Unmapped`, `Not Run`, `Failed`, or `Blocked` at Stage 6 close unless explicitly marked `Waived` by user decision for infeasible cases.
   - First run investigation screen:
     - if issue is cross-cutting, root cause is unclear, or confidence is low, set `Investigation Required = Yes`, pause implementation, and update `tickets/in-progress/<ticket-name>/investigation-notes.md` before classification write-back.
     - if issue is clearly bounded with high confidence, set `Investigation Required = No` and classify directly.

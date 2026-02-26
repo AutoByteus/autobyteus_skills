@@ -27,6 +27,7 @@ This document tracks implementation and validation progress in real time, includ
 - Unit/Integration Test Status: `Not Started`, `In Progress`, `Passed`, `Failed`, `Blocked`, `N/A`
 - Internal Code Review Status: `Not Started`, `In Progress`, `Pass`, `Fail`
 - Aggregated Validation Status: `Not Started`, `In Progress`, `Passed`, `Failed`, `Blocked`, `N/A`
+- Acceptance Criteria Coverage Status: `Unmapped`, `Not Run`, `Passed`, `Failed`, `Blocked`, `Waived`
 - Failure Classification: `Local Fix`, `Design Impact`, `Requirement Gap`, `N/A`
 - Investigation Required: `Yes`, `No`, `N/A`
 - Design Follow-Up: `Not Needed`, `Needed`, `In Progress`, `Updated`
@@ -64,9 +65,9 @@ Rules:
 
 ## Aggregated API/E2E Validation Scenario Log (Stage 6)
 
-| Date | Scenario ID | Source Type (`Requirement`/`Design-Risk`) | Requirement ID(s) | Use Case ID(s) | Level (`API`/`E2E`) | Status | Failure Summary | Investigation Required (`Yes`/`No`) | Classification (`Local Fix`/`Design Impact`/`Requirement Gap`) | Action Path Taken | `investigation-notes.md` Updated | Requirements Updated | Design Updated | Call Stack Regenerated | Review Re-Entry Round | Resume Condition Met |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| YYYY-MM-DD | AV-001 | Requirement | R-001 | UC-001 | API | Failed | Missing flow branch for fallback path | Yes | Design Impact | Paused implementation, reopened investigation, then updated design basis | Yes | No | Yes | Yes | Round 6 | Yes |
+| Date | Scenario ID | Source Type (`Requirement`/`Design-Risk`) | Acceptance Criteria ID(s) | Requirement ID(s) | Use Case ID(s) | Level (`API`/`E2E`) | Status | Failure Summary | Investigation Required (`Yes`/`No`) | Classification (`Local Fix`/`Design Impact`/`Requirement Gap`) | Action Path Taken | `investigation-notes.md` Updated | Requirements Updated | Design Updated | Call Stack Regenerated | Review Re-Entry Round | Resume Condition Met |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| YYYY-MM-DD | AV-001 | Requirement | AC-001 | R-001 | UC-001 | API | Failed | Missing flow branch for fallback path | Yes | Design Impact | Paused implementation, reopened investigation, then updated design basis | Yes | No | Yes | Yes | Round 6 | Yes |
 
 Rules:
 - If issue scope is large/cross-cutting or root-cause confidence is low, `Investigation Required` must be `Yes` and understanding-stage re-entry is required before requirements/design updates.
@@ -78,6 +79,17 @@ Rules:
 - unclear/cross-cutting root cause requires full-chain re-entry from understanding: `Stage 0 -> Stage 1 -> Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 5.5`.
 - No source code edits before required upstream artifacts are updated and logged.
 
+## Acceptance Criteria Closure Matrix (Stage 6 Gate)
+
+| Date | Acceptance Criteria ID | Requirement ID | Scenario ID(s) | Coverage Status (`Unmapped`/`Not Run`/`Passed`/`Failed`/`Blocked`/`Waived`) | Notes |
+| --- | --- | --- | --- | --- | --- |
+| YYYY-MM-DD | AC-001 | R-001 | AV-001 | Failed | API response contract missing required field. |
+
+Rules:
+- Every in-scope acceptance criterion from `requirements.md` must appear in this matrix.
+- Any row not at `Passed` or `Waived` keeps Stage 6 open and requires re-entry before retry.
+- Stage 6 cannot be marked complete while any row is `Unmapped`, `Not Run`, `Failed`, or `Blocked` unless explicitly marked `Waived` by user decision for infeasible cases.
+
 ## Aggregated Validation Feasibility Record
 
 - API/E2E scenarios feasible in current environment: `Yes` / `No`
@@ -85,6 +97,8 @@ Rules:
 - Current environment constraints (tokens/secrets/third-party dependency/access limits):
 - Best-available compensating automated evidence:
 - Residual risk accepted:
+- Explicit user waiver for infeasible acceptance criteria: `Yes` / `No`
+- Waiver reference (if `Yes`):
 
 ## Blocked Items
 
@@ -122,6 +136,8 @@ Rules:
   - file-size/SoC checks are recorded for all changed source files,
   - if gate decision is `Fail`, re-entry declaration and target stage path are recorded.
 - Mark Stage 6 aggregated validation complete only when:
-  - critical API/E2E scenarios pass, or infeasibility is documented with concrete constraints and compensating automated evidence,
+  - every executable in-scope acceptance criterion in the closure matrix is `Passed`,
+  - critical executable API/E2E scenarios pass,
+  - any infeasible acceptance criterion has explicit user waiver + documented constraints + compensating evidence + residual risk,
   - required escalation actions (`Local Fix`/`Design Impact`/`Requirement Gap`) are resolved and logged.
 - Mark Stage 7 docs sync complete only when docs synchronization result is recorded (`Updated` or `No impact` with rationale).

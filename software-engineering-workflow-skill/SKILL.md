@@ -81,7 +81,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 - Do not start implementation execution until `implementation-plan.md` is finalized and `implementation-progress.md` is initialized.
 - Do not start internal code review until implementation execution is complete with required unit/integration verification.
 - Do not start aggregated API/E2E validation until internal code review gate is `Pass`.
-- Do not start post-validation `docs/` synchronization until aggregated API/E2E validation is complete (or explicit infeasibility and residual risk are recorded).
+- Do not start post-validation `docs/` synchronization until aggregated API/E2E validation is complete (for infeasible acceptance criteria, explicit user waiver + constraints + compensating evidence + residual risk must be recorded).
 - Do not close the task until post-validation `docs/` synchronization is completed (or explicit no-impact decision is recorded with rationale).
 - Keep the ticket folder under `tickets/in-progress/` until explicit user completion confirmation is received.
 - Treat technical completion and ticket archival as separate gates: technical completion ends at validated implementation + internal code review + aggregated validation + docs sync; archival to `tickets/done/` requires explicit user confirmation.
@@ -162,8 +162,10 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - open questions/risks.
 - Requirements quality rule (mandatory): requirements must be verifiable behavior specifications, not only descriptive narratives.
 - For each requirement, include a stable `requirement_id` and explicit expected outcome.
+- For each acceptance criterion, include a stable `acceptance_criteria_id` (for example: `AC-001`) and an explicit measurable expected outcome.
 - Acceptance criteria must be testable and cover primary behavior plus relevant edge/error behavior.
 - Include a requirement coverage map to call-stack use cases (all requirements must map to at least one use case).
+- Include an acceptance-criteria coverage map to Stage 6 scenarios (all acceptance criteria must map to at least one API/E2E scenario).
 - Confirm the triage result (`Small` vs `Medium` vs `Large`) and rationale in the requirements doc.
 - Refine requirements from the latest `investigation-notes.md`; do not derive requirements from memory-only investigation.
 - Design-ready requirement gate must make expected behavior clear enough to draft design and runtime call stacks.
@@ -407,18 +409,27 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 - Scenario sources (mandatory):
   - requirement-driven scenarios (must cover all critical requirements and flows),
   - design-risk-driven scenarios (must cover technical risks introduced by architecture/design choices).
+- Acceptance-criteria closure loop (mandatory):
+  - build and maintain an explicit Stage 6 acceptance-criteria matrix sourced from `requirements.md` (`acceptance_criteria_id` -> mapped scenario IDs -> execution status),
+  - every in-scope acceptance criterion must map to at least one executable API/E2E scenario before execution starts,
+  - any acceptance criterion with status `Unmapped`, `Not Run`, `Failed`, or `Blocked` keeps Stage 6 open and requires re-entry unless explicitly marked `Waived` by user decision for infeasible cases,
+  - rerun the required re-entry chain and return to Stage 6 until all in-scope acceptance criteria are `Passed` or explicitly `Waived`.
 - For each scenario, record at minimum:
   - `scenario_id`,
+  - mapped `acceptance_criteria_id` values,
   - mapped `requirement_id` and `use_case_id` values,
   - source type (`Requirement`/`Design-Risk`),
   - validation level (`API`/`E2E`),
   - expected outcome,
   - execution command/harness,
   - result (`Passed`/`Failed`/`Blocked`/`N/A`).
+- API validation depth rule (mandatory): when scenario level is `API`, validate contract-level behavior including required fields/schema shape, status codes, and error payload behavior for mapped acceptance criteria.
+- Cross-boundary validation rule (mandatory): for client/server or multi-service scope, include API/E2E scenarios that validate cross-boundary interaction behavior (request -> boundary handoff -> downstream effect -> returned state).
 - Manual testing policy: do not include manual testing in the default workflow.
 - Feasibility policy:
   - if a scenario is not executable in current environment (missing secrets/tokens, unavailable partner system, infra limit), record concrete infeasibility reasons and constraints in `aggregated-validation.md` and `implementation-progress.md`,
-  - record compensating automated evidence and residual risk notes for each infeasible critical scenario.
+  - record compensating automated evidence and residual risk notes for each infeasible critical scenario,
+  - mark Stage 6 as `Blocked` unless the user explicitly accepts a waiver for the infeasible acceptance criteria.
 - Test feedback escalation policy (mandatory):
   - classify each failing aggregated validation scenario as exactly one of `Local Fix`, `Design Impact`, or `Requirement Gap`,
   - before final classification, run an investigation screen:
@@ -443,7 +454,10 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - for unclear/cross-cutting root cause, follow mandatory full-chain re-entry from understanding (`Stage 0 -> Stage 1 -> Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 5.5`) before rerunning affected scenarios.
   - do not keep appending fixes that make files/components bigger without re-evaluating separation of concerns and design intent.
 - Stage completion gate:
-  - critical aggregated scenarios pass, or infeasible critical scenarios have concrete constraints + compensating evidence + residual risk explicitly documented.
+  - all in-scope acceptance criteria from `requirements.md` are mapped to Stage 6 scenarios,
+  - all executable in-scope acceptance criteria have execution status `Passed`,
+  - all executable mapped API/E2E scenarios are resolved (`Passed`), with no unresolved failures/blockers,
+  - if any acceptance criterion is infeasible due to environment constraints, Stage 6 remains `Blocked` until explicit user waiver is recorded with constraints + compensating evidence + residual risk.
 - Use `assets/aggregated-validation-template.md`.
 - Speak when `aggregated-validation.md` is created/updated and when aggregated validation stage completes.
 
@@ -468,7 +482,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 - Complete handoff only after implementation execution, aggregated API/E2E validation, and docs synchronization are complete.
 - Handoff summary must include:
   - delivered scope vs planned scope,
-  - verification summary (unit/integration plus API/E2E aggregated validation, documented infeasibility reasons/constraints, and compensating automated evidence),
+  - verification summary (unit/integration plus API/E2E aggregated validation, acceptance-criteria closure status, and for infeasible criteria documented constraints + compensating automated evidence + explicit user waiver reference),
   - docs files updated (or explicit no-impact rationale).
 - Ticket state transition:
   - keep ticket under `tickets/in-progress/<ticket-name>/` by default after handoff,
@@ -503,6 +517,7 @@ These defaults list file-producing stages; gating and handoff rules still follow
   - record gate result (`Pass`/`Fail`) and any re-entry declaration before `Stage 6`
 - Stage 6 (aggregated API/E2E validation, only after `Stage 5.5 = Pass`):
   - create/update `tickets/in-progress/<ticket-name>/aggregated-validation.md`
+  - maintain acceptance-criteria matrix (`acceptance_criteria_id` -> scenario coverage -> pass status)
   - record scenario execution results and any escalation decisions in `tickets/in-progress/<ticket-name>/implementation-progress.md`
 - Stage 7 (post-validation documentation sync):
   - update existing impacted docs in place (for example `docs/**/*.md`, `ARCHITECTURE.md`)
