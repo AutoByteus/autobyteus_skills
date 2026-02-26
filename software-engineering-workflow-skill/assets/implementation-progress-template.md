@@ -66,7 +66,7 @@ Rules:
 
 | Date | Scenario ID | Source Type (`Requirement`/`Design-Risk`) | Requirement ID(s) | Use Case ID(s) | Level (`API`/`E2E`) | Status | Failure Summary | Investigation Required (`Yes`/`No`) | Classification (`Local Fix`/`Design Impact`/`Requirement Gap`) | Action Path Taken | `investigation-notes.md` Updated | Requirements Updated | Design Updated | Call Stack Regenerated | Review Re-Entry Round | Resume Condition Met |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| YYYY-MM-DD | SV-001 | Requirement | R-001 | UC-001 | API | Failed | Missing flow branch for fallback path | Yes | Design Impact | Paused implementation, reopened investigation, then updated design basis | Yes | No | Yes | Yes | Round 6 | Yes |
+| YYYY-MM-DD | AV-001 | Requirement | R-001 | UC-001 | API | Failed | Missing flow branch for fallback path | Yes | Design Impact | Paused implementation, reopened investigation, then updated design basis | Yes | No | Yes | Yes | Round 6 | Yes |
 
 Rules:
 - If issue scope is large/cross-cutting or root-cause confidence is low, `Investigation Required` must be `Yes` and understanding-stage re-entry is required before requirements/design updates.

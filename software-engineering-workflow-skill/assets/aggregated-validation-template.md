@@ -17,21 +17,25 @@ Stage 6 may start only after `Stage 5.5` internal code review gate result is `Pa
 - Every critical requirement must map to at least one scenario.
 - Every in-scope use case must map to at least one scenario, or explicitly `N/A` with rationale.
 - `Design-Risk` scenarios must include explicit technical objective/risk and expected outcome.
+- Use stable scenario IDs with `AV-` prefix (for example: `AV-001`).
 - Manual testing is not part of the default workflow.
 
 ## Scenario Catalog
 
 | Scenario ID | Source Type (`Requirement`/`Design-Risk`) | Requirement ID(s) | Use Case ID(s) | Level (`API`/`E2E`) | Objective/Risk | Expected Outcome | Command/Harness | Status (`Not Started`/`In Progress`/`Passed`/`Failed`/`Blocked`/`N/A`) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| SV-001 | Requirement | R-001 | UC-001 | API | N/A |  |  | Not Started |
+| AV-001 | Requirement | R-001 | UC-001 | API | N/A |  |  | Not Started |
 
 ## Failure Escalation Log
 
 | Date | Scenario ID | Failure Summary | Investigation Required (`Yes`/`No`) | Classification (`Local Fix`/`Design Impact`/`Requirement Gap`) | Action Path | `investigation-notes.md` Updated | Requirements Updated | Design Updated | Call Stack Regenerated | Review Re-Entry Round | Resolved |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| YYYY-MM-DD | SV-001 |  |  |  |  |  |  |  |  |  | No |
+| YYYY-MM-DD | AV-001 |  |  |  |  |  |  |  |  |  | No |
 
 Rules:
+- Before final classification, run an investigation screen:
+  - if issue scope is cross-cutting, root cause is unclear, or confidence is low, set `Investigation Required = Yes` and update `investigation-notes.md` first.
+  - if issue is clearly bounded with high confidence, classification can proceed directly.
 - `Local Fix` requires artifact update first, then fix, then rerun `Stage 5` + `Stage 5.5` before rerunning affected scenarios.
 - `Design Impact` requires `Investigation Required = Yes` and investigation checkpoint before design write-backs.
 - If requirement-level gaps are found during design-impact investigation, reclassify to `Requirement Gap`.

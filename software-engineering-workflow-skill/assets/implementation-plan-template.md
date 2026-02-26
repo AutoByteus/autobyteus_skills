@@ -13,7 +13,7 @@
 
 - Investigation notes: `tickets/in-progress/<ticket-name>/investigation-notes.md`
 - Requirements: `tickets/in-progress/<ticket-name>/requirements.md`
-  - Current Status: `Draft` / `Design-ready` / `Refined`
+  - Current Status: `Design-ready` / `Refined`
 - Runtime call stacks: `tickets/in-progress/<ticket-name>/future-state-runtime-call-stack.md`
 - Runtime review: `tickets/in-progress/<ticket-name>/future-state-runtime-call-stack-review.md`
 - Proposed design (required for `Medium/Large`): `tickets/in-progress/<ticket-name>/proposed-design.md`
@@ -84,13 +84,13 @@
 
 | Requirement | Design Section | Use Case / Call Stack | Planned Task ID(s) | Stage 5 Verification (Unit/Integration) | Stage 6 Scenario ID(s) |
 | --- | --- | --- | --- | --- | --- |
-| R-001 |  | UC-001 |  | Unit/Integration | SV-001 |
+| R-001 |  | UC-001 |  | Unit/Integration | AV-001 |
 
 ## Design Delta Traceability (Required For `Medium/Large`)
 
 | Change ID (from proposed design doc) | Change Type | Planned Task ID(s) | Includes Remove/Rename Work | Verification |
 | --- | --- | --- | --- | --- |
-| C-001 |  |  | Yes/No | Unit/Integration + SV-Scenario |
+| C-001 |  |  | Yes/No | Unit/Integration + AV-Scenario |
 
 ## Decommission / Rename Execution Tasks
 
@@ -139,7 +139,7 @@
 
 | Scenario ID | Source Type (`Requirement`/`Design-Risk`) | Requirement ID(s) | Use Case ID(s) | Validation Level (`API`/`E2E`) | Expected Outcome |
 | --- | --- | --- | --- | --- | --- |
-| SV-001 | Requirement | R-001 | UC-001 | API |  |
+| AV-001 | Requirement | R-001 | UC-001 | API |  |
 
 ## Aggregated Validation Escalation Policy (Stage 6 Guardrail)
 
