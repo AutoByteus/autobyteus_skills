@@ -1,10 +1,10 @@
-# Aggregated Validation
+# API/E2E Testing
 
-Use this document for Stage 6 aggregated validation (API/E2E).
+Use this document for Stage 7 API/E2E test implementation and execution.
 Do not use this file for unit/integration tracking; that belongs in `implementation-progress.md`.
-Stage 6 may start only after `Stage 5.5` internal code review gate result is `Pass`.
+Stage 7 starts after Stage 6 implementation (source + unit/integration) is complete.
 
-## Validation Scope
+## Testing Scope
 
 - Ticket:
 - Scope classification: `Small` / `Medium` / `Large`
@@ -21,8 +21,9 @@ Stage 6 may start only after `Stage 5.5` internal code review gate result is `Pa
 - `Design-Risk` scenarios must include explicit technical objective/risk and expected outcome.
 - Use stable scenario IDs with `AV-` prefix (for example: `AV-001`).
 - Manual testing is not part of the default workflow.
-- Stage 6 cannot close while any acceptance criterion is `Unmapped`, `Not Run`, `Failed`, or `Blocked` unless explicitly marked `Waived` by user decision for infeasible cases.
-- During Stage 6 execution, `workflow-state.md` should show `Current Stage = 6` and `Code Edit Permission = Locked`.
+- Stage 7 cannot close while any acceptance criterion is `Unmapped`, `Not Run`, `Failed`, or `Blocked` unless explicitly marked `Waived` by user decision for infeasible cases.
+- During Stage 7 execution, `workflow-state.md` should show `Current Stage = 7` and `Code Edit Permission = Unlocked`.
+- Stage 7 includes test-file/harness implementation and test execution.
 
 ## Acceptance Criteria Coverage Matrix (Mandatory)
 
@@ -38,7 +39,7 @@ Stage 6 may start only after `Stage 5.5` internal code review gate result is `Pa
 
 ## Failure Escalation Log
 
-| Date | Scenario ID | Failure Summary | Investigation Required (`Yes`/`No`) | Classification (`Local Fix`/`Design Impact`/`Requirement Gap`) | Action Path | `investigation-notes.md` Updated | Requirements Updated | Design Updated | Call Stack Regenerated | Review Re-Entry Round | Resolved |
+| Date | Scenario ID | Failure Summary | Investigation Required (`Yes`/`No`) | Classification (`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`) | Action Path | `investigation-notes.md` Updated | Requirements Updated | Design Updated | Call Stack Regenerated | Review Re-Entry Round | Resolved |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | YYYY-MM-DD | AV-001 |  |  |  |  |  |  |  |  |  | No |
 
@@ -47,13 +48,14 @@ Rules:
   - if issue scope is cross-cutting, root cause is unclear, or confidence is low, set `Investigation Required = Yes` and update `investigation-notes.md` first.
   - if issue is clearly bounded with high confidence, classification can proceed directly.
 - For each failing scenario, update acceptance-criteria matrix statuses before and after re-entry.
-- `Local Fix` requires artifact update first, then fix, then rerun `Stage 5` + `Stage 5.5` before rerunning affected scenarios.
+- `Local Fix` requires artifact update first, then fix, then rerun `Stage 6 -> Stage 7` before rerunning affected scenarios.
 - `Design Impact` requires `Investigation Required = Yes` and investigation checkpoint before design write-backs.
 - If requirement-level gaps are found during design-impact investigation, reclassify to `Requirement Gap`.
 - No direct source-code patching is allowed before required upstream artifacts are updated.
-- `Design Impact` requires full-chain re-entry: `Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 5.5` before rerunning affected scenarios.
-- `Requirement Gap` requires full-chain re-entry: `Stage 1 -> Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 5.5` before rerunning affected scenarios.
-- unclear/cross-cutting root cause requires full-chain re-entry: `Stage 0 -> Stage 1 -> Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 5.5`.
+- `Design Impact` requires full-chain re-entry: `Stage 1 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7` before rerunning affected scenarios.
+- `Requirement Gap` requires full-chain re-entry: `Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7` before rerunning affected scenarios.
+- `Unclear`/cross-cutting root cause requires full-chain re-entry: `Stage 0 -> Stage 1 -> Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7`.
+- Stage 0 in a re-entry path means re-open bootstrap controls in the same ticket/worktree (`workflow-state.md`, lock state, artifact baselines); do not create a new ticket folder.
 
 ## Feasibility And Risk Record
 
@@ -65,13 +67,14 @@ Rules:
 - User waiver for infeasible acceptance criteria recorded (`Yes`/`No`):
 - If `Yes`, waiver reference (date/user decision):
 
-## Stage 6 Gate Decision
+## Stage 7 Gate Decision
 
-- Stage 6 complete: `Yes` / `No`
+- Stage 7 complete: `Yes` / `No`
 - All in-scope acceptance criteria mapped to scenarios: `Yes` / `No`
 - All executable in-scope acceptance criteria status = `Passed`: `Yes` / `No`
 - Critical executable scenarios passed: `Yes` / `No`
 - Any infeasible acceptance criteria: `Yes` / `No`
 - Explicit user waiver recorded for each infeasible acceptance criterion (if any): `Yes` / `No` / `N/A`
 - Unresolved escalation items: `Yes` / `No`
+- Ready to enter Stage 8 code review: `Yes` / `No`
 - Notes:

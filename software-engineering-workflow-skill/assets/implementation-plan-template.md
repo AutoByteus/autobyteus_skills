@@ -5,9 +5,9 @@
 - Classification: `Small` / `Medium` / `Large`
 - Reasoning:
 - Workflow Depth:
-  - `Small` -> draft implementation plan (solution sketch) -> future-state runtime call stack -> future-state runtime call stack review (iterative deep rounds until `Go Confirmed`) -> finalize implementation plan -> implementation progress tracking -> internal code review gate -> aggregated API/E2E validation -> docs sync
-  - `Medium` -> proposed design doc -> future-state runtime call stack -> future-state runtime call stack review (iterative deep rounds until `Go Confirmed`) -> implementation plan -> implementation progress tracking -> internal code review gate -> aggregated API/E2E validation -> docs sync
-  - `Large` -> proposed design doc -> future-state runtime call stack -> future-state runtime call stack review (iterative deep rounds until `Go Confirmed`) -> implementation plan -> implementation progress tracking -> internal code review gate -> aggregated API/E2E validation -> docs sync
+  - `Small` -> draft implementation plan (solution sketch) -> future-state runtime call stack -> future-state runtime call stack review (iterative deep rounds until `Go Confirmed`) -> finalize implementation plan -> implementation progress tracking -> API/E2E testing (implement + execute) -> code review gate -> docs sync
+  - `Medium` -> proposed design doc -> future-state runtime call stack -> future-state runtime call stack review (iterative deep rounds until `Go Confirmed`) -> implementation plan -> implementation progress tracking -> API/E2E testing (implement + execute) -> code review gate -> docs sync
+  - `Large` -> proposed design doc -> future-state runtime call stack -> future-state runtime call stack review (iterative deep rounds until `Go Confirmed`) -> implementation plan -> implementation progress tracking -> API/E2E testing (implement + execute) -> code review gate -> docs sync
 
 ## Upstream Artifacts (Required)
 
@@ -28,7 +28,7 @@
 
 - `requirements.md` is at least `Design-ready` (`Refined` allowed):
 - Acceptance criteria use stable IDs (`AC-*`) with measurable expected outcomes:
-- `workflow-state.md` is current and Stage 4 review-gate evidence is recorded:
+- `workflow-state.md` is current and Stage 5 review-gate evidence is recorded:
 - Runtime call stack review artifact exists and is current:
 - All in-scope use cases reviewed:
 - No unresolved blocking findings:
@@ -85,13 +85,13 @@
 
 ## Requirement And Design Traceability
 
-| Requirement | Acceptance Criteria ID(s) | Design Section | Use Case / Call Stack | Planned Task ID(s) | Stage 5 Verification (Unit/Integration) | Stage 6 Scenario ID(s) |
+| Requirement | Acceptance Criteria ID(s) | Design Section | Use Case / Call Stack | Planned Task ID(s) | Stage 6 Verification (Unit/Integration) | Stage 7 Scenario ID(s) |
 | --- | --- | --- | --- | --- | --- | --- |
 | R-001 | AC-001 |  | UC-001 |  | Unit/Integration | AV-001 |
 
-## Acceptance Criteria To Stage 6 Mapping (Mandatory)
+## Acceptance Criteria To Stage 7 Mapping (Mandatory)
 
-| Acceptance Criteria ID | Requirement ID | Expected Outcome | Stage 6 Scenario ID(s) | Validation Level (`API`/`E2E`) | Initial Status (`Planned`/`Blocked`) |
+| Acceptance Criteria ID | Requirement ID | Expected Outcome | Stage 7 Scenario ID(s) | Test Level (`API`/`E2E`) | Initial Status (`Planned`/`Blocked`) |
 | --- | --- | --- | --- | --- | --- |
 | AC-001 | R-001 |  | AV-001 | API | Planned |
 
@@ -119,10 +119,10 @@
 | --- | --- | --- | --- | --- |
 |  |  |  |  |  |
 
-## Internal Code Review Gate Plan (Stage 5.5)
+## Code Review Gate Plan (Stage 8)
 
-- Gate artifact path: `tickets/in-progress/<ticket-name>/internal-code-review.md`
-- Source-file scope only (exclude tests):
+- Gate artifact path: `tickets/in-progress/<ticket-name>/code-review.md`
+- Scope (source + tests):
 - `>300` line changed source files SoC assessment approach:
 - `>400` line changed source file policy and expected action:
 - Allowed exceptions and required rationale style:
@@ -135,27 +135,27 @@
 
 - Unit tests:
 - Integration tests:
-- Stage 5 boundary: file/module/service-level verification only (unit + integration).
-- Stage 5.5 handoff notes for internal code review:
-  - predicted design-impact hotspots:
-  - files likely to exceed size/SoC thresholds:
-- Stage 6 handoff notes for aggregated validation:
+- Stage 6 boundary: file/module/service-level verification only (unit + integration).
+- Stage 7 handoff notes for API/E2E testing:
   - expected acceptance criteria count:
   - critical flows to validate (API/E2E):
   - expected scenario count:
   - known environment constraints:
+- Stage 8 handoff notes for code review:
+  - predicted design-impact hotspots:
+  - files likely to exceed size/SoC thresholds:
 
-## Aggregated API/E2E Validation Scenario Catalog (Stage 6 Input)
+## API/E2E Testing Scenario Catalog (Stage 7 Input)
 
-| Scenario ID | Source Type (`Requirement`/`Design-Risk`) | Acceptance Criteria ID(s) | Requirement ID(s) | Use Case ID(s) | Validation Level (`API`/`E2E`) | Expected Outcome |
+| Scenario ID | Source Type (`Requirement`/`Design-Risk`) | Acceptance Criteria ID(s) | Requirement ID(s) | Use Case ID(s) | Test Level (`API`/`E2E`) | Expected Outcome |
 | --- | --- | --- | --- | --- | --- | --- |
 | AV-001 | Requirement | AC-001 | R-001 | UC-001 | API |  |
 
-## Aggregated Validation Escalation Policy (Stage 6 Guardrail)
+## API/E2E Testing Escalation Policy (Stage 7 Guardrail)
 
-- Classification rules for failing aggregated validation scenarios:
-  - choose exactly one classification for the current failure event: `Local Fix`, `Design Impact`, or `Requirement Gap`.
-  - do not allow any in-scope acceptance criterion to remain `Unmapped`, `Not Run`, `Failed`, or `Blocked` at Stage 6 close unless explicitly marked `Waived` by user decision for infeasible cases.
+- Classification rules for failing API/E2E scenarios:
+  - choose exactly one classification for the current failure event: `Local Fix`, `Design Impact`, `Requirement Gap`, or `Unclear`.
+  - do not allow any in-scope acceptance criterion to remain `Unmapped`, `Not Run`, `Failed`, or `Blocked` at Stage 7 close unless explicitly marked `Waived` by user decision for infeasible cases.
   - First run investigation screen:
     - if issue is cross-cutting, root cause is unclear, or confidence is low, set `Investigation Required = Yes`, pause implementation, and update `tickets/in-progress/<ticket-name>/investigation-notes.md` before classification write-back.
     - if issue is clearly bounded with high confidence, set `Investigation Required = No` and classify directly.
@@ -163,12 +163,13 @@
   - `Design Impact`: responsibility boundaries drift, architecture change needed, or patch-on-patch complexity appears.
   - `Requirement Gap`: missing/ambiguous requirement or newly discovered requirement-level constraint.
 - Required action:
-  - `Local Fix` -> update implementation/review artifacts first, then implement fix, rerun `Stage 5` + `Stage 5.5`, then rerun affected scenarios.
+  - `Local Fix` -> update implementation/review artifacts first, then implement fix, rerun `Stage 6 -> Stage 7`, then rerun affected scenarios.
   - `Design Impact` -> set `Investigation Required = Yes` (mandatory checkpoint), update `investigation-notes.md`, then follow full-chain re-entry.
   - if requirement-level gaps are discovered during the design-impact investigation checkpoint -> reclassify as `Requirement Gap` and follow the requirement-gap path.
-  - `Design Impact` (after checkpoint, still design impact) -> return to `Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 5.5`; rerun affected scenarios.
-  - `Requirement Gap` -> return to `Stage 1 -> Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 5.5`; rerun affected scenarios.
-  - unclear/cross-cutting root cause -> return to `Stage 0 -> Stage 1 -> Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 5.5`; rerun affected scenarios.
+  - `Design Impact` (after checkpoint, still design impact) -> return to `Stage 1 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7`; rerun affected scenarios.
+  - `Requirement Gap` -> return to `Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7`; rerun affected scenarios.
+  - `Unclear`/cross-cutting root cause -> return to `Stage 0 -> Stage 1 -> Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7`; rerun affected scenarios.
+  - Stage 0 in a re-entry path means re-open bootstrap controls in the same ticket/worktree (`workflow-state.md`, lock state, artifact baselines); do not create a new ticket folder.
   - when `Investigation Required = Yes`, understanding-stage re-entry is mandatory before design/requirements updates.
 
 ## Cross-Reference Exception Protocol

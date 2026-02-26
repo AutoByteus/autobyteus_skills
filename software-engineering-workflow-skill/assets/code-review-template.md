@@ -1,25 +1,25 @@
-# Internal Code Review
+# Code Review
 
-Use this document for `Stage 5.5` pre-aggregated-validation code review.
+Use this document for `Stage 8` code review after Stage 7 API/E2E testing passes.
 This gate enforces structure quality, source-file maintainability, and mandatory re-entry rules.
 
 ## Review Meta
 
 - Ticket:
 - Review Round:
-- Trigger Stage: `5` / `6` / `Re-entry`
+- Trigger Stage: `7` / `Re-entry`
 - Workflow state source: `tickets/in-progress/<ticket-name>/workflow-state.md`
 - Design basis artifact:
 - Runtime call stack artifact:
 
 ## Scope
 
-- Source files reviewed (exclude tests):
+- Files reviewed (source + tests):
 - Why these files:
 
 ## Source File Size And SoC Audit (Mandatory)
 
-| File | Current Line Count | Adds/Expands Functionality (`Yes`/`No`) | `>300` SoC Assessment | `>400` Hard Check | Preliminary Classification (`N/A`/`Local Fix`/`Design Impact`/`Requirement Gap`) | Required Action (`Keep`/`Split`/`Move`/`Refactor`) |
+| File | Current Line Count | Adds/Expands Functionality (`Yes`/`No`) | `>300` SoC Assessment | `>400` Hard Check | Preliminary Classification (`N/A`/`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`) | Required Action (`Keep`/`Split`/`Move`/`Refactor`) |
 | --- | --- | --- | --- | --- | --- | --- |
 |  |  |  | Pass/Fail | Pass/Fail |  |  |
 
@@ -27,7 +27,7 @@ Rules:
 - For changed source file line count `>300`, SoC assessment is mandatory.
 - For changed source file line count `>400` with functionality expansion, default classification is `Design Impact`.
 - `>400` exception is allowed only with explicit rationale and split plan.
-- During Stage 5.5, `workflow-state.md` should show `Current Stage = 5.5` and `Code Edit Permission = Locked`.
+- During Stage 8, `workflow-state.md` should show `Current Stage = 8` and `Code Edit Permission = Locked`.
 
 ## Findings
 
@@ -38,12 +38,13 @@ Rules:
 ## Re-Entry Declaration (Mandatory On `Fail`)
 
 - Trigger Stage:
-- Classification (`Local Fix`/`Design Impact`/`Requirement Gap`):
+- Classification (`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`):
 - Required Return Path:
-  - `Local Fix` -> update implementation artifacts first -> code fix -> rerun `Stage 5` + `Stage 5.5`
-  - `Design Impact` -> `Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 5.5`
-  - `Requirement Gap` -> `Stage 1 -> Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 5.5`
-  - unclear/cross-cutting -> `Stage 0 -> Stage 1 -> Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 5.5`
+  - `Local Fix` -> update implementation artifacts first -> code fix -> rerun `Stage 6 -> Stage 7 -> Stage 8`
+  - `Design Impact` -> `Stage 1 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7 -> Stage 8`
+  - `Requirement Gap` -> `Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7 -> Stage 8`
+  - `Unclear`/cross-cutting -> `Stage 0 -> Stage 1 -> Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7 -> Stage 8`
+  - Stage 0 in a re-entry path means re-open bootstrap controls in the same ticket/worktree (`workflow-state.md`, lock state, artifact baselines); do not create a new ticket folder.
 - Upstream artifacts required before code edits:
   - `investigation-notes.md` updated (if required):
   - `requirements.md` updated (if required):
@@ -53,5 +54,5 @@ Rules:
 ## Gate Decision
 
 - Decision: `Pass` / `Fail`
-- Implementation can proceed to `Stage 6`: `Yes` / `No`
+- Implementation can proceed to `Stage 9`: `Yes` / `No`
 - Notes:

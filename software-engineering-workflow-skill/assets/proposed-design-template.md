@@ -149,7 +149,7 @@ Rule:
 
 ## Design Feedback Loop Notes (From Review/Implementation)
 
-| Date | Trigger (Review/File/Test/Blocker) | Classification (`Local Fix`/`Design Impact`/`Requirement Gap`) | Design Smell | Requirements Updated? | Design Update Applied | Status |
+| Date | Trigger (Review/File/Test/Blocker) | Classification (`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`) | Design Smell | Requirements Updated? | Design Update Applied | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 |  |  |  |  | Yes/No |  |  |
 
