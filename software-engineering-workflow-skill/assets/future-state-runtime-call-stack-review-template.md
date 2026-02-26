@@ -11,6 +11,10 @@ This review validates alignment with target (`to-be`) design behavior, not parit
 - Clean-Review Streak Before This Round: `0` / `1` / `2` / ...
 - Clean-Review Streak After This Round: `0` / `1` / `2` / ...
 - Round State: `Reset` / `Candidate Go` / `Go Confirmed`
+- Missing-Use-Case Discovery Sweep Completed This Round: `Yes` / `No`
+- New Use Cases Discovered This Round: `Yes` / `No`
+- This Round Classification (`Design Impact`/`Requirement Gap`/`Unclear`/`N/A`):
+- Required Re-Entry Path Before Next Round:
 
 ## Review Basis
 
@@ -23,31 +27,32 @@ This review validates alignment with target (`to-be`) design behavior, not parit
   - Requirements Status:
   - Design Version:
   - Call Stack Version:
-- Required Write-Backs Completed For This Round: `Yes` / `No` / `N/A`
+- Required Persisted Artifact Updates Completed For This Round: `Yes` / `No` / `N/A`
 
 ## Review Intent (Mandatory)
 
 - Primary check: Is the future-state runtime call stack a coherent and implementable future-state model?
 - Not a pass criterion: matching current-code call paths exactly.
 - Not a required action: adding/removing layers by default; `Keep` can pass when layering is coherent and boundary placement is clear.
-- Local-fix-is-not-enough rule: if a fix works functionally but degrades architecture/layering/responsibility boundaries, mark `Fail` and require architectural write-back.
+- Local-fix-is-not-enough rule: if a fix works functionally but degrades architecture/layering/responsibility boundaries, mark `Fail` and require architectural artifact updates via classified re-entry.
 - Any finding with a required design/call-stack update is blocking.
 
 ## Round History
 
-| Round | Requirements Status | Design Version | Call Stack Version | Findings Requiring Write-Back | Write-Backs Completed | Clean Streak After Round | Round State | Gate (`Go`/`No-Go`) |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 |  |  |  | Yes/No | Yes/No/N/A | 0/1/2+ | Reset/Candidate Go/Go Confirmed |  |
-| 2 |  |  |  | Yes/No | Yes/No/N/A | 0/1/2+ | Reset/Candidate Go/Go Confirmed |  |
-| 3 |  |  |  | Yes/No | Yes/No/N/A | 0/1/2+ | Reset/Candidate Go/Go Confirmed |  |
-| N |  |  |  | Yes/No | Yes/No/N/A | 0/1/2+ | Reset/Candidate Go/Go Confirmed |  |
+| Round | Requirements Status | Design Version | Call Stack Version | Findings Requiring Persisted Updates | New Use Cases Discovered | Persisted Updates Completed | Classification (`Design Impact`/`Requirement Gap`/`Unclear`/`N/A`) | Required Re-Entry Path | Clean Streak After Round | Round State | Gate (`Go`/`No-Go`) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 |  |  |  | Yes/No | Yes/No | Yes/No/N/A |  |  | 0/1/2+ | Reset/Candidate Go/Go Confirmed |  |
+| 2 |  |  |  | Yes/No | Yes/No | Yes/No/N/A |  |  | 0/1/2+ | Reset/Candidate Go/Go Confirmed |  |
+| 3 |  |  |  | Yes/No | Yes/No | Yes/No/N/A |  |  | 0/1/2+ | Reset/Candidate Go/Go Confirmed |  |
+| N |  |  |  | Yes/No | Yes/No | Yes/No/N/A |  |  | 0/1/2+ | Reset/Candidate Go/Go Confirmed |  |
 
 Notes:
 - No fixed round count is hard-coded.
-- `Candidate Go` means one clean deep-review round with no blockers and no required write-backs.
+- `Candidate Go` means one clean deep-review round with no blockers, no required persisted artifact updates, and no newly discovered use cases.
 - `Go Confirmed` means two consecutive clean deep-review rounds.
+- Any round with blockers, required persisted artifact updates, or newly discovered use cases must be classified and routed through the required re-entry path before the next review round.
 
-## Round Write-Back Log (Mandatory)
+## Round Artifact Update Log (Mandatory)
 
 | Round | Findings Requiring Updates (`Yes`/`No`) | Updated Files | Version Changes | Changed Sections | Resolved Finding IDs |
 | --- | --- | --- | --- | --- | --- |
@@ -58,6 +63,19 @@ Notes:
 
 Rule:
 - A round is incomplete until required file updates are physically written and logged.
+- `Required persisted artifact updates` means file updates produced in the classified re-entry stage path, not in-memory edits inside Stage 5.
+
+## Missing-Use-Case Discovery Log (Mandatory Per Round)
+
+| Round | Discovery Lens | New Use Case IDs (`None` if no new case) | Source Type (`Requirement`/`Design-Risk`) | Why Previously Missing | Classification (`Design Impact`/`Requirement Gap`/`Unclear`/`N/A`) | Upstream Update Required |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Requirement coverage / boundary crossing / fallback-error / design-risk |  |  |  |  |  |
+| 2 | Requirement coverage / boundary crossing / fallback-error / design-risk |  |  |  |  |  |
+| N | Requirement coverage / boundary crossing / fallback-error / design-risk |  |  |  |  |  |
+
+Rule:
+- Missing-use-case discovery must run in every round before gate verdict.
+- If any new use case is discovered, the round cannot be marked clean.
 
 ## Per-Use-Case Review
 
@@ -69,7 +87,7 @@ Rule:
 
 - If no findings, write `None`.
 - Otherwise list only actionable findings:
-  - `[F-001] Use case: ... | Type: Architecture/Layering/Hack/LocalFixDegradation/Vocabulary/Naming/Gap/Structure/Dependency/Redundancy/Simplification/Legacy/Decommission | Severity: Blocker/Major/Minor | Evidence: ... | Required update: ...`
+  - `[F-001] Use case: ... | Type: Architecture/Layering/Hack/LocalFixDegradation/Vocabulary/Naming/MissingUseCase/Gap/Structure/Dependency/Redundancy/Simplification/Legacy/Decommission | Severity: Blocker/Major/Minor | Confidence: High/Medium/Low | Evidence: ... | Required update: ... | Classification: Design Impact/Requirement Gap/Unclear`
 
 Rule:
 - Any finding with a `Required update` is blocking and must be resolved in a later review round before implementation can start.
@@ -103,12 +121,16 @@ Rule:
   - Simplification opportunity check is `Pass` for all in-scope use cases:
   - All use-case verdicts are `Pass`:
   - No unresolved blocking findings:
-  - Required write-backs completed for this round:
+  - Required persisted artifact updates completed for this round:
+  - Missing-use-case discovery sweep completed for this round:
+  - No newly discovered use cases in this round:
   - Remove/decommission checks complete for scoped `Remove`/`Rename/Move` changes:
-  - Two consecutive deep-review rounds have no blockers and no required write-backs:
+  - Two consecutive deep-review rounds have no blockers, no required persisted artifact updates, and no newly discovered use cases:
   - Findings trend quality is acceptable across rounds (issues declined in count/severity or became more localized), or explicit design decomposition update is recorded:
 - If `No`, required refinement actions:
-  - Update `requirements.md` first if this is a `Requirement Gap` (status `Refined`), then update design basis:
+  - If classification is `Design Impact` (clear/high-confidence design issue): `Stage 3 -> Stage 4 -> Stage 5`:
+  - If classification is `Requirement Gap`: update `requirements.md` first in `Stage 2` (status `Refined`), then `Stage 3 -> Stage 4 -> Stage 5`:
+  - If classification is `Unclear` (cross-cutting or low confidence): update `investigation-notes.md` in `Stage 1`, then `Stage 2 -> Stage 3 -> Stage 4 -> Stage 5`:
   - Regenerate `future-state-runtime-call-stack.md`:
   - Re-run this review from updated files:
 

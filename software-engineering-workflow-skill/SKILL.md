@@ -90,6 +90,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 - Work in explicit stages and complete each gate before producing downstream artifacts.
 - Before every stage transition, update `workflow-state.md` first (snapshot + transition log + gate statuses), then proceed.
 - Treat `workflow-state.md` as an execution lock controller, not optional documentation.
+- Transition authority rule (mandatory): stage movement is controlled by the Stage Transition Contract + Transition Matrix. When a trigger condition is met, transition immediately to the mapped path; do not continue in the current stage by preference.
 - Requirements can start as rough `Draft` from user input/bug report artifacts before deep analysis.
 - Do not start investigation until ticket/worktree bootstrap is complete and `requirements.md` status `Draft` is physically written.
 - Do not mark understanding pass complete until `investigation-notes.md` is physically written and current for the ticket.
@@ -109,11 +110,18 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 - Treat technical completion and ticket archival as separate gates: technical completion ends at implementation + API/E2E test gate + code review + docs sync; archival to `tickets/done/` requires explicit user confirmation.
 - `Small` scope exception: drafting `implementation-plan.md` (solution sketch only) before review is allowed as design input, but this draft does not unlock implementation kickoff.
 - Future-state runtime call stack review must run as iterative deep-review rounds (not one-pass review).
-- `Go Confirmed` cannot be declared immediately after write-backs from a blocking round.
-- Stability rule (mandatory): unlock `Go Confirmed` only after two consecutive deep-review rounds report no blockers and no required write-backs.
+- `Go Confirmed` cannot be declared immediately after required upstream artifact updates from a blocking round.
+- Stability rule (mandatory): unlock `Go Confirmed` only after two consecutive deep-review rounds report no blockers, no required persisted artifact updates, and no newly discovered use cases.
 - First clean round is provisional (`Candidate Go`), second consecutive clean round is confirmation (`Go Confirmed`).
+- Missing-use-case discovery rule (mandatory): every Stage 5 round must run a dedicated missing-use-case discovery sweep (requirement coverage, boundary crossings, fallback/error branches, and design-risk scenarios).
+- A Stage 5 round is not clean if it discovers new use cases, requires persisted artifact updates, or finds blockers.
 - Any review finding with a required design/call-stack update is blocking; regenerate affected artifacts and re-review before proceeding.
 - If design/review reveals missing understanding or requirement ambiguity, return to understanding + requirements stages, update `requirements.md`, then continue design/review.
+- Stage 5 classified re-entry mapping (mandatory):
+  - `Design Impact` (clear boundary/layer/naming/architecture issue with high confidence): return to `Stage 3 -> Stage 4 -> Stage 5`.
+  - `Requirement Gap` (missing/ambiguous requirement or acceptance criterion): return to `Stage 2 -> Stage 3 -> Stage 4 -> Stage 5`.
+  - `Unclear` (cross-cutting scope or low root-cause confidence): return to `Stage 1 -> Stage 2 -> Stage 3 -> Stage 4 -> Stage 5`.
+- For any Stage 5 blocking round, record classification + return path in `future-state-runtime-call-stack-review.md` and `workflow-state.md` before starting the next round.
 - Re-entry declaration rule (mandatory): when a post-implementation gate (`Stage 7` API/E2E testing or `Stage 8` code review) finds issues, explicitly record:
   - trigger stage (`7`/`8`),
   - classification (`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`),
@@ -127,14 +135,15 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - `Unclear` (or cross-cutting root cause): return to `Stage 0 -> Stage 1 -> Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7`; once Stage 7 passes, continue to `Stage 8`.
 - Stage 0 in a re-entry path means re-open bootstrap controls in the same ticket/worktree (`workflow-state.md`, lock state, artifact baselines); do not create a new ticket folder.
 - If the user asks for all artifacts in one turn, still enforce stage gates within that turn (iterate review rounds first; only then produce implementation artifacts).
-- No mental-only review refinements: if a round finds issues, update the affected artifact files immediately in the same round before starting the next round.
-- For each review round, record explicit write-backs in `future-state-runtime-call-stack-review.md`:
+- Stage-first persistence rule: if a Stage 5 round finds issues, first record classification + return path and transition to the required upstream stage in `workflow-state.md`, then persist required artifact updates in that stage.
+- No mental-only review refinements: do not carry unresolved updates in memory across rounds.
+- For each review round, record explicit persisted artifact updates in `future-state-runtime-call-stack-review.md`:
   - updated files,
   - new artifact versions,
   - changed sections,
   - which findings were resolved.
 - A review round cannot be considered complete until its required file updates are physically written.
-- If announcing review-round status, do it only after the round record/write-backs are physically written and the related Stage 5 gate status is persisted in `workflow-state.md`.
+- If announcing review-round status, do it only after the round record + required staged artifact updates are physically written and the related Stage 5 gate status is persisted in `workflow-state.md`.
 
 ### Canonical Stage Sequence (Quick Map)
 
@@ -145,7 +154,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 | 2 | Requirements Refinement | `requirements.md` reaches `Design-ready`/`Refined` | Locked |
 | 3 | Design Basis | `implementation-plan.md` sketch (`Small`) or `proposed-design.md` (`Medium/Large`) | Locked |
 | 4 | Runtime Modeling | `future-state-runtime-call-stack.md` current | Locked |
-| 5 | Runtime Review Gate | `Go Confirmed` (two consecutive clean rounds) | Locked |
+| 5 | Runtime Review Gate | `Go Confirmed` (two consecutive clean rounds with no blockers/persisted updates/new use cases) | Locked |
 | 6 | Source Implementation + Unit/Integration | Source code + required unit/integration checks complete | Unlocked |
 | 7 | API/E2E Test Implementation + Gate | API/E2E scenarios implemented and acceptance criteria closure complete | Unlocked |
 | 8 | Code Review Gate | Code review decision recorded (`Pass`/`Fail`) | Locked |
@@ -161,7 +170,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 | 2 Requirements | `requirements.md` is `Design-ready` (or `Refined`) with requirement/acceptance-criteria coverage maps | Stay in `2` until requirements are design-ready | `3` |
 | 3 Design Basis | Design basis artifact is current (`implementation-plan.md` sketch for `Small`, `proposed-design.md` for `Medium/Large`) | Stay in `3` and revise design basis | `4` |
 | 4 Runtime Modeling | `future-state-runtime-call-stack.md` is current for in-scope use cases | Stay in `4` and regenerate runtime model | `5` |
-| 5 Review Gate | Runtime review reaches `Go Confirmed` (two consecutive clean rounds) | Stay in `5`; if requirement/design issues found, return upstream then rerun `3 -> 4 -> 5` (or `2 -> 3 -> 4 -> 5`) | `6` |
+| 5 Review Gate | Runtime review reaches `Go Confirmed` (two consecutive clean rounds with no blockers, no required persisted artifact updates, and no newly discovered use cases) | Classified re-entry before next review round (`Design Impact`: `3 -> 4 -> 5`, `Requirement Gap`: `2 -> 3 -> 4 -> 5`, `Unclear`: `1 -> 2 -> 3 -> 4 -> 5`) | `6` |
 | 6 Source + Unit/Integration | Source implementation complete and required unit/integration checks pass | Stay in `6` for local implementation/test fixes | `7` |
 | 7 API/E2E Gate | API/E2E scenarios implemented and all executable mapped acceptance criteria are `Passed` (or explicitly `Waived` by user for infeasible cases) | `Blocked` on infeasible/no waiver; otherwise re-enter by classification (`Local Fix`: `6 -> 7`, `Design Impact`: `1 -> 3 -> 4 -> 5 -> 6 -> 7`, `Requirement Gap`: `2 -> 3 -> 4 -> 5 -> 6 -> 7`, `Unclear`: `0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7`) | `8` |
 | 8 Code Review Gate | Code review decision is `Pass` | Re-enter by classification (`Local Fix`: `6 -> 7 -> 8`, `Design Impact`: `1 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8`, `Requirement Gap`: `2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8`, `Unclear`: `0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8`) | `9` |
@@ -173,6 +182,9 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 | Trigger | Required Transition Path | Notes |
 | --- | --- | --- |
 | Normal forward pass | `0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10` | Use only when each stage gate is `Pass`. |
+| Stage 5 blocker classified `Design Impact` | `3 -> 4 -> 5` | Use when issue is clearly in architecture/layering/boundary/naming decisions. |
+| Stage 5 blocker classified `Requirement Gap` | `2 -> 3 -> 4 -> 5` | Use when missing/ambiguous requirement or acceptance criteria is discovered. |
+| Stage 5 blocker classified `Unclear` | `1 -> 2 -> 3 -> 4 -> 5` | Use when root cause is uncertain or cross-cutting and investigation must be refreshed first. |
 | Stage 6 unit/integration failure | stay in `Stage 6` | Fix implementation/tests within Stage 6; do not advance to Stage 7. |
 | Stage 7 failure classified `Local Fix` | `6 -> 7` | Update artifacts first, then code fix, then rerun Stage 7 scenarios. |
 | Stage 7 failure classified `Design Impact` | `1 -> 3 -> 4 -> 5 -> 6 -> 7` | Re-open investigation, then re-enter design/runtime chain before retrying Stage 7. |
@@ -344,6 +356,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 - Review focus is future-state correctness and implementability against the target design basis (`proposed-design.md` for `Medium/Large`, small-scope solution sketch in `implementation-plan.md` for `Small`), not parity with current code structure.
 - Review must challenge architecture choice itself (layering/boundaries/allocation), not only file-level separation of concerns.
 - Run review in explicit rounds and record each round in the same review artifact.
+- In every round, run a dedicated missing-use-case discovery sweep before verdicting the round.
 - Review each use case against these criteria:
   - architecture fit check (`Pass`/`Fail`): chosen architecture shape is appropriate for this use case and expected growth,
   - layering fitness check (`Pass`/`Fail`): layering and interactions are logical and maintainable (no required layer-count change when current layering is already coherent),
@@ -370,16 +383,17 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - overall verdict (`Pass`/`Fail`).
 - Round policy:
   - use deep review for every round (challenge assumptions, edge cases, and cleanup quality),
-  - if a round finds blockers or required write-backs, apply write-backs immediately and reset clean-review streak to 0,
-  - if a round finds no blockers and no required write-backs, mark `Candidate Go` and increment clean-review streak,
+  - if a round finds blockers, requires persisted artifact updates, or discovers new use cases, classify the round (`Design Impact`/`Requirement Gap`/`Unclear`), apply required upstream updates through the classified stage path, and reset clean-review streak to 0,
+  - if a round finds no blockers, no required persisted artifact updates, and no newly discovered use cases, mark `Candidate Go` and increment clean-review streak,
   - open `Go` only when clean-review streak reaches 2 consecutive deep-review rounds.
 - Across rounds, track trend quality: issues should decline in count/severity or become more localized; otherwise escalate design refinement before proceeding.
-- Round write-back discipline (mandatory):
-  - Step A: run review and record findings in the current round.
-  - Step B: if findings require updates, immediately modify design/call-stack artifacts and bump versions (`vN -> vN+1`).
-  - Step C: record an "Applied Updates" entry in the review artifact (what changed, where, and why).
-  - Step D: start the next round from updated files only; do not carry unresolved edits in memory.
-  - Step E: record clean-review streak state in the review artifact (`Reset`, `Candidate Go`, or `Go Confirmed`).
+- Round staged re-entry discipline (mandatory):
+  - Step A: run review + missing-use-case discovery and record findings in the current round.
+  - Step B: classify blockers as exactly one of `Design Impact`/`Requirement Gap`/`Unclear`.
+  - Step C: if findings require updates, transition to the classified upstream stage path first, then modify required artifacts there and bump versions (`vN -> vN+1`).
+  - Step D: record an "Applied Updates" entry in the review artifact (what changed, where, and why), including classification + return path.
+  - Step E: start the next round from updated files only; do not carry unresolved edits in memory.
+  - Step F: record clean-review streak state in the review artifact (`Reset`, `Candidate Go`, or `Go Confirmed`).
 - Gate `Go` criteria (all required):
   - architecture fit check is `Pass` for all in-scope use cases,
   - layering fitness check is `Pass` for all in-scope use cases,
@@ -401,12 +415,13 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - all in-scope use cases have overall verdict `Pass`,
   - no unresolved blocking findings (including any required design/call-stack updates),
   - for any impacted `Add`/`Modify`/`Rename/Move`/`Remove` scope items, decommission/cleanup and obsolete/deprecated/dead-path checks are `Pass`,
-  - two consecutive deep-review rounds have no blockers and no required write-backs.
+  - no new use cases are discovered in either of the two clean rounds,
+  - two consecutive deep-review rounds have no blockers and no required persisted artifact updates.
 - If issues are found:
-  - if architecture fit/layering fitness/boundary placement/structure bias/anti-hack/local-fix degradation checks fail, revise architecture direction in the design basis first, then regenerate runtime call stacks and rerun review.
-  - `Medium/Large`: revise the proposed design document, regenerate runtime call stacks, then rerun review.
-  - `Small`: refine the implementation plan (and add design notes if needed), regenerate runtime call stacks, then rerun review.
-- If review findings expose requirement gaps/ambiguity, update `requirements.md` first (status `Refined`), then update design + runtime call stacks in the same loop.
+  - classify each blocking round as exactly one of `Design Impact`/`Requirement Gap`/`Unclear` and record it in `future-state-runtime-call-stack-review.md` and `workflow-state.md`.
+  - `Design Impact` (clear and high-confidence design issue): update design basis in Stage 3 (`Medium/Large`: `proposed-design.md`; `Small`: design section in `implementation-plan.md`), regenerate call stacks in Stage 4, then return to Stage 5.
+  - `Requirement Gap`: update `requirements.md` first in Stage 2 (status `Refined`), then update design basis in Stage 3, regenerate call stacks in Stage 4, then return to Stage 5.
+  - `Unclear` (cross-cutting/low-confidence): update `investigation-notes.md` in Stage 1 first, then proceed through `2 -> 3 -> 4 -> 5`.
 - If naming drift is found, prefer explicit rename/split/move updates in the same review loop instead of carrying stale names forward.
 - Even when a round reports no findings, still complete the round record in-file and run another deep-review round until the two-consecutive-clean stability rule is satisfied.
 - Repeat until all gate `Go Confirmed` criteria are satisfied.
@@ -493,7 +508,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 - Test feedback escalation policy (mandatory):
   - classify each failing Stage 7 scenario as exactly one of `Local Fix`, `Design Impact`, `Requirement Gap`, or `Unclear`,
   - before final classification, run an investigation screen:
-    - if issue scope is cross-cutting, touches unknown runtime paths, or root-cause confidence is low, mark `Investigation Required` and reopen understanding stage first (`investigation-notes.md` must be updated before design/requirements write-backs),
+    - if issue scope is cross-cutting, touches unknown runtime paths, or root-cause confidence is low, mark `Investigation Required` and reopen understanding stage first (`investigation-notes.md` must be updated before design/requirements artifact updates),
     - if issue is clearly bounded with high root-cause confidence, continue classification directly.
   - `Local Fix` is allowed only when responsibility boundaries stay intact, no new use case/acceptance criterion is needed, and no requirement/design changes are needed.
   - if a fix works functionally but degrades layering/separation-of-concerns, it is **not** `Local Fix`; classify as `Design Impact`.

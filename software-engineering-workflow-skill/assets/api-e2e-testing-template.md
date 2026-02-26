@@ -49,7 +49,7 @@ Rules:
   - if issue is clearly bounded with high confidence, classification can proceed directly.
 - For each failing scenario, update acceptance-criteria matrix statuses before and after re-entry.
 - `Local Fix` requires artifact update first, then fix, then rerun `Stage 6 -> Stage 7` before rerunning affected scenarios.
-- `Design Impact` requires `Investigation Required = Yes` and investigation checkpoint before design write-backs.
+- `Design Impact` requires `Investigation Required = Yes` and investigation checkpoint before design artifact updates.
 - If requirement-level gaps are found during design-impact investigation, reclassify to `Requirement Gap`.
 - No direct source-code patching is allowed before required upstream artifacts are updated.
 - `Design Impact` requires full-chain re-entry: `Stage 1 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7` before rerunning affected scenarios.

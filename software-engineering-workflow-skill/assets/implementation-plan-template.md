@@ -32,7 +32,9 @@
 - Runtime call stack review artifact exists and is current:
 - All in-scope use cases reviewed:
 - No unresolved blocking findings:
-- Runtime review has `Go Confirmed` with two consecutive clean deep-review rounds:
+- Runtime review has `Go Confirmed` with two consecutive clean deep-review rounds (no blockers, no required persisted artifact updates, no newly discovered use cases):
+- Missing-use-case discovery sweeps completed for the final two clean rounds:
+- No newly discovered use cases in the final two clean rounds:
 
 ## Solution Sketch (Required For `Small`, Optional Otherwise)
 
@@ -48,11 +50,11 @@
 
 ## Runtime Call Stack Review Gate Summary (Required)
 
-| Round | Review Result | Findings Requiring Write-Back | Write-Back Completed | Round State (`Reset`/`Candidate Go`/`Go Confirmed`) | Clean Streak After Round |
-| --- | --- | --- | --- | --- | --- |
-| 1 | Pass/Fail | Yes/No | Yes/No/N/A |  |  |
-| 2 | Pass/Fail | Yes/No | Yes/No/N/A |  |  |
-| N | Pass/Fail | Yes/No | Yes/No/N/A |  |  |
+| Round | Review Result | Findings Requiring Persisted Updates | New Use Cases Discovered | Persisted Updates Completed | Classification (`Design Impact`/`Requirement Gap`/`Unclear`/`N/A`) | Required Re-Entry Path | Round State (`Reset`/`Candidate Go`/`Go Confirmed`) | Clean Streak After Round |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Pass/Fail | Yes/No | Yes/No | Yes/No/N/A |  |  |  |  |
+| 2 | Pass/Fail | Yes/No | Yes/No | Yes/No/N/A |  |  |  |  |
+| N | Pass/Fail | Yes/No | Yes/No | Yes/No/N/A |  |  |  |  |
 
 ## Go / No-Go Decision
 
@@ -161,7 +163,7 @@
   - choose exactly one classification for the current failure event: `Local Fix`, `Design Impact`, `Requirement Gap`, or `Unclear`.
   - do not allow any in-scope acceptance criterion to remain `Unmapped`, `Not Run`, `Failed`, or `Blocked` at Stage 7 close unless explicitly marked `Waived` by user decision for infeasible cases.
   - First run investigation screen:
-    - if issue is cross-cutting, root cause is unclear, or confidence is low, set `Investigation Required = Yes`, pause implementation, and update `tickets/in-progress/<ticket-name>/investigation-notes.md` before classification write-back.
+    - if issue is cross-cutting, root cause is unclear, or confidence is low, set `Investigation Required = Yes`, pause implementation, and update `tickets/in-progress/<ticket-name>/investigation-notes.md` before persisting classification/re-entry records.
     - if issue is clearly bounded with high confidence, set `Investigation Required = No` and classify directly.
   - `Local Fix`: no requirement/design change needed; responsibility boundaries remain intact.
   - `Design Impact`: responsibility boundaries drift, architecture change needed, or patch-on-patch complexity appears.

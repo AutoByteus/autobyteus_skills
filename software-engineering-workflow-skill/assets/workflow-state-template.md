@@ -2,6 +2,7 @@
 
 Use this file as the mandatory stage-control artifact for the ticket.
 Update this file before every stage transition and before any source-code edit.
+Stage movement is controlled by this file's Stage Transition Contract + Transition Matrix.
 
 ## Current Snapshot
 
@@ -23,7 +24,7 @@ Update this file before every stage transition and before any source-code edit.
 | 2 Requirements | Not Started | `requirements.md` is `Design-ready`/`Refined` |  |
 | 3 Design Basis | Not Started | Design basis updated for scope (`implementation-plan.md` sketch or `proposed-design.md`) |  |
 | 4 Runtime Modeling | Not Started | `future-state-runtime-call-stack.md` current |  |
-| 5 Review Gate | Not Started | Runtime review `Go Confirmed` (two clean rounds) |  |
+| 5 Review Gate | Not Started | Runtime review `Go Confirmed` (two clean rounds, no blockers/persisted updates/new use cases) |  |
 | 6 Implementation | Not Started | Plan/progress current + source + unit/integration verification complete |  |
 | 7 API/E2E Testing | Not Started | API/E2E test implementation complete + AC scenario gate complete |  |
 | 8 Code Review | Not Started | Code review gate `Pass`/`Fail` recorded |  |
@@ -39,7 +40,7 @@ Update this file before every stage transition and before any source-code edit.
 | 2 | `requirements.md` is `Design-ready`/`Refined` | stay in `2` |
 | 3 | Design basis current for scope | stay in `3` |
 | 4 | Runtime call stack current | stay in `4` |
-| 5 | Runtime review `Go Confirmed` (two clean rounds) | stay in `5` or return upstream and rerun |
+| 5 | Runtime review `Go Confirmed` (two clean rounds with no blockers/no required persisted artifact updates/no newly discovered use cases) | classified re-entry then rerun (`Design Impact`: `3 -> 4 -> 5`, `Requirement Gap`: `2 -> 3 -> 4 -> 5`, `Unclear`: `1 -> 2 -> 3 -> 4 -> 5`) |
 | 6 | Source + required unit/integration verification complete | stay in `6` |
 | 7 | API/E2E gate closes all executable mapped acceptance criteria (`Passed` or explicit user `Waived`) | `Blocked` on infeasible/no waiver; otherwise classified re-entry |
 | 8 | Code review gate decision is `Pass` | classified re-entry then rerun |
@@ -51,6 +52,9 @@ Update this file before every stage transition and before any source-code edit.
 | Trigger | Required Transition Path | Gate Result |
 | --- | --- | --- |
 | Normal forward progression | `0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10` | Pass |
+| Stage 5 blocker (`Design Impact`) | `3 -> 4 -> 5` | Fail |
+| Stage 5 blocker (`Requirement Gap`) | `2 -> 3 -> 4 -> 5` | Fail |
+| Stage 5 blocker (`Unclear`) | `1 -> 2 -> 3 -> 4 -> 5` | Fail |
 | Stage 6 unit/integration failure | stay in `6` | Fail |
 | Stage 7 failure (`Local Fix`) | `6 -> 7` | Fail |
 | Stage 7 failure (`Design Impact`) | `1 -> 3 -> 4 -> 5 -> 6 -> 7` | Fail |
@@ -64,6 +68,7 @@ Update this file before every stage transition and before any source-code edit.
 
 Note:
 - In re-entry paths, Stage 0 means re-open bootstrap controls in the same ticket/worktree (`workflow-state.md`, lock state, artifact baselines); do not create a new ticket folder.
+- For Stage 5 failures, record classified re-entry first; then persist artifact updates in the returned upstream stage before running the next Stage 5 round.
 
 ## Pre-Edit Checklist (Stage 6 Source-Code Edits)
 
@@ -76,11 +81,14 @@ Note:
 
 ## Re-Entry Declaration
 
-- Trigger Stage (`7`/`8`):
+- Trigger Stage (`5`/`7`/`8`):
 - Classification (`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`):
 - Required Return Path:
 - Required Upstream Artifacts To Update Before Code Edits:
 - Resume Condition:
+
+Note:
+- Stage 5 re-entry normally uses `Design Impact` / `Requirement Gap` / `Unclear` only (not `Local Fix`).
 
 ## Transition Log (Append-Only)
 

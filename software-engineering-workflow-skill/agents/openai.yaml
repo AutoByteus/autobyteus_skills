@@ -10,14 +10,21 @@ interface:
     `Current Stage=0` and `Code Edit Permission=Locked`; Stage 1 is investigation
     (deep understanding + triage); Stage 2 refines requirements to `Design-ready`;
     Stage 3 sets design basis; Stage 4 builds future-state runtime call stacks;
-    Stage 5 runs iterative deep review until `Go Confirmed` (two clean rounds);
+    Stage 5 runs iterative deep review until `Go Confirmed` (two clean rounds with
+    no blockers, no required persisted artifact updates, and no newly discovered
+    use cases);
     Stage 6 implements source + unit/integration (bottom-up per file); Stage 7
     implements API/E2E tests and executes the acceptance-criteria closure gate;
     Stage 8 runs code review only after Stage 7 passes; Stage 9 syncs docs; Stage
-    10 performs final handoff. No source-code edits are allowed unless
+    10 performs final handoff. Stage movement is controlled by the Stage Transition
+    Contract + Transition Matrix; when a trigger condition is met, transition
+    immediately to the mapped path. No source-code edits are allowed unless
     `workflow-state.md` shows `Current Stage=6`, `Code Edit Permission=Unlocked`,
     and Stage 5 `Go Confirmed` evidence. Stage 7 stays open until all executable
-    mapped criteria pass or are explicitly waived for infeasible cases. For any
+    mapped criteria pass or are explicitly waived for infeasible cases. For Stage
+    5 blockers, apply classified re-entry before re-review: `Design Impact` ->
+    `3 -> 4 -> 5`; `Requirement Gap` -> `2 -> 3 -> 4 -> 5`; `Unclear` ->
+    `1 -> 2 -> 3 -> 4 -> 5`. For any
     Stage 7/8 failure, require re-entry declaration in `workflow-state.md` before
     edits and follow classification paths: `Local Fix` -> `6 -> 7` (and include
     `-> 8` when failure trigger is Stage 8); `Design Impact` -> `1 -> 3 -> 4 -> 5

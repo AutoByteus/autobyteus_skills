@@ -8,7 +8,7 @@ This document tracks implementation and testing progress in real time, including
   - `workflow-state.md` exists and is current,
   - investigation notes written and current,
   - requirements at least `Design-ready`,
-  - future-state runtime call stack review gate is `Go Confirmed` (two consecutive clean deep-review rounds),
+  - future-state runtime call stack review gate is `Go Confirmed` (two consecutive clean deep-review rounds with no blockers, no required persisted artifact updates, and no newly discovered use cases),
   - implementation plan finalized.
 - Update it continuously during implementation (Stage 6), API/E2E testing (Stage 7), code review (Stage 8), and docs sync (Stage 9).
 - Record every meaningful change immediately: file status transitions, test status changes, blockers, classification decisions, escalation actions, and scenario results.
@@ -21,7 +21,7 @@ This document tracks implementation and testing progress in real time, including
 - Investigation notes are current (`tickets/in-progress/<ticket-name>/investigation-notes.md`):
 - Requirements status is `Design-ready` or `Refined`:
 - Runtime review final gate is `Implementation can start: Yes`:
-- Runtime review reached `Go Confirmed` with two consecutive clean deep-review rounds:
+- Runtime review reached `Go Confirmed` with two consecutive clean deep-review rounds (no blockers, no required persisted artifact updates, no newly discovered use cases):
 - No unresolved blocking findings:
 
 ## Legend
@@ -44,7 +44,7 @@ This document tracks implementation and testing progress in real time, including
 
 | Date | Previous Scope | New Scope | Trigger | Required Action |
 | --- | --- | --- | --- | --- |
-| YYYY-MM-DD | Small | Medium | Example: architectural complexity exceeded small-scope assumptions | Update requirements/design basis as needed, regenerate call stacks, rerun review to `Go Confirmed`, then resume implementation. |
+| YYYY-MM-DD | Small | Medium | Example: architectural complexity exceeded small-scope assumptions | Follow classified re-entry path (`Design Impact`: `3 -> 4 -> 5`, `Requirement Gap`: `2 -> 3 -> 4 -> 5`, `Unclear`: `1 -> 2 -> 3 -> 4 -> 5`), rerun review to `Go Confirmed`, then resume implementation. |
 
 ## File-Level Progress Table (Stage 6)
 
