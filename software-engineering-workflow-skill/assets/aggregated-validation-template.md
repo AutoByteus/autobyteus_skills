@@ -8,6 +8,7 @@ Stage 6 may start only after `Stage 5.5` internal code review gate result is `Pa
 
 - Ticket:
 - Scope classification: `Small` / `Medium` / `Large`
+- Workflow state source: `tickets/in-progress/<ticket-name>/workflow-state.md`
 - Requirements source: `tickets/in-progress/<ticket-name>/requirements.md`
 - Call stack source: `tickets/in-progress/<ticket-name>/future-state-runtime-call-stack.md`
 - Design source (`Medium/Large`): `tickets/in-progress/<ticket-name>/proposed-design.md`
@@ -21,6 +22,7 @@ Stage 6 may start only after `Stage 5.5` internal code review gate result is `Pa
 - Use stable scenario IDs with `AV-` prefix (for example: `AV-001`).
 - Manual testing is not part of the default workflow.
 - Stage 6 cannot close while any acceptance criterion is `Unmapped`, `Not Run`, `Failed`, or `Blocked` unless explicitly marked `Waived` by user decision for infeasible cases.
+- During Stage 6 execution, `workflow-state.md` should show `Current Stage = 6` and `Code Edit Permission = Locked`.
 
 ## Acceptance Criteria Coverage Matrix (Mandatory)
 

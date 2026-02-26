@@ -8,6 +8,7 @@ This gate enforces structure quality, source-file maintainability, and mandatory
 - Ticket:
 - Review Round:
 - Trigger Stage: `5` / `6` / `Re-entry`
+- Workflow state source: `tickets/in-progress/<ticket-name>/workflow-state.md`
 - Design basis artifact:
 - Runtime call stack artifact:
 
@@ -26,6 +27,7 @@ Rules:
 - For changed source file line count `>300`, SoC assessment is mandatory.
 - For changed source file line count `>400` with functionality expansion, default classification is `Design Impact`.
 - `>400` exception is allowed only with explicit rationale and split plan.
+- During Stage 5.5, `workflow-state.md` should show `Current Stage = 5.5` and `Code Edit Permission = Locked`.
 
 ## Findings
 

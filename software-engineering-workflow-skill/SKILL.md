@@ -36,6 +36,27 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 - If a dedicated worktree already exists for the ticket, reuse it instead of creating a new one.
 - If the environment is not a git repository, continue without worktree setup and still enforce ticket-folder + `Draft` requirement capture.
 
+### Workflow State File (Mandatory Enforcement Artifact)
+
+- Create and maintain `tickets/in-progress/<ticket-name>/workflow-state.md` as the canonical stage-control artifact.
+- Initialize it during Stage 0 immediately after ticket bootstrap with:
+  - `Current Stage = 0`,
+  - `Code Edit Permission = Locked`,
+  - stage gate rows in `Not Started`/`In Progress` state.
+- Update model (mandatory):
+  - rewrite `Current Snapshot` in place on every stage transition,
+  - append one row to `Transition Log` for every transition/re-entry,
+  - keep `Stage Gates` rows current with evidence links/paths.
+- Source-code edit lock (hard rule):
+  - no source code edits are allowed unless `workflow-state.md` explicitly shows `Code Edit Permission = Unlocked`,
+  - default state is `Locked`; unlock only when Stage 5 prerequisites are all satisfied.
+- Re-entry lock rule:
+  - on any Stage 5.5/6 failure, set `Code Edit Permission = Locked` before re-entry actions,
+  - record trigger/classification/return path in `workflow-state.md` before proceeding.
+- Violation protocol:
+  - if source code is edited while `Code Edit Permission = Locked`, record a violation entry in `workflow-state.md`,
+  - pause further source edits, declare re-entry, and return to the required upstream stage path.
+
 ### Audible Notifications (Speak Tool, Required)
 
 - Use the `Speak` tool for key stage-boundary updates so the user does not need to watch the screen continuously.
@@ -73,12 +94,19 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 ### Execution Model (Strict Stage Gates)
 
 - Work in explicit stages and complete each gate before producing downstream artifacts.
+- Before every stage transition, update `workflow-state.md` first (snapshot + transition log + gate statuses), then proceed.
+- Treat `workflow-state.md` as an execution lock controller, not optional documentation.
 - Requirements can start as rough `Draft` from user input/bug report artifacts before deep analysis.
 - Do not start investigation until ticket/worktree bootstrap is complete and `requirements.md` status `Draft` is physically written.
 - Do not mark understanding pass complete until `investigation-notes.md` is physically written and current for the ticket.
 - Do not draft design artifacts (`proposed-design.md` or small-scope design basis in `implementation-plan.md`) until deep understanding pass is complete and `requirements.md` reaches `Design-ready`.
 - Do not finalize `implementation-plan.md` or generate `implementation-progress.md` until the future-state runtime call stack review gate is fully satisfied for the current scope.
 - Do not start implementation execution until `implementation-plan.md` is finalized and `implementation-progress.md` is initialized.
+- Do not start source-code edits until all of the following are true in `workflow-state.md`:
+  - `Current Stage = 5`,
+  - `Code Edit Permission = Unlocked`,
+  - Stage 4 gate is `Go Confirmed`,
+  - required upstream artifacts are marked `Pass` with evidence.
 - Do not start internal code review until implementation execution is complete with required unit/integration verification.
 - Do not start aggregated API/E2E validation until internal code review gate is `Pass`.
 - Do not start post-validation `docs/` synchronization until aggregated API/E2E validation is complete (for infeasible acceptance criteria, explicit user waiver + constraints + compensating evidence + residual risk must be recorded).
@@ -96,6 +124,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - trigger stage (`5.5`/`6`),
   - classification (`Local Fix`/`Design Impact`/`Requirement Gap`),
   - required return stage path before any code edit.
+- Re-entry declaration must be recorded in `workflow-state.md` before any artifact/code update work begins.
 - No-direct-patch rule (mandatory): for post-implementation gate findings, do not edit source code first. Update required upstream artifacts first based on classification path.
 - Re-entry mapping (mandatory):
   - `Local Fix`: update implementation artifacts (`implementation-plan.md` / `implementation-progress.md` / `internal-code-review.md` as applicable), then implement fix, then rerun `Stage 5` and `Stage 5.5` before returning to `Stage 6`.
@@ -117,6 +146,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 - Run mandatory first-action sequence:
   - create/use `tickets/in-progress/<ticket-name>/`,
   - if git repo, create/switch ticket worktree/branch,
+  - create/update `tickets/in-progress/<ticket-name>/workflow-state.md` from `assets/workflow-state-template.md` and set `Current Stage = 0`, `Code Edit Permission = Locked`,
   - capture initial requirement snapshot (`requirements.md` status `Draft`) from user input/bug report evidence first (text, images, logs, repro notes, constraints),
   - then run deep understanding from problem context and relevant codebase/runtime context before choosing downstream artifacts.
 - Create/update `tickets/in-progress/<ticket-name>/investigation-notes.md` continuously during investigation. Do not keep investigation results only in memory.
@@ -141,6 +171,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - `Medium`: create proposed design doc first, build future-state runtime call stacks from the proposed design doc, run iterative deep-review rounds until stability gate `Go Confirmed`, and only then create implementation plan and track progress in real time.
   - `Large`: create proposed design doc first, build future-state runtime call stacks from the proposed design doc, run iterative deep-review rounds until stability gate `Go Confirmed`, and only then create implementation plan and track progress in real time.
 - Re-evaluate during implementation; if scope expands or smells appear, escalate from `Small` to full workflow.
+- Before transitioning to Stage 1, update `workflow-state.md` snapshot + transition log + stage gate evidence.
 - Speak completion after triage depth is finalized (`Small`/`Medium`/`Large`) and `investigation-notes.md` is current.
 
 ### 1) Refine Requirements Document To Design-Ready (Mandatory)
@@ -357,6 +388,10 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 - Implementation plan + real-time progress tracking are required for all sizes (`Small`, `Medium`, `Large`).
 - Treat future-state runtime call stack + review as a pre-implementation verification gate: ensure each use case is represented and reviewed before coding starts.
 - Start implementation only after the review gate says implementation can start and all in-scope use cases are `Pass`.
+- Before first source-code edit in Stage 5, update `workflow-state.md`:
+  - set `Current Stage = 5`,
+  - set `Code Edit Permission = Unlocked`,
+  - record transition evidence that Stage 4 gate is `Go Confirmed` and pre-edit checklist is satisfied.
 - Ensure traceability when a proposed design doc exists: every design change-inventory row (especially `Rename/Move` and `Remove`) maps to implementation tasks and verification steps.
 - Enforce clean-cut implementation: do not keep legacy compatibility paths.
 - Use "one file at a time" as the default execution strategy, not an absolute rule.
@@ -380,6 +415,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 ### 5.5) Run Internal Code Review Gate (Mandatory, Pre-Aggregated Validation)
 
 - Run this stage immediately after `Stage 5` completes.
+- At Stage 5.5 entry, update `workflow-state.md` and set `Code Edit Permission = Locked`.
 - Create/update `tickets/in-progress/<ticket-name>/internal-code-review.md` as the canonical internal review artifact.
 - Scope:
   - source files only (exclude tests),
@@ -404,6 +440,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 ### 6) Run Aggregated API/E2E Validation (Mandatory)
 
 - Run this stage only after `Stage 5.5` internal code review gate is `Pass`.
+- At Stage 6 entry, update `workflow-state.md` and keep `Code Edit Permission = Locked` while validation is active.
 - Aggregated validation is scenario-level verification of broader interactions, not file-level checks.
 - Create/update `tickets/in-progress/<ticket-name>/aggregated-validation.md` as the canonical scenario + result artifact.
 - Scenario sources (mandatory):
@@ -458,6 +495,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - all executable in-scope acceptance criteria have execution status `Passed`,
   - all executable mapped API/E2E scenarios are resolved (`Passed`), with no unresolved failures/blockers,
   - if any acceptance criterion is infeasible due to environment constraints, Stage 6 remains `Blocked` until explicit user waiver is recorded with constraints + compensating evidence + residual risk.
+- Before transitioning to Stage 7, update `workflow-state.md` with Stage 6 gate result and transition evidence.
 - Use `assets/aggregated-validation-template.md`.
 - Speak when `aggregated-validation.md` is created/updated and when aggregated validation stage completes.
 
@@ -498,32 +536,42 @@ These defaults list file-producing stages; gating and handoff rules still follow
 - Stage 0 (bootstrap + draft requirement + investigation):
   - create/use `tickets/in-progress/<ticket-name>/`
   - if git repo, create/switch ticket worktree/branch
+  - create/update `tickets/in-progress/<ticket-name>/workflow-state.md` (`Current Stage = 0`, `Code Edit Permission = Locked`)
   - `tickets/in-progress/<ticket-name>/requirements.md` (`Draft`)
   - `tickets/in-progress/<ticket-name>/investigation-notes.md`
 - Stage 1 (requirements refinement to `Design-ready`):
+  - update `tickets/in-progress/<ticket-name>/workflow-state.md` transition (`0 -> 1`)
   - update `tickets/in-progress/<ticket-name>/requirements.md` in place
 - Stage 2 (design basis):
+  - update `tickets/in-progress/<ticket-name>/workflow-state.md` transition (`1 -> 2`)
   - `Small`: start/refine `tickets/in-progress/<ticket-name>/implementation-plan.md` (solution sketch section only for design basis).
   - `Medium/Large`: create/refine `tickets/in-progress/<ticket-name>/proposed-design.md`.
 - Stage 3 (runtime modeling):
+  - update `tickets/in-progress/<ticket-name>/workflow-state.md` transition (`2 -> 3`)
   - `tickets/in-progress/<ticket-name>/future-state-runtime-call-stack.md`
 - Stage 4 (review gate, iterative):
+  - update `tickets/in-progress/<ticket-name>/workflow-state.md` transition (`3 -> 4`)
   - `tickets/in-progress/<ticket-name>/future-state-runtime-call-stack-review.md`
 - Stage 5 (only after gate `Go Confirmed`):
+  - update `tickets/in-progress/<ticket-name>/workflow-state.md` (`Current Stage = 5`, `Code Edit Permission = Unlocked` only when pre-edit checklist is `Pass`)
   - finalize/update `tickets/in-progress/<ticket-name>/implementation-plan.md`
   - `tickets/in-progress/<ticket-name>/implementation-progress.md`
 - Stage 5.5 (internal code review gate):
+  - update `tickets/in-progress/<ticket-name>/workflow-state.md` (`Current Stage = 5.5`, `Code Edit Permission = Locked`)
   - create/update `tickets/in-progress/<ticket-name>/internal-code-review.md`
   - record gate result (`Pass`/`Fail`) and any re-entry declaration before `Stage 6`
 - Stage 6 (aggregated API/E2E validation, only after `Stage 5.5 = Pass`):
+  - update `tickets/in-progress/<ticket-name>/workflow-state.md` (`Current Stage = 6`, `Code Edit Permission = Locked`)
   - create/update `tickets/in-progress/<ticket-name>/aggregated-validation.md`
   - maintain acceptance-criteria matrix (`acceptance_criteria_id` -> scenario coverage -> pass status)
   - record scenario execution results and any escalation decisions in `tickets/in-progress/<ticket-name>/implementation-progress.md`
 - Stage 7 (post-validation documentation sync):
+  - update `tickets/in-progress/<ticket-name>/workflow-state.md` transition (`6 -> 7`)
   - update existing impacted docs in place (for example `docs/**/*.md`, `ARCHITECTURE.md`)
   - create missing relevant docs in `docs/` when no existing doc covers the implemented functionality
   - record docs sync result in `tickets/in-progress/<ticket-name>/implementation-progress.md` (`Updated`/`No impact` + rationale)
 - Stage 8 (ticket state transition):
+  - update `tickets/in-progress/<ticket-name>/workflow-state.md` transition (`7 -> 8`) and final state record
   - keep ticket in `tickets/in-progress/<ticket-name>/` unless user explicitly confirms completion/verification or asks to move it
   - on explicit user completion/verification instruction, move ticket folder to `tickets/done/<ticket-name>/`
   - if user reopens later, move it back to `tickets/in-progress/<ticket-name>/` before new updates
@@ -537,3 +585,4 @@ These defaults list file-producing stages; gating and handoff rules still follow
 - `assets/implementation-progress-template.md`
 - `assets/internal-code-review-template.md`
 - `assets/aggregated-validation-template.md`
+- `assets/workflow-state-template.md`

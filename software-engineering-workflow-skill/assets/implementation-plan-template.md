@@ -11,6 +11,7 @@
 
 ## Upstream Artifacts (Required)
 
+- Workflow state: `tickets/in-progress/<ticket-name>/workflow-state.md`
 - Investigation notes: `tickets/in-progress/<ticket-name>/investigation-notes.md`
 - Requirements: `tickets/in-progress/<ticket-name>/requirements.md`
   - Current Status: `Design-ready` / `Refined`
@@ -27,6 +28,7 @@
 
 - `requirements.md` is at least `Design-ready` (`Refined` allowed):
 - Acceptance criteria use stable IDs (`AC-*`) with measurable expected outcomes:
+- `workflow-state.md` is current and Stage 4 review-gate evidence is recorded:
 - Runtime call stack review artifact exists and is current:
 - All in-scope use cases reviewed:
 - No unresolved blocking findings:

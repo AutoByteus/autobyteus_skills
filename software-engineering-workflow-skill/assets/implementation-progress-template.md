@@ -5,6 +5,7 @@ This document tracks implementation and validation progress in real time, includ
 ## When To Use This Document
 
 - Create this file at implementation kickoff after pre-implementation gates are complete:
+  - `workflow-state.md` exists and is current,
   - investigation notes written and current,
   - requirements at least `Design-ready`,
   - future-state runtime call stack review gate is `Go Confirmed` (two consecutive clean deep-review rounds),
@@ -14,6 +15,8 @@ This document tracks implementation and validation progress in real time, includ
 
 ## Kickoff Preconditions Checklist
 
+- Workflow state is current (`tickets/in-progress/<ticket-name>/workflow-state.md`):
+- `workflow-state.md` shows `Current Stage = 5` and `Code Edit Permission = Unlocked` before source edits:
 - Scope classification confirmed (`Small`/`Medium`/`Large`):
 - Investigation notes are current (`tickets/in-progress/<ticket-name>/investigation-notes.md`):
 - Requirements status is `Design-ready` or `Refined`:
