@@ -527,10 +527,16 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - duplication and patch-on-patch complexity smells,
   - test quality and test maintainability.
 - Source file size policy (mandatory):
-  - for any changed source file with line count `> 300`, run explicit SoC split assessment and record result.
-  - for any changed source file with line count `> 400` that adds or expands functionality, classify as `Design Impact` by default.
-  - for `> 400` cases, do not continue by default; trigger re-entry with investigation checkpoint first (`Stage 1 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7 -> Stage 8`).
-  - exception path for `> 400` is allowed only with explicit rationale in `code-review.md` (`why split now is not viable`, `risk containment`, `next split plan`).
+  - measure line counts explicitly per changed source file:
+    - effective non-empty line count command: `rg -n "\\S" <file-path> | wc -l`
+    - per-file changed-line delta command: `git diff --numstat <base-ref>...HEAD -- <file-path>`
+  - enforcement baseline uses effective non-empty line count.
+  - for changed source files with effective non-empty line count `<= 500`, run normal review checks.
+  - for changed source files with effective non-empty line count `501-700`, SoC split assessment is mandatory and must include itemized split candidates.
+  - for changed source files with effective non-empty line count `> 700` that add or expand functionality, default classification is `Design Impact`.
+  - for `> 700` default-design-impact cases, do not continue by default; trigger re-entry with investigation checkpoint first (`Stage 1 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7 -> Stage 8`).
+  - exception path for `> 700` is allowed only with explicit rationale in `code-review.md` (`why split now is not viable`, `risk containment`, `near-term split plan`).
+  - delta gate (mandatory): if a single changed source file has `> 220` changed lines in the current diff, record a design-impact assessment even when file size is `<= 700`.
 - Gate decision:
   - `Pass`: continue to `Stage 9`.
   - `Fail`: apply re-entry declaration and follow re-entry mapping before any source code edits.

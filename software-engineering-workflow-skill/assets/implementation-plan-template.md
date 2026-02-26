@@ -123,8 +123,12 @@
 
 - Gate artifact path: `tickets/in-progress/<ticket-name>/code-review.md`
 - Scope (source + tests):
-- `>300` line changed source files SoC assessment approach:
-- `>400` line changed source file policy and expected action:
+- line-count measurement command (`effective non-empty`):
+  - effective non-empty line count: `rg -n "\\S" <file-path> | wc -l`
+  - changed-line delta: `git diff --numstat <base-ref>...HEAD -- <file-path>`
+- `501-700` effective-line source files SoC assessment approach:
+- `>700` effective-line source file policy and expected action:
+- per-file diff delta gate (`>220` changed lines) assessment approach:
 - Allowed exceptions and required rationale style:
 
 | File | Current Line Count | Adds/Expands Functionality (`Yes`/`No`) | SoC Risk (`Low`/`Medium`/`High`) | Required Action (`Keep`/`Split`/`Move`/`Refactor`) | Expected Review Classification if not addressed |

@@ -92,14 +92,19 @@ Rules:
 
 ## Code Review Log (Stage 8)
 
-| Date | Review Round | File | Source Lines | Adds/Expands Functionality (`Yes`/`No`) | `>300` SoC Check | `>400` Hard Check | Classification (`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`) | Re-Entry Declaration Recorded | Upstream Artifacts Updated Before Code Edit | Decision (`Pass`/`Fail`) | Notes |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| YYYY-MM-DD | 1 | `src/example-a.ts` | 428 | Yes | Fail | Fail | Design Impact | Yes | Yes | Fail | Returned to Stage 1 -> 3 chain before further edits. |
+| Date | Review Round | File | Effective Non-Empty Lines | Adds/Expands Functionality (`Yes`/`No`) | `501-700` SoC Check | `>700` Hard Check | `>220` Changed-Line Delta Gate | Classification (`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`) | Re-Entry Declaration Recorded | Upstream Artifacts Updated Before Code Edit | Decision (`Pass`/`Fail`) | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| YYYY-MM-DD | 1 | `src/example-a.ts` | 615 | Yes | Pass | Fail | Fail | Design Impact | Yes | Yes | Fail | Returned to Stage 1 -> 3 chain before further edits. |
 
 Rules:
 - Include source and test files in review scope.
-- If changed source file line count is `>300`, explicit SoC assessment is mandatory.
-- If changed source file line count is `>400` and functionality is expanded, default classification is `Design Impact` and `Decision = Fail` unless explicit exception rationale exists.
+- Measure each changed source file with:
+  - effective non-empty line count: `rg -n "\\S" <file-path> | wc -l`
+  - changed-line delta: `git diff --numstat <base-ref>...HEAD -- <file-path>`
+- Enforcement baseline uses effective non-empty line count.
+- If effective non-empty line count is `501-700`, explicit SoC split assessment is mandatory.
+- If effective non-empty line count is `>700` and functionality is expanded, default classification is `Design Impact` and `Decision = Fail` unless explicit exception rationale exists.
+- If a single changed source file has `>220` changed lines in current diff, record a design-impact assessment even when effective file size is `<=700`.
 - For `Fail`, do not proceed to `Stage 9`; apply re-entry mapping first and rerun `Stage 6 -> Stage 7 -> Stage 8`.
 
 ## Blocked Items

@@ -19,14 +19,20 @@ This gate enforces structure quality, source-file maintainability, and mandatory
 
 ## Source File Size And SoC Audit (Mandatory)
 
-| File | Current Line Count | Adds/Expands Functionality (`Yes`/`No`) | `>300` SoC Assessment | `>400` Hard Check | Preliminary Classification (`N/A`/`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`) | Required Action (`Keep`/`Split`/`Move`/`Refactor`) |
-| --- | --- | --- | --- | --- | --- | --- |
-|  |  |  | Pass/Fail | Pass/Fail |  |  |
+| File | Effective Non-Empty Line Count | Adds/Expands Functionality (`Yes`/`No`) | `501-700` SoC Assessment | `>700` Hard Check | `>220` Changed-Line Delta Gate | Preliminary Classification (`N/A`/`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`) | Required Action (`Keep`/`Split`/`Move`/`Refactor`) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|  |  |  | Pass/Fail/N/A | Pass/Fail/N/A | Pass/Fail/N/A |  |  |
 
 Rules:
-- For changed source file line count `>300`, SoC assessment is mandatory.
-- For changed source file line count `>400` with functionality expansion, default classification is `Design Impact`.
-- `>400` exception is allowed only with explicit rationale and split plan.
+- Use explicit measurement commands per changed source file:
+  - effective non-empty line count: `rg -n "\\S" <file-path> | wc -l`
+  - changed-line delta: `git diff --numstat <base-ref>...HEAD -- <file-path>`
+- Enforcement baseline uses effective non-empty line count.
+- For effective non-empty line count `<=500`, normal review applies (`501-700` and `>700` checks can be `N/A`).
+- For effective non-empty line count `501-700`, SoC split assessment is mandatory and must include itemized split candidates.
+- For effective non-empty line count `>700` with functionality expansion, default classification is `Design Impact`.
+- `>700` exception is allowed only with explicit rationale and near-term split plan.
+- Delta gate: if a single changed source file has `>220` changed lines in current diff, record a design-impact assessment even if file size is `<=700`.
 - During Stage 8, `workflow-state.md` should show `Current Stage = 8` and `Code Edit Permission = Locked`.
 
 ## Findings
