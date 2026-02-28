@@ -36,6 +36,8 @@ This review validates alignment with target (`to-be`) design behavior, not parit
 - Not a required action: adding/removing layers by default; `Keep` can pass when layering is coherent and boundary placement is clear.
 - Local-fix-is-not-enough rule: if a fix works functionally but degrades architecture/layering/responsibility boundaries, mark `Fail` and require architectural artifact updates via classified re-entry.
 - Any finding with a required design/call-stack update is blocking.
+- No-backward-compat review rule: if future-state behavior keeps compatibility wrappers, dual-path logic, or legacy fallback branches for old flows, mark `Fail`.
+- Decoupling review rule: if future-state behavior introduces tight coupling, bidirectional dependency tangles, or unjustified cycles, mark `Fail`.
 
 ## Round History
 
@@ -79,15 +81,15 @@ Rule:
 
 ## Per-Use-Case Review
 
-| Use Case | Architecture Fit (`Pass`/`Fail`) | Layering Fitness (`Pass`/`Fail`) | Boundary Placement (`Pass`/`Fail`) | Existing-Structure Bias Check (`Pass`/`Fail`) | Anti-Hack Check (`Pass`/`Fail`) | Local-Fix Degradation Check (`Pass`/`Fail`) | Terminology & Concept Naturalness (`Pass`/`Fail`) | File/API Naming Clarity (`Pass`/`Fail`) | Name-to-Responsibility Alignment Under Scope Drift (`Pass`/`Fail`) | Future-State Alignment With Design Basis (`Pass`/`Fail`) | Use-Case Coverage Completeness (`Pass`/`Fail`) | Use-Case Source Traceability (`Pass`/`Fail`) | Design-Risk Justification Quality (`Pass`/`Fail`/`N/A`) | Business Flow Completeness (`Pass`/`Fail`) | Layer-Appropriate SoC Check (`Pass`/`Fail`) | Dependency Flow Smells | Redundancy/Duplication Check (`Pass`/`Fail`) | Simplification Opportunity Check (`Pass`/`Fail`) | Remove/Decommission Completeness (`Pass`/`Fail`/`N/A`) | No Legacy/Backward-Compat Branches (`Pass`/`Fail`) | Verdict (`Pass`/`Fail`) |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| UC-001 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| Use Case | Architecture Fit (`Pass`/`Fail`) | Layering Fitness (`Pass`/`Fail`) | Boundary Placement (`Pass`/`Fail`) | Decoupling Check (`Pass`/`Fail`) | Existing-Structure Bias Check (`Pass`/`Fail`) | Anti-Hack Check (`Pass`/`Fail`) | Local-Fix Degradation Check (`Pass`/`Fail`) | Terminology & Concept Naturalness (`Pass`/`Fail`) | File/API Naming Clarity (`Pass`/`Fail`) | Name-to-Responsibility Alignment Under Scope Drift (`Pass`/`Fail`) | Future-State Alignment With Design Basis (`Pass`/`Fail`) | Use-Case Coverage Completeness (`Pass`/`Fail`) | Use-Case Source Traceability (`Pass`/`Fail`) | Design-Risk Justification Quality (`Pass`/`Fail`/`N/A`) | Business Flow Completeness (`Pass`/`Fail`) | Layer-Appropriate SoC Check (`Pass`/`Fail`) | Dependency Flow Smells | Redundancy/Duplication Check (`Pass`/`Fail`) | Simplification Opportunity Check (`Pass`/`Fail`) | Remove/Decommission Completeness (`Pass`/`Fail`/`N/A`) | Legacy Retention Removed (`Pass`/`Fail`) | No Compatibility Wrappers/Dual Paths (`Pass`/`Fail`) | Verdict (`Pass`/`Fail`) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| UC-001 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 
 ## Findings
 
 - If no findings, write `None`.
 - Otherwise list only actionable findings:
-  - `[F-001] Use case: ... | Type: Architecture/Layering/Hack/LocalFixDegradation/Vocabulary/Naming/MissingUseCase/Gap/Structure/Dependency/Redundancy/Simplification/Legacy/Decommission | Severity: Blocker/Major/Minor | Confidence: High/Medium/Low | Evidence: ... | Required update: ... | Classification: Design Impact/Requirement Gap/Unclear`
+  - `[F-001] Use case: ... | Type: Architecture/Layering/Decoupling/Hack/LocalFixDegradation/Vocabulary/Naming/MissingUseCase/Gap/Structure/Dependency/Redundancy/Simplification/Legacy/BackwardCompat/Decommission | Severity: Blocker/Major/Minor | Confidence: High/Medium/Low | Evidence: ... | Required update: ... | Classification: Design Impact/Requirement Gap/Unclear`
 
 Rule:
 - Any finding with a `Required update` is blocking and must be resolved in a later review round before implementation can start.
@@ -105,6 +107,7 @@ Rule:
   - Architecture fit is `Pass` for all in-scope use cases:
   - Layering fitness is `Pass` for all in-scope use cases:
   - Boundary placement is `Pass` for all in-scope use cases:
+  - Decoupling check is `Pass` for all in-scope use cases:
   - Existing-structure bias check is `Pass` for all in-scope use cases:
   - Anti-hack check is `Pass` for all in-scope use cases:
   - Local-fix degradation check is `Pass` for all in-scope use cases:
@@ -125,6 +128,8 @@ Rule:
   - Missing-use-case discovery sweep completed for this round:
   - No newly discovered use cases in this round:
   - Remove/decommission checks complete for scoped `Remove`/`Rename/Move` changes:
+  - Legacy retention removed for impacted old-behavior paths:
+  - No compatibility wrappers/dual paths retained for old behavior:
   - Two consecutive deep-review rounds have no blockers, no required persisted artifact updates, and no newly discovered use cases:
   - Findings trend quality is acceptable across rounds (issues declined in count/severity or became more localized), or explicit design decomposition update is recorded:
 - If `No`, required refinement actions:

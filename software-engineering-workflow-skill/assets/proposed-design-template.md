@@ -24,6 +24,7 @@
 
 - Policy: `No backward compatibility; remove legacy code paths.`
 - Required action: identify and remove obsolete legacy paths/files included in this scope.
+- Gate rule: design is invalid if it depends on compatibility wrappers, dual-path behavior, or legacy fallback branches.
 
 ## Requirements And Use Cases
 
@@ -49,6 +50,7 @@
 - Chosen direction:
 - Rationale (`complexity`, `testability`, `operability`, `evolution cost`):
 - Layering fitness assessment (are current layering and interactions still coherent?): `Yes` / `No`
+- Decoupling assessment (are boundaries low-coupled with clear one-way dependency directions?): `Yes` / `No`
 - Outcome (`Keep`/`Add`/`Split`/`Merge`/`Move`/`Remove`):
 - Note: `Keep` is valid when layering and boundary interactions are already coherent.
 
@@ -71,6 +73,12 @@
 | --- | --- | --- | --- | --- |
 |  |  |  |  |  |
 
+## Backward-Compatibility Rejection Log (Mandatory)
+
+| Candidate Compatibility Mechanism | Why It Was Considered | Rejection Decision (`Rejected`/`N/A`) | Replacement Clean-Cut Design |
+| --- | --- | --- | --- |
+|  |  |  |  |
+
 ## File And Module Breakdown
 
 | File/Module | Change Type | Layer / Boundary | Concern / Responsibility | Public APIs | Inputs/Outputs | Dependencies |
@@ -82,6 +90,7 @@
 - UI/frontend scope: responsibility is clear at view/component/store boundaries.
 - Non-UI scope: responsibility is clear at file/module/service boundaries.
 - Integration/infrastructure scope: each adapter/module owns one integration concern with clear contracts.
+- Decoupling check: dependencies follow allowed direction, avoid tight cross-module coupling, and avoid unjustified cycles.
 
 ## Naming Decisions (Natural And Implementation-Friendly)
 

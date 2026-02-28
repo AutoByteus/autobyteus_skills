@@ -61,6 +61,11 @@ This document tracks implementation and testing progress in real time, including
 | YYYY-MM-DD | AV-001 | Requirement | AC-001 | R-001 | UC-001 | API | Failed | Missing flow branch for fallback path | Yes | Design Impact | Re-entered Stage 1 -> 3 chain before retry | Yes | No | Yes | Yes | Yes |
 
 Rules:
+- Stage 6 failure classification (before Stage 7):
+  - `Local Fix`: stay in `Stage 6` and resolve implementation/tests locally.
+  - `Design Impact`: re-enter `Stage 1 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6` before continuing implementation.
+  - `Requirement Gap`: re-enter `Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6` before continuing implementation.
+  - `Unclear`/cross-cutting root cause: re-enter `Stage 0 -> Stage 1 -> Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6` before continuing implementation.
 - If issue scope is large/cross-cutting or root-cause confidence is low, `Investigation Required` must be `Yes` and understanding-stage re-entry is required before requirements/design updates.
 - `Local Fix` requires artifact update first, then fix, then rerun `Stage 6 -> Stage 7` before retry.
 - `Design Impact` requires full-chain re-entry: `Stage 1 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7`.
@@ -106,6 +111,8 @@ Rules:
 - If effective non-empty line count is `>700` and functionality is expanded, default classification is `Design Impact` and `Decision = Fail` unless explicit exception rationale exists.
 - If a single changed source file has `>220` changed lines in current diff, record a design-impact assessment even when effective file size is `<=700`.
 - For `Fail`, do not proceed to `Stage 9`; apply re-entry mapping first and rerun `Stage 6 -> Stage 7 -> Stage 8`.
+- Any decoupling failure (tight coupling or unjustified cycle) is blocking and requires classified re-entry before further source edits.
+- Any backward-compatibility mechanism or legacy-retention finding is blocking and requires classified re-entry before further source edits.
 
 ## Blocked Items
 
@@ -137,7 +144,9 @@ Rules:
 - For `Rename/Move`/`Remove` tasks, verify obsolete references and dead branches are removed.
 - Mark Stage 6 implementation execution complete only when:
   - implementation plan scope is delivered (or deviations are documented),
-  - required unit/integration tests pass.
+  - required unit/integration tests pass,
+  - no backward-compatibility shims or legacy old-behavior branches remain in scope,
+  - decoupling-impact checks show no new unjustified tight coupling/cycles.
 - Mark Stage 7 API/E2E testing complete only when:
   - every executable in-scope acceptance criterion in the closure matrix is `Passed`,
   - critical executable API/E2E scenarios pass,

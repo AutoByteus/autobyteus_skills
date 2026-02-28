@@ -102,7 +102,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - `Code Edit Permission = Unlocked`,
   - Stage 5 gate is `Go Confirmed`,
   - required upstream artifacts are marked `Pass` with evidence.
-- Do not start API/E2E test implementation and execution until implementation execution is complete with required unit/integration verification.
+- Do not start API/E2E test implementation and execution until implementation execution is complete with required unit/integration verification and Stage 6 modernization/decoupling checks are satisfied.
 - Do not start code review until API/E2E test gate is `Pass`.
 - Do not start post-testing `docs/` synchronization until code review is complete (for infeasible acceptance criteria in Stage 7, explicit user waiver + constraints + compensating evidence + residual risk must be recorded).
 - Do not close the task until post-testing `docs/` synchronization is completed (or explicit no-impact decision is recorded with rationale).
@@ -122,6 +122,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - `Requirement Gap` (missing/ambiguous requirement or acceptance criterion): return to `Stage 2 -> Stage 3 -> Stage 4 -> Stage 5`.
   - `Unclear` (cross-cutting scope or low root-cause confidence): return to `Stage 1 -> Stage 2 -> Stage 3 -> Stage 4 -> Stage 5`.
 - For any Stage 5 blocking round, record classification + return path in `future-state-runtime-call-stack-review.md` and `workflow-state.md` before starting the next round.
+- Stage 6 non-local re-entry rule (mandatory): if a Stage 6 issue is classified as `Design Impact`, `Requirement Gap`, or `Unclear`, record classification + return path in `workflow-state.md`, set `Code Edit Permission = Locked`, and transition to the mapped upstream stage path before further source edits.
 - Re-entry declaration rule (mandatory): when a post-implementation gate (`Stage 7` API/E2E testing or `Stage 8` code review) finds issues, explicitly record:
   - trigger stage (`7`/`8`),
   - classification (`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`),
@@ -155,9 +156,9 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 | 3 | Design Basis | `implementation-plan.md` sketch (`Small`) or `proposed-design.md` (`Medium/Large`) | Locked |
 | 4 | Runtime Modeling | `future-state-runtime-call-stack.md` current | Locked |
 | 5 | Runtime Review Gate | `Go Confirmed` (two consecutive clean rounds with no blockers/persisted updates/new use cases) | Locked |
-| 6 | Source Implementation + Unit/Integration | Source code + required unit/integration checks complete | Unlocked |
+| 6 | Source Implementation + Unit/Integration | Source code + required unit/integration checks complete + no backward-compat/legacy retention + decoupling preserved | Unlocked |
 | 7 | API/E2E Test Implementation + Gate | API/E2E scenarios implemented and acceptance criteria closure complete | Unlocked |
-| 8 | Code Review Gate | Code review decision recorded (`Pass`/`Fail`) | Locked |
+| 8 | Code Review Gate | Code review decision recorded (`Pass`/`Fail`) with decoupling/no-backward-compat/no-legacy checks | Locked |
 | 9 | Docs Sync | `docs/` updates complete or no-impact rationale recorded | Locked |
 | 10 | Final Handoff | Delivery summary + ticket state decision recorded | Locked |
 
@@ -171,9 +172,9 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 | 3 Design Basis | Design basis artifact is current (`implementation-plan.md` sketch for `Small`, `proposed-design.md` for `Medium/Large`) | Stay in `3` and revise design basis | `4` |
 | 4 Runtime Modeling | `future-state-runtime-call-stack.md` is current for in-scope use cases | Stay in `4` and regenerate runtime model | `5` |
 | 5 Review Gate | Runtime review reaches `Go Confirmed` (two consecutive clean rounds with no blockers, no required persisted artifact updates, and no newly discovered use cases) | Classified re-entry before next review round (`Design Impact`: `3 -> 4 -> 5`, `Requirement Gap`: `2 -> 3 -> 4 -> 5`, `Unclear`: `1 -> 2 -> 3 -> 4 -> 5`) | `6` |
-| 6 Source + Unit/Integration | Source implementation complete and required unit/integration checks pass | Stay in `6` for local implementation/test fixes | `7` |
+| 6 Source + Unit/Integration | Source implementation complete, required unit/integration checks pass, no backward-compatibility/legacy-retention paths remain in scope, and decoupling boundaries stay intact (no new unjustified cycles/tight coupling) | Local issues: stay in `6`; classified re-entry for non-local issues (`Design Impact`: `1 -> 3 -> 4 -> 5 -> 6`, `Requirement Gap`: `2 -> 3 -> 4 -> 5 -> 6`, `Unclear`: `0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6`) | `7` |
 | 7 API/E2E Gate | API/E2E scenarios implemented and all executable mapped acceptance criteria are `Passed` (or explicitly `Waived` by user for infeasible cases) | `Blocked` on infeasible/no waiver; otherwise re-enter by classification (`Local Fix`: `6 -> 7`, `Design Impact`: `1 -> 3 -> 4 -> 5 -> 6 -> 7`, `Requirement Gap`: `2 -> 3 -> 4 -> 5 -> 6 -> 7`, `Unclear`: `0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7`) | `8` |
-| 8 Code Review Gate | Code review decision is `Pass` | Re-enter by classification (`Local Fix`: `6 -> 7 -> 8`, `Design Impact`: `1 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8`, `Requirement Gap`: `2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8`, `Unclear`: `0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8`) | `9` |
+| 8 Code Review Gate | Code review decision is `Pass` with all mandatory review checks satisfied (including decoupling + no-backward-compat/no-legacy) | Re-enter by classification (`Local Fix`: `6 -> 7 -> 8`, `Design Impact`: `1 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8`, `Requirement Gap`: `2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8`, `Unclear`: `0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8`) | `9` |
 | 9 Docs Sync | Docs updates are completed, or explicit no-impact rationale is recorded | Stay in `9` until docs gate is satisfied | `10` |
 | 10 Final Handoff | Handoff summary complete; ticket move to `done` only on explicit user confirmation | Stay in `10`/`in-progress` until explicit user completion instruction | End |
 
@@ -185,7 +186,10 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 | Stage 5 blocker classified `Design Impact` | `3 -> 4 -> 5` | Use when issue is clearly in architecture/layering/boundary/naming decisions. |
 | Stage 5 blocker classified `Requirement Gap` | `2 -> 3 -> 4 -> 5` | Use when missing/ambiguous requirement or acceptance criteria is discovered. |
 | Stage 5 blocker classified `Unclear` | `1 -> 2 -> 3 -> 4 -> 5` | Use when root cause is uncertain or cross-cutting and investigation must be refreshed first. |
-| Stage 6 unit/integration failure | stay in `Stage 6` | Fix implementation/tests within Stage 6; do not advance to Stage 7. |
+| Stage 6 failure classified `Local Fix` | stay in `Stage 6` | Fix implementation/tests within Stage 6; do not advance to Stage 7. |
+| Stage 6 failure classified `Design Impact` | `1 -> 3 -> 4 -> 5 -> 6` | Re-open investigation checkpoint, then re-enter design/runtime chain before continuing implementation. |
+| Stage 6 failure classified `Requirement Gap` | `2 -> 3 -> 4 -> 5 -> 6` | Update requirements first, then rerun downstream chain before continuing implementation. |
+| Stage 6 failure (`Unclear`/cross-cutting root cause) | `0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6` | Re-open Stage 0 controls in the same ticket context, then rerun full chain before continuing implementation. |
 | Stage 7 failure classified `Local Fix` | `6 -> 7` | Update artifacts first, then code fix, then rerun Stage 7 scenarios. |
 | Stage 7 failure classified `Design Impact` | `1 -> 3 -> 4 -> 5 -> 6 -> 7` | Re-open investigation, then re-enter design/runtime chain before retrying Stage 7. |
 | Stage 7 failure classified `Requirement Gap` | `2 -> 3 -> 4 -> 5 -> 6 -> 7` | Update requirements first, then rerun downstream chain. |
@@ -287,6 +291,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 - Functional/local correctness is not sufficient: if a bug fix "works" but degrades layering or responsibility boundaries, redesign the structure instead of accepting the patch.
 - Reject patch-on-patch hacks that bypass clear boundaries just to make a local change compile.
 - Follow separation of concerns after the target architecture direction is chosen: each file/module owns a clear responsibility.
+- Explicit decoupling rule (mandatory): define and preserve clear module/service/component boundaries so dependencies are one-directional and replaceable.
 - For `Small`, the solution sketch in `implementation-plan.md` must still include a concise architecture sketch (target layers/boundaries and any new modules/files).
 - Apply separation-of-concerns at the correct technical boundary for the stack:
   - frontend/UI scope: evaluate responsibility at view/component level (each component should own a clear concern),
@@ -320,6 +325,8 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - mapped sections in runtime call stack doc.
 - Version the design during review loops (`v1`, `v2`, ...) and record what changed between rounds.
 - Use the template in `assets/proposed-design-template.md` as a starting point.
+- No-backward-compat design gate (mandatory): proposed design must not introduce compatibility wrappers, dual-read/dual-write flows, legacy adapters, or fallback branches kept only for old behavior.
+- If backward-compatibility or legacy-retention mechanisms are required to make the design work, classify as `Fail` and redesign the architecture direction before continuing.
 - Do not speak solely because `proposed-design.md` changed; announce only when the related `workflow-state.md` transition/gate update is persisted.
 
 ### 4) Build Future-State Runtime Call Stacks Per Use Case
@@ -355,12 +362,14 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 - Create `future-state-runtime-call-stack-review.md` as a mandatory review artifact.
 - Review focus is future-state correctness and implementability against the target design basis (`proposed-design.md` for `Medium/Large`, small-scope solution sketch in `implementation-plan.md` for `Small`), not parity with current code structure.
 - Review must challenge architecture choice itself (layering/boundaries/allocation), not only file-level separation of concerns.
+- Review must explicitly evaluate decoupling quality, not only local correctness.
 - Run review in explicit rounds and record each round in the same review artifact.
 - In every round, run a dedicated missing-use-case discovery sweep before verdicting the round.
 - Review each use case against these criteria:
   - architecture fit check (`Pass`/`Fail`): chosen architecture shape is appropriate for this use case and expected growth,
   - layering fitness check (`Pass`/`Fail`): layering and interactions are logical and maintainable (no required layer-count change when current layering is already coherent),
   - boundary placement check (`Pass`/`Fail`): responsibilities are assigned to the right layer/module boundary,
+  - decoupling check (`Pass`/`Fail`): dependency directions stay one-way, avoid tight cross-module coupling, and avoid cyclic cross-references,
   - existing-structure bias check (`Pass`/`Fail`): design is not forced to mirror current files when that harms target architecture,
   - anti-hack check (`Pass`/`Fail`): no patch-on-patch tricks that hide architecture issues behind local fixes,
   - local-fix degradation check (`Pass`/`Fail`): a functionally working fix does not degrade architecture or separation of concerns,
@@ -379,7 +388,8 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - redundancy/duplication check (`Pass`/`Fail`),
   - simplification opportunity check (`Pass`/`Fail`),
   - remove/decommission and obsolete/deprecated/dead-path cleanup completeness for impacted changes (`Pass`/`Fail`),
-  - no-legacy/no-backward-compat check (`Pass`/`Fail`),
+  - legacy-retention cleanup check (`Pass`/`Fail`) (obsolete old-behavior/deprecated/dead paths are removed for impacted scope),
+  - backward-compatibility mechanism check (`Pass`/`Fail`) (no compatibility wrappers, dual-path behavior, or legacy fallback branches retained),
   - overall verdict (`Pass`/`Fail`).
 - Round policy:
   - use deep review for every round (challenge assumptions, edge cases, and cleanup quality),
@@ -398,6 +408,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - architecture fit check is `Pass` for all in-scope use cases,
   - layering fitness check is `Pass` for all in-scope use cases,
   - boundary placement check is `Pass` for all in-scope use cases,
+  - decoupling check is `Pass` for all in-scope use cases,
   - existing-structure bias check is `Pass` for all in-scope use cases,
   - anti-hack check is `Pass` for all in-scope use cases,
   - local-fix degradation check is `Pass` for all in-scope use cases,
@@ -416,6 +427,8 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - no unresolved blocking findings (including any required design/call-stack updates),
   - for any impacted `Add`/`Modify`/`Rename/Move`/`Remove` scope items, decommission/cleanup and obsolete/deprecated/dead-path checks are `Pass`,
   - no new use cases are discovered in either of the two clean rounds,
+  - legacy-retention cleanup check is `Pass` for all in-scope use cases,
+  - backward-compatibility mechanism check is `Pass` for all in-scope use cases,
   - two consecutive deep-review rounds have no blockers and no required persisted artifact updates.
 - If issues are found:
   - classify each blocking round as exactly one of `Design Impact`/`Requirement Gap`/`Unclear` and record it in `future-state-runtime-call-stack-review.md` and `workflow-state.md`.
@@ -453,6 +466,14 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - record transition evidence that Stage 5 gate is `Go Confirmed` and pre-edit checklist is satisfied.
 - Ensure traceability when a proposed design doc exists: every design change-inventory row (especially `Rename/Move` and `Remove`) maps to implementation tasks and verification steps.
 - Enforce clean-cut implementation: do not keep legacy compatibility paths.
+- No-backward-compat implementation rule (mandatory): reject compatibility wrappers, dual-path reads/writes, and old-behavior fallback branches even if they make rollout easier.
+- Decoupling-preservation implementation rule (mandatory): implementation must not introduce new tight coupling or cyclic dependencies across layers/modules.
+- Implementation completeness rule (mandatory): implementation is not complete until obsolete code paths and compatibility shims in scope are removed.
+- Stage 6 failure classification rule (mandatory):
+  - `Local Fix`: issue is bounded and does not require requirement/design/call-stack updates; remain in Stage 6.
+  - `Design Impact`: issue indicates architecture/decoupling or compatibility-policy breach requiring upstream design/runtime updates; re-enter `Stage 1 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6`.
+  - `Requirement Gap`: missing/ambiguous requirement or acceptance criteria discovered during implementation; re-enter `Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6`.
+  - `Unclear`: cross-cutting/low-confidence root cause; re-enter `Stage 0 -> Stage 1 -> Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6`.
 - Use "one file at a time" as the default execution strategy, not an absolute rule.
 - When rare cross-referencing is unavoidable, allow limited parallel/incomplete implementation, but explicitly record:
   - the cross-reference smell,
@@ -467,7 +488,9 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
 - Mark a file `Completed` only when implementation is done and required tests are passing.
 - Mark Stage 6 complete only when:
   - implementation plan scope is delivered (or deviations are explicitly documented),
-  - required unit/integration tests pass.
+  - required unit/integration tests pass,
+  - no backward-compatibility shims or legacy old-behavior branches remain in scope,
+  - decoupling boundaries remain valid (no newly introduced unjustified tight coupling/cyclic dependencies).
 - Use `assets/implementation-plan-template.md` and `assets/implementation-progress-template.md`.
 - Do not speak for routine `implementation-plan.md`/`implementation-progress.md` edits. Announce only for persisted `workflow-state.md` events (Stage 6 entry, lock/unlock change, gate/transition outcomes).
 
@@ -537,9 +560,11 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - include changed files and directly impacted related files when structural risk exists.
 - Mandatory review checks:
   - separation-of-concerns and responsibility boundaries,
+  - explicit decoupling quality (low coupling, clear dependency direction, no unjustified cycles),
   - architecture/layer boundary consistency with design basis,
   - naming-to-responsibility alignment and drift,
   - duplication and patch-on-patch complexity smells,
+  - no backward-compatibility mechanisms and no legacy code retention,
   - test quality and test maintainability.
 - Source file size policy (mandatory):
   - measure line counts explicitly per changed source file:
@@ -553,7 +578,7 @@ In this skill, future-state runtime call stacks are future-state (`to-be`) execu
   - exception path for `> 700` is allowed only with explicit rationale in `code-review.md` (`why split now is not viable`, `risk containment`, `near-term split plan`).
   - delta gate (mandatory): if a single changed source file has `> 220` changed lines in the current diff, record a design-impact assessment even when file size is `<= 700`.
 - Gate decision:
-  - `Pass`: continue to `Stage 9`.
+  - `Pass`: continue to `Stage 9` only when all mandatory review checks (including decoupling and no-backward-compat/no-legacy checks) are `Pass`.
   - `Fail`: apply re-entry declaration and follow re-entry mapping before any source code edits.
 - If code review requires source changes, rerun `Stage 6 -> Stage 7 -> Stage 8`.
 - Use `assets/code-review-template.md`.
@@ -619,6 +644,7 @@ These defaults list file-producing stages; gating and handoff rules still follow
   - finalize/update `tickets/in-progress/<ticket-name>/implementation-plan.md`
   - `tickets/in-progress/<ticket-name>/implementation-progress.md`
   - execute source implementation plus required unit/integration verification and log progress in real time
+  - close Stage 6 only when no backward-compatibility/legacy-retention paths remain in scope and decoupling boundaries remain valid
 - Stage 7 (API/E2E test implementation + API/E2E test gate):
   - update `tickets/in-progress/<ticket-name>/workflow-state.md` (`Current Stage = 7`, `Code Edit Permission = Unlocked`)
   - create/update `tickets/in-progress/<ticket-name>/api-e2e-testing.md`

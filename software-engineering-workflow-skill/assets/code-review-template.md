@@ -35,11 +35,19 @@ Rules:
 - Delta gate: if a single changed source file has `>220` changed lines in current diff, record a design-impact assessment even if file size is `<=700`.
 - During Stage 8, `workflow-state.md` should show `Current Stage = 8` and `Code Edit Permission = Locked`.
 
+## Decoupling And Legacy Rejection Checks (Mandatory)
+
+| Check | Result (`Pass`/`Fail`) | Evidence | Required Action |
+| --- | --- | --- | --- |
+| Decoupling check (low coupling, clear dependency direction, no unjustified cycles) |  |  |  |
+| No backward-compatibility mechanisms (no compatibility wrappers/dual-path behavior) |  |  |  |
+| No legacy code retention for old behavior |  |  |  |
+
 ## Findings
 
 - If none, write `None`.
 - Otherwise:
-  - `[CR-001] File: ... | Type: SoC/Layering/Naming/Duplication/FileSize/Complexity | Severity: Blocker/Major/Minor | Evidence: ... | Required update: ...`
+  - `[CR-001] File: ... | Type: SoC/Decoupling/Layering/Naming/Duplication/Legacy/BackwardCompat/FileSize/Complexity | Severity: Blocker/Major/Minor | Evidence: ... | Required update: ...`
 
 ## Re-Entry Declaration (Mandatory On `Fail`)
 
@@ -61,4 +69,9 @@ Rules:
 
 - Decision: `Pass` / `Fail`
 - Implementation can proceed to `Stage 9`: `Yes` / `No`
+- Mandatory pass checks:
+  - Decoupling check = `Pass`
+  - No backward-compatibility mechanisms = `Pass`
+  - No legacy code retention = `Pass`
+- Classification rule: if any mandatory pass check fails, do not classify as `Local Fix` by default; classify as `Design Impact` unless clear requirement ambiguity is the primary cause.
 - Notes:

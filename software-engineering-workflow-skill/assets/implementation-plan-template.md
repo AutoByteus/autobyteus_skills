@@ -73,6 +73,7 @@
 - Bottom-up: implement dependencies before dependents.
 - Test-driven: write unit tests and integration tests alongside implementation.
 - Mandatory modernization rule: no backward-compatibility shims or legacy branches.
+- Mandatory decoupling rule: preserve clear module boundaries and one-way dependency direction; avoid adding tight coupling/cycles.
 - Choose the proper structural change for architecture integrity; do not prefer local hacks just because they are smaller.
 - One file at a time is the default; use limited parallel work only when dependency edges require it.
 - Update progress after each meaningful status change (file state, test state, blocker state, or design follow-up state).
@@ -114,6 +115,13 @@
 1. 
 2. 
 3. 
+
+## Backward-Compat And Decoupling Guardrails (Mandatory)
+
+- Backward-compatibility mechanisms introduced: `None` / `List + redesign required`
+- Legacy code retained for old behavior: `No` / `Yes (blocked)`
+- Decoupling impact assessment completed: `Yes` / `No`
+- New tight coupling or cyclic dependency introduced: `No` / `Yes (blocked)`
 
 ## Per-File Definition Of Done
 

@@ -16,6 +16,7 @@ Do not treat this document as an as-is trace of current code behavior.
   - `[ERROR]` error path
 - Comments: use brief inline comments with `# ...`.
 - Do not include legacy/backward-compatibility branches.
+- Keep decoupling visible in call paths: avoid bidirectional cross-module loops and unclear dependency direction.
 
 ## Design Basis
 
@@ -99,6 +100,7 @@ module/e.ts:persist(...)
 ### Design Smells / Gaps
 
 - Any legacy/backward-compatibility branch present? (`Yes/No`)
+- Any tight coupling or cyclic cross-module dependency introduced? (`Yes/No`)
 - Any naming-to-responsibility drift detected? (`Yes/No`)
 
 ### Open Questions
