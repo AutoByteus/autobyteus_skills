@@ -71,6 +71,7 @@ Rules:
 - `Design Impact` requires full-chain re-entry: `Stage 1 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7`.
 - `Requirement Gap` requires full-chain re-entry: `Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7`.
 - `Unclear`/cross-cutting root cause requires full-chain re-entry from understanding: `Stage 0 -> Stage 1 -> Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7`.
+- If a would-be fix depends on wrong module/file placement, reclassify it as `Design Impact` before further source edits.
 - Stage 0 in a re-entry path means re-open bootstrap controls in the same ticket/worktree (`workflow-state.md`, lock state, artifact baselines); do not create a new ticket folder.
 - No source code edits before required upstream artifacts are updated and logged.
 
@@ -97,9 +98,9 @@ Rules:
 
 ## Code Review Log (Stage 8)
 
-| Date | Review Round | File | Effective Non-Empty Lines | Adds/Expands Functionality (`Yes`/`No`) | `>500` Hard-Limit Check | `>220` Changed-Line Delta Gate | Classification (`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`) | Re-Entry Declaration Recorded | Upstream Artifacts Updated Before Code Edit | Decision (`Pass`/`Fail`) | Notes |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| YYYY-MM-DD | 1 | `src/example-a.ts` | 615 | Yes | Fail | Fail | Design Impact | Yes | Yes | Fail | Exceeded `>500` hard limit; returned to `Stage 1 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7 -> Stage 8` before further edits. |
+| Date | Review Round | File | Effective Non-Empty Lines | Adds/Expands Functionality (`Yes`/`No`) | `>500` Hard-Limit Check | `>220` Changed-Line Delta Gate | Module/File Placement Check (`Pass`/`Fail`) | Classification (`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`) | Re-Entry Declaration Recorded | Upstream Artifacts Updated Before Code Edit | Decision (`Pass`/`Fail`) | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| YYYY-MM-DD | 1 | `src/example-a.ts` | 615 | Yes | Fail | Fail | Pass | Design Impact | Yes | Yes | Fail | Exceeded `>500` hard limit; returned to `Stage 1 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7 -> Stage 8` before further edits. |
 
 Rules:
 - Include source and test files in review scope.
@@ -113,6 +114,7 @@ Rules:
 - If a single changed source file has `>220` changed lines in current diff, record a design-impact assessment even when effective file size is `<=500`.
 - For `Fail`, do not proceed to `Stage 9`; apply re-entry mapping first and rerun `Stage 6 -> Stage 7 -> Stage 8`.
 - Any decoupling failure (tight coupling or unjustified cycle) is blocking and requires classified re-entry before further source edits.
+- Any module/file placement failure (wrong concern folder or unjustified shared placement) is blocking and requires classified re-entry before further source edits.
 - Any backward-compatibility mechanism or legacy-retention finding is blocking and requires classified re-entry before further source edits.
 
 ## Blocked Items
@@ -147,7 +149,8 @@ Rules:
   - implementation plan scope is delivered (or deviations are documented),
   - required unit/integration tests pass,
   - no backward-compatibility shims or legacy old-behavior branches remain in scope,
-  - decoupling-impact checks show no new unjustified tight coupling/cycles.
+  - decoupling-impact checks show no new unjustified tight coupling/cycles,
+  - touched files have correct module/file placement or an explicit move/split has been completed.
 - Mark Stage 7 API/E2E testing complete only when:
   - every executable in-scope acceptance criterion in the closure matrix is `Passed`,
   - critical executable API/E2E scenarios pass,
@@ -156,5 +159,6 @@ Rules:
 - Mark Stage 8 code review complete only when:
   - `code-review.md` exists and gate decision is recorded,
   - `<=500` hard-limit checks and required `>220` delta-gate assessments are recorded for all changed source files,
+  - module/file placement checks are recorded for all changed source files,
   - if gate decision is `Fail`, re-entry declaration and target stage path are recorded.
 - Mark Stage 9 docs sync complete only when docs synchronization result is recorded (`Updated` or `No impact` with rationale).

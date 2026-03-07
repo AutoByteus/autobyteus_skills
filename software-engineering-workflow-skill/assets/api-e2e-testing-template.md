@@ -50,7 +50,7 @@ Rules:
 - For each failing scenario, update acceptance-criteria matrix statuses before and after re-entry.
 - `Local Fix` requires artifact update first, then fix, then rerun `Stage 6 -> Stage 7` before rerunning affected scenarios.
 - `Design Impact` requires `Investigation Required = Yes` and investigation checkpoint before design artifact updates.
-- If a potential fix introduces compatibility wrappers/dual-path behavior/legacy retention or degrades decoupling (tight coupling/cycles), classify as `Design Impact` (not `Local Fix`).
+- If a potential fix introduces compatibility wrappers/dual-path behavior/legacy retention, degrades decoupling (tight coupling/cycles), or keeps code in the wrong concern folder, classify as `Design Impact` (not `Local Fix`).
 - If requirement-level gaps are found during design-impact investigation, reclassify to `Requirement Gap`.
 - No direct source-code patching is allowed before required upstream artifacts are updated.
 - `Design Impact` requires full-chain re-entry: `Stage 1 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7` before rerunning affected scenarios.

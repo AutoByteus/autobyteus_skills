@@ -51,6 +51,7 @@
 - SoC cause statement (how concerns are split and owned):
 - Layering result statement (how layering emerges from SoC + dependency direction for this scope):
 - Decoupling rule statement (one-way, replaceable boundaries; no unjustified cycles):
+- Module/file placement rule statement (file path/folder must match owning concern or explicitly justified shared boundary):
 
 ## Architecture Direction Decision (Mandatory)
 
@@ -58,6 +59,7 @@
 - Rationale (`complexity`, `testability`, `operability`, `evolution cost`):
 - Layering fitness assessment (are current layering and interactions still coherent under emergent-layering rules?): `Yes` / `No`
 - Decoupling assessment (are boundaries low-coupled with clear one-way dependency directions?): `Yes` / `No`
+- Module/file placement assessment (do file paths/folders match owning concerns for this scope?): `Yes` / `No`
 - Outcome (`Keep`/`Add`/`Split`/`Merge`/`Move`/`Remove`):
 - Note: `Keep` is valid when layering and boundary interactions are already coherent.
 
@@ -82,6 +84,12 @@
 | Change ID | Change Type (`Add`/`Modify`/`Rename/Move`/`Remove`) | Current Path | Target Path | Rationale | Impacted Areas | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | C-001 |  |  |  |  |  |  |
+
+## Module/File Placement And Ownership Check (Mandatory)
+
+| File/Module | Current Path | Target Path | Owning Concern / Platform | Path Matches Concern? (`Yes`/`No`) | Action (`Keep`/`Move`/`Split`/`Promote Shared`) | Rationale |
+| --- | --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |  |
 
 ## Target Architecture Shape And Boundaries (Mandatory)
 
@@ -108,6 +116,7 @@
 - Integration/infrastructure scope: each adapter/module owns one integration concern with clear contracts.
 - Layering note: layering should emerge from SoC + coordination needs, not forced fixed-tier naming.
 - Decoupling check: dependencies follow allowed direction, avoid tight cross-module coupling, and avoid unjustified cycles.
+- Module/file placement check: folder/path should make the owning concern obvious; platform-specific files should not live in unrelated or ambiguous locations.
 
 ## Naming Decisions (Natural And Implementation-Friendly)
 
@@ -126,6 +135,9 @@
 | Candidate Area | Current-File-Layout Bias Risk | Architecture-First Alternative | Decision | Why |
 | --- | --- | --- | --- | --- |
 |  | Low/Medium/High |  | Keep/Change |  |
+
+Rule:
+- Do not keep a misplaced file in place merely because many callers already import it from there; that is structure bias, not design quality.
 
 ## Anti-Hack Check (Mandatory)
 

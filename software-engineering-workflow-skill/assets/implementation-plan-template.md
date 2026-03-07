@@ -74,6 +74,7 @@
 - Test-driven: write unit tests and integration tests alongside implementation.
 - Mandatory modernization rule: no backward-compatibility shims or legacy branches.
 - Mandatory decoupling rule: preserve clear module boundaries and one-way dependency direction; avoid adding tight coupling/cycles.
+- Mandatory module/file placement rule: keep each touched file in the folder/boundary that owns its concern; plan explicit moves when current placement is misleading.
 - Choose the proper structural change for architecture integrity; do not prefer local hacks just because they are smaller.
 - One file at a time is the default; use limited parallel work only when dependency edges require it.
 - Update progress after each meaningful status change (file state, test state, blocker state, or design follow-up state).
@@ -85,6 +86,12 @@
 | 1 |  |  |  |
 | 2 |  |  |  |
 | 3 |  |  |  |
+
+## Module/File Placement Plan (Mandatory)
+
+| Item | Current Path | Target Path | Owning Concern / Platform | Action (`Keep`/`Move`/`Split`/`Promote Shared`) | Verification |
+| --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |
 
 ## Requirement And Design Traceability
 
@@ -139,6 +146,7 @@
 - `>500` effective-line source file hard-limit policy and expected design-impact action:
 - per-file diff delta gate (`>220` changed lines) assessment approach:
 - Hard-limit handling details in `code-review.md` (required re-entry path and split/refactor plan):
+- module/file placement review approach (how wrong-folder placements will be detected and corrected):
 
 | File | Current Line Count | Adds/Expands Functionality (`Yes`/`No`) | SoC Risk (`Low`/`Medium`/`High`) | Required Action (`Keep`/`Split`/`Move`/`Refactor`) | Expected Review Classification if not addressed |
 | --- | --- | --- | --- | --- | --- |
@@ -156,6 +164,7 @@
   - known environment constraints:
 - Stage 8 handoff notes for code review:
   - predicted design-impact hotspots:
+  - predicted module/file placement hotspots:
   - files likely to exceed size/SoC thresholds:
 
 ## API/E2E Testing Scenario Catalog (Stage 7 Input)

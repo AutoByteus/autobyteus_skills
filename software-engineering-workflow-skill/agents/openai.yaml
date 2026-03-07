@@ -22,8 +22,9 @@ interface:
     assessment); Stage 9 syncs docs; Stage 10 performs final handoff. Across
     design/review/implementation, enforce shared architecture principles (`SoC`
     as cause, layering as emergent result, decoupling as one-way replaceable
-    boundaries), and enforce modernization explicitly (no backward compatibility
-    mechanisms, no legacy old-behavior retention). Stage movement is
+    boundaries, and module/file placement as folder ownership matching concern), and
+    enforce modernization explicitly (no backward compatibility mechanisms, no
+    legacy old-behavior retention). Stage movement is
     controlled by the Stage Transition
     Contract + Transition Matrix; when a trigger condition is met, transition
     immediately to the mapped path. No source-code edits are allowed unless
