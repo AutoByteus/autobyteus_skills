@@ -1,7 +1,7 @@
 ```text
-Motif（warm-sermon）：
-- 细腻纸张肌理与柔和金色分隔线。
-- 微弱暖光粒子（仅在右侧叙事区域）。
-- 木纹/羊皮纸质感低强度覆盖。
-- 简洁十字或圆环符号低对比重复出现。
+Motif (warm-sermon):
+- Fine paper texture and soft gold dividers.
+- Weak warm-light particles only in the right narrative area.
+- Low-strength wood or parchment texture overlay.
+- Repeated simple cross or ring symbols at low contrast.
 ```

@@ -1,7 +1,7 @@
 ```text
-Motif（editorial-light）：
-- 轻微纸纹/布纹（低噪点）。
-- 柔和亮度渐变（禁止暗角）。
-- 细线分隔与点状装饰（低饱和强调色）。
-- 卡片边缘微弱高光，增强分层。
+Motif (editorial-light):
+- Light paper or fabric texture with low noise.
+- Soft brightness gradient with no vignette.
+- Fine-line dividers and dot accents in low-saturation accent colors.
+- Very subtle card-edge highlight to reinforce layering.
 ```

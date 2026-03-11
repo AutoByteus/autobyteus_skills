@@ -1,8 +1,8 @@
 ```text
-Style Pack：neo-tech（科技未来风）
-- 版式：左侧信息面板 52–58%，右侧数据叙事插画 42–48%。
-- 配色：深蓝灰 + 青蓝/紫色强调，正文高对比浅色或深色按背景自适应。
-- 面板：玻璃拟态卡片（低反光），边框细亮线。
-- 光影：边缘发光与环境补光，避免过度炫光造成阅读疲劳。
-- 背景：网络节点、城市天际线、数据流动、抽象科技纹理。
+Style Pack: neo-tech (near-future tech)
+- Layout: left information panel 52%-58%, right data-story illustration zone 42%-48%.
+- Palette: deep blue-gray base with cyan-blue or violet accents; body text adapts for high contrast against the background.
+- Panel treatment: glassmorphism card with low reflection and thin luminous borders.
+- Lighting: edge glow plus ambient fill, but avoid eye-fatiguing glare.
+- Background bias: network nodes, city skyline, flowing data, abstract tech texture.
 ```

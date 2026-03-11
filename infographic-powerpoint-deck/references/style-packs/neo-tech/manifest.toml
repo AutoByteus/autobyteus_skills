@@ -1,5 +1,5 @@
 id = "neo-tech"
 display_name = "Neo Tech"
 inherits = ["base-core"]
-intent_keywords = ["AI", "科技", "未来感", "创业", "增长"]
+intent_keywords = ["AI", "technology", "futuristic", "startup", "growth"]
 default_scene_tags = ["tech", "futuristic", "network", "data"]

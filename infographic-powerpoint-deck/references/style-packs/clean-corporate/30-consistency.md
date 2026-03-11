@@ -1,7 +1,7 @@
 ```text
-Consistency Lock（clean-corporate）：
-- 卡片边距、边框、圆角和图标线宽整套一致。
-- 强调色使用频率克制（每页 1–2 个视觉重点）。
-- 文字与图表信息优先于背景氛围。
-- 投影可读性优先：避免浅灰低对比文字。
+Consistency Lock (clean-corporate):
+- Keep card margins, borders, corner radius, and icon stroke width consistent across the deck.
+- Use accent colors sparingly, with only 1-2 visual emphasis points per slide.
+- Text and charts take priority over background mood.
+- Projection readability comes first: avoid pale low-contrast body text.
 ```

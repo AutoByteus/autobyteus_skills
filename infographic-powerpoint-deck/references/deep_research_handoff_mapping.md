@@ -6,7 +6,7 @@ Use this when upstream `slide_extraction.md` comes from `deep-research-article`.
 
 If upstream table already has these columns, map 1:1:
 - `Headline (claim)` → slide title / claim headline
-- `Must-appear text (verbatim)` → “必须出现文字（逐字准确）”
+- `Must-appear text (verbatim)` → `Must-appear text (verbatim)` section in the slide prompt
 - `Supporting bullets (2–4)` → bullet section
 - `Recommended style pack ID` → `pack-id`
 - `Scene ID` → scene selection

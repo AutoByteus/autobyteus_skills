@@ -1,7 +1,7 @@
 ```text
-Consistency Lock（cinematic-dark）：
-- 主光方向固定（建议右上→左下），整套一致。
-- 远景剪影带高度区间一致，始终低对比虚化。
-- 图标线宽与发光强度一致。
-- 禁止高噪点背景和额外文本元素。
+Consistency Lock (cinematic-dark):
+- Keep the primary light direction fixed, ideally upper-right to lower-left, across the full deck.
+- Keep the far-background silhouette band at a consistent height and always softly blurred.
+- Keep icon stroke width and glow intensity consistent.
+- No high-noise backgrounds or extra text elements.
 ```

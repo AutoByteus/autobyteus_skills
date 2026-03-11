@@ -63,41 +63,41 @@ def main() -> int:
     write_file(
         pack_dir / "10-style-profile.md",
         """```text
-Style Pack：<pack-id>（风格名称）
-- 版式：左侧文字面板 X%，右侧插画 X%。
-- 配色：主背景、正文、强调色。
-- 面板：卡片/毛玻璃/实底风格。
-- 光影：亮度、对比度、是否允许暗角。
-- 背景：优先视觉语义（场景类别）。
+Style Pack: <pack-id> (<display name>)
+- Layout: left text panel X%, right illustration zone X%.
+- Color palette: primary background, body text, accent color.
+- Panel treatment: card / frosted glass / solid panel style.
+- Lighting: brightness, contrast, and whether vignette is allowed.
+- Background bias: preferred visual semantics or scene classes.
 ```""",
     )
     write_file(
         pack_dir / "20-motif.md",
         """```text
-Motif（<pack-id>）：
-- 统一符号/纹理元素 1。
-- 统一符号/纹理元素 2。
-- 统一符号/纹理元素 3。
-- 统一符号/纹理元素 4。
+Motif (<pack-id>):
+- Repeated symbol / texture element 1.
+- Repeated symbol / texture element 2.
+- Repeated symbol / texture element 3.
+- Repeated symbol / texture element 4.
 ```""",
     )
     write_file(
         pack_dir / "30-consistency.md",
         """```text
-Consistency Lock（<pack-id>）：
-- 页间版式一致性约束。
-- 字号与层级一致性约束。
-- 图标与颜色一致性约束。
-- 可读性硬约束与禁止项。
+Consistency Lock (<pack-id>):
+- Cross-slide layout consistency rules.
+- Type hierarchy and sizing consistency rules.
+- Icon and color consistency rules.
+- Readability hard constraints and forbidden elements.
 ```""",
     )
     write_file(
         pack_dir / "40-scene-bias.md",
         """```text
-Scene Bias（<pack-id>）：
-- 优先场景标签：tag1, tag2, tag3。
-- 推荐场景 ID：scene-1, scene-2, scene-3。
-- 禁止：不适配的视觉风格。
+Scene Bias (<pack-id>):
+- Preferred scene tags: tag1, tag2, tag3.
+- Recommended scene IDs: scene-1, scene-2, scene-3.
+- Forbidden: visual styles that do not fit this pack.
 ```""",
     )
 

@@ -1,7 +1,7 @@
 ```text
-Motif（cinematic-dark）：
-- 金色细线几何环（右侧主物附近，低对比）。
-- 光束中的微量漂浮颗粒（仅少量）。
-- 轻微羊皮纸纹理（低强度）。
-- 标题下金色细分隔线（统一样式）。
+Motif (cinematic-dark):
+- Fine gold geometric ring near the right-side hero object, kept low-contrast.
+- Very small amount of floating particles inside light beams.
+- Light parchment texture at low strength.
+- Thin gold divider under the title in a consistent style.
 ```

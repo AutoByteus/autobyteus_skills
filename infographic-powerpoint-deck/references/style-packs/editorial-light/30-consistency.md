@@ -1,7 +1,7 @@
 ```text
-Consistency Lock（editorial-light）：
-- 整体中高亮度，禁止大面积深色背景。
-- 标题、引用、要点层级在全套统一。
-- 图标线宽与卡片圆角统一，阴影强度一致。
-- 文字区保持稳定留白，不得被纹理干扰。
+Consistency Lock (editorial-light):
+- Keep overall medium-high brightness. No large dark background fields.
+- Keep title, quote, and bullet hierarchy consistent across the full deck.
+- Keep icon stroke width, card corner radius, and shadow strength consistent.
+- Preserve stable whitespace around the text area and keep texture from interfering.
 ```

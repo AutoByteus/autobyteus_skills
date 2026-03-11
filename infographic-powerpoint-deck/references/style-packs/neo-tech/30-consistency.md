@@ -1,7 +1,7 @@
 ```text
-Consistency Lock（neo-tech）：
-- 每页保持相同连接线风格与节点尺寸体系。
-- 强调色仅用于关键指标、结论、行动点。
-- 右侧插画信息密度受控，左侧文本区保持纯净。
-- 禁止随机多色荧光和高噪点特效。
+Consistency Lock (neo-tech):
+- Keep connector style and node sizing system consistent on every slide.
+- Use accent colors only for key metrics, conclusions, and action points.
+- Control information density in the right illustration zone and keep the left text zone clean.
+- No random multicolor neon or high-noise effects.
 ```

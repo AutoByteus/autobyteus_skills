@@ -1,7 +1,7 @@
 ```text
-Consistency Lock（airy-relaxed）：
-- 全套保持低反差、低噪点和柔和光影。
-- 字号层级与行距统一，保证舒适阅读节奏。
-- 背景插画对比度受控，文字区始终纯净。
-- 禁止戏剧化强光束与重颗粒纹理。
+Consistency Lock (airy-relaxed):
+- Keep the full deck low-contrast, low-noise, and softly lit.
+- Keep type hierarchy and line spacing consistent for an easy reading rhythm.
+- Control background-illustration contrast so the text area always stays clean.
+- No dramatic hard beams or heavy grain textures.
 ```

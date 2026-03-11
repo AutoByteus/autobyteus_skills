@@ -1,7 +1,7 @@
 ```text
-Motif（clean-corporate）：
-- 统一网格与分隔线系统（弱对比）。
-- 低饱和点线图形作为辅助导视。
-- 卡片边缘高光极弱，避免装饰化噪声。
-- 图标与箭头简洁、统一线宽。
+Motif (clean-corporate):
+- Unified grid and divider system at weak contrast.
+- Low-saturation dotted and linear graphics as supporting navigation cues.
+- Very weak card-edge highlights to avoid decorative noise.
+- Clean icons and arrows with consistent stroke width.
 ```

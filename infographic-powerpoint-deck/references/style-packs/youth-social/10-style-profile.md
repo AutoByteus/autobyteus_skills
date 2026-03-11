@@ -1,8 +1,8 @@
 ```text
-Style Pack：youth-social（年轻社群风）
-- 版式：左侧文字面板 50–56%，右侧视觉表达 44–50%。
-- 配色：明亮渐变（蓝紫/橙粉/青绿）+ 深色高对比文字区。
-- 面板：圆角卡片更大，层次分明，视觉节奏更快。
-- 光影：明亮、清爽、有活力，避免重阴影。
-- 背景：社群活动、校园空间、城市公园、创意工作区。
+Style Pack: youth-social (youth social)
+- Layout: left text panel 50%-56%, right expression zone 44%-50%.
+- Palette: bright gradients (blue-violet / orange-pink / teal-green) plus a dark high-contrast text zone.
+- Panel treatment: larger rounded cards, clear layering, faster visual rhythm.
+- Lighting: bright, fresh, energetic, with no heavy shadows.
+- Background bias: community events, campus space, city park, or creative studio.
 ```

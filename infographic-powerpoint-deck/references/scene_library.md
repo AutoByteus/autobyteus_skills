@@ -1,4 +1,4 @@
-# Scene library (v3+ “更有画面感”扩展库)
+# Scene library (v3+ cinematic expansion)
 
 Use this to make slides feel like a coherent cinematic story while keeping the **left text panel** clean.
 For reusable IDs and tags, pair this with `references/scene-catalog.md`.

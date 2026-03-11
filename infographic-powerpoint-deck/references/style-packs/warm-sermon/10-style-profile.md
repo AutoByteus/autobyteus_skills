@@ -1,8 +1,8 @@
 ```text
-Style Pack：warm-sermon（温暖讲道风）
-- 版式：左侧文字面板 56–60%，右侧叙事插画 40–44%。
-- 配色：暖米白/蜂蜜金/木质棕为基调；正文深棕灰高对比。
-- 面板：浅暖色半透明卡片，边缘柔和，强调亲和阅读感。
-- 光影：清晨/黄昏暖光，阴影柔和，避免压暗。
-- 背景：教堂/书房/会堂等温暖场景，低对比且不喧宾夺主。
+Style Pack: warm-sermon (warm sermon)
+- Layout: left text panel 56%-60%, right narrative illustration zone 40%-44%.
+- Palette: warm off-white / honey gold / wood brown foundation; deep brown-gray body text with strong contrast.
+- Panel treatment: lightly warm translucent card with soft edges and approachable reading tone.
+- Lighting: warm morning or sunset light with soft shadows and no dimming.
+- Background bias: chapel, study, hall, or other warm scenes that stay low-contrast and secondary.
 ```

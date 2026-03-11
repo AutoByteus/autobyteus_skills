@@ -3,23 +3,27 @@
 Paste this block into every slide prompt to reduce “tiny text” and improve readability.
 
 ```text
-排版与字号硬约束（必须遵守）：
-- 画布：16:9；安全边距：四周至少留白 4%（文字不得贴边）。
-- 左侧文字面板：必须与所选 style pack 一致（可为深色或浅色）；面板内文字始终高对比、清晰锐利。
-- 标题层级：
-  - 主标题：超大字号、粗体；一行优先，最多两行；行距舒适。
-  - 分标题/小标题（如“经文摘句/要点”）：使用 style pack 的强调色，明显小一号但仍清晰。
-  - 引用经文：比要点略小或同级，但不得小到难读；引用块与要点之间要有明显间距。
-  - 要点 bullets：每条不超过两行；必要时拆成两页。
-  - 页脚：小字但依然可读，不得小到看不清。
-- 行宽与行距：
-  - 每行中文建议不超过 18–22 个字（超出则自动换行）。
-  - 行距必须大于字高的 1.25 倍，避免拥挤。
-- 文字数量上限（建议）：
-  - 普通页：引用 ≤3 行、要点 ≤5 条。
-  - 超密集页（清单）：必须使用“两栏文字面板”布局，并减少背景细节。
-- 对比度硬约束：
-  - 面板底色与正文文字应保持强对比（建议接近 WCAG 4.5:1 或更高）。
-  - 若背景偏亮，则正文改深色；若背景偏暗，则正文改浅色。
-- 禁止：任何一页不得出现“超小字”；不得用花哨字体；不得让背景纹理穿过文字导致阅读困难。
+Typography and spacing hard constraints (required):
+- Canvas: 16:9. Safe margins: at least 4% whitespace on every edge. No text touching the edge.
+- Left text panel: must match the selected style pack (light or dark). Text inside the panel must stay high-contrast, sharp, and easy to read.
+- Title hierarchy:
+  - Main title: very large, bold, ideally one line, maximum two lines, comfortable leading.
+  - Section headers / subheads: use the style-pack accent color and remain clearly legible.
+  - Quotes / supporting text: slightly smaller than bullets or on the same tier, but never tiny.
+  - Bullets: maximum two lines each. Split into additional slides if needed.
+  - Footer: small but still readable at presentation distance.
+- Line length and spacing:
+  - Latin-script languages (English, German, etc.): prefer roughly 6-12 words per line in dense text blocks.
+  - CJK languages: prefer roughly 18-22 characters per line before wrapping.
+  - Line spacing must be at least 1.25x the character height.
+- Text volume limits (recommended):
+  - Standard slide: quotes up to 3 lines, bullets up to 5 items.
+  - High-density list slide: use a two-column text-panel layout and reduce background detail.
+- Contrast hard constraints:
+  - The panel background and body text must maintain strong contrast (target roughly WCAG 4.5:1 or better).
+  - If the background is bright, use dark body text. If the background is dark, use light body text.
+- Forbidden:
+  - No tiny text.
+  - No decorative novelty fonts.
+  - No background texture or contrast crossing through the text area in a way that hurts readability.
 ```

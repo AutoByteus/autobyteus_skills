@@ -1,7 +1,7 @@
 ```text
-Consistency Lock（research-academic）：
-- 证据与结论区块排版规则全套一致。
-- 图表色板固定，类别颜色不跨页漂移。
-- 段落间距和编号体系一致，便于追踪逻辑。
-- 禁止无关装饰和情绪化视觉噪声。
+Consistency Lock (research-academic):
+- Keep the layout rules for evidence and conclusion blocks consistent across the full deck.
+- Fix chart palettes so category colors do not drift across slides.
+- Keep paragraph spacing and numbering systems consistent to support logical tracing.
+- No irrelevant decoration or emotional visual noise.
 ```

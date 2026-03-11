@@ -1,7 +1,7 @@
 ```text
-Motif（neo-tech）：
-- 点线网络结构与发光节点（低密度）。
-- 卡片边缘细光环与极弱扫描线纹理。
-- 统一箭头/流程连接器强调逻辑流。
-- 数据网格背景轻度出现，避免遮挡文本。
+Motif (neo-tech):
+- Sparse dot-line network structures with glowing nodes.
+- Fine card-edge halo and very weak scan-line texture.
+- Consistent arrows and flow connectors to emphasize logic.
+- Light data-grid background presence without blocking text.
 ```

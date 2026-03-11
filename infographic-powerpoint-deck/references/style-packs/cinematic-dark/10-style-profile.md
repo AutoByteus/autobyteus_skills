@@ -1,8 +1,8 @@
 ```text
-Style Pack：cinematic-dark（电影感深色）
-- 版式：左侧文字面板 55–60%，右侧叙事插画 40–45%。
-- 配色：深海军蓝/靛蓝主色；正文浅色高对比；强调色金色 #F4C542。
-- 面板：深色毛玻璃卡片，边角统一，边距统一。
-- 光影：可使用体积光与轮廓光；暗角仅允许极弱。
-- 背景：允许黄昏/夜色，但必须保持文字区域可读。
+Style Pack: cinematic-dark (cinematic dark)
+- Layout: left text panel 55%-60%, right narrative illustration zone 40%-45%.
+- Palette: deep navy / indigo base; high-contrast light body text; gold accent #F4C542.
+- Panel treatment: dark frosted-glass card with consistent corners and margins.
+- Lighting: volumetric light and rim light allowed; vignette only at a very weak level.
+- Background bias: dusk or night scenes are allowed, but the text zone must stay readable.
 ```

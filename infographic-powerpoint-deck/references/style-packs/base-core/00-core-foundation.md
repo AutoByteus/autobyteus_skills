@@ -1,9 +1,9 @@
 ```text
-基础约束（所有 style pack 通用，必须遵守）：
-- 画布与输出：单张 16:9 幻灯片图像，非分层文件。
-- 文字准确性：所有“必须出现文字”逐字准确；不得改写、不得增删标点。
-- 文字限制：不得添加任何额外文字（尤其是英文、logo、水印、随机字符）。
-- 可读性优先：文字区保持高对比、清晰锐利；背景不可侵入文字区。
-- 信息结构：标题层级清晰，留白充分，避免超小字号。
-- 系列一致性：同一套 deck 使用同一 style pack，不中途混搭。
+Base constraints (required for every style pack):
+- Canvas and output: one flat 16:9 slide image, not a layered file.
+- Text accuracy: everything in `Must-appear text (verbatim)` must appear exactly. Do not rewrite or alter punctuation.
+- Text limits: do not add any extra text, logos, watermarks, or random characters in any language.
+- Readability first: keep the text area high-contrast and sharp. The background must not invade the text area.
+- Information structure: keep a clear title hierarchy, generous whitespace, and no tiny text.
+- Series consistency: use one style pack for the whole deck unless the user explicitly requests mixing.
 ```

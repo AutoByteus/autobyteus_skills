@@ -40,7 +40,7 @@ Never mix blocks from different style packs in one deck unless explicitly reques
 
 1. Create scaffold:
    ```bash
-   python3 scripts/create_style_pack.py --pack-id <new-id> --display-name "<Name>" --keywords "关键词1,关键词2" --scene-tags "tag1,tag2"
+   python3 scripts/create_style_pack.py --pack-id <new-id> --display-name "<Name>" --keywords "keyword1,keyword2" --scene-tags "tag1,tag2"
    ```
 2. Add `manifest.toml` with:
    - `id`, `display_name`, `inherits`, `intent_keywords`, `default_scene_tags`.

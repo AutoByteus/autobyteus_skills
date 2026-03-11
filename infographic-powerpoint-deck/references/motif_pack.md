@@ -64,15 +64,15 @@ When writing slide prompts, add one of these (depending on which pack you chose)
 
 ### Pack A pasteable block
 ```text
-本页需包含 Motif Pack A（Keynote Cinematic）所有元素，保持低对比、系列一致；不得影响左侧文字可读性。
+This slide must include all elements from Motif Pack A (Keynote Cinematic). Keep them low-contrast and series-consistent, and do not reduce left-panel readability.
 ```
 
 ### Pack B pasteable block
 ```text
-本页需包含 Motif Pack B（Movie Poster Epic）所有元素，保持低对比、系列一致；不得影响左侧文字可读性。
+This slide must include all elements from Motif Pack B (Movie Poster Epic). Keep them low-contrast and series-consistent, and do not reduce left-panel readability.
 ```
 
 ### Pack C pasteable block
 ```text
-本页需包含 Motif Pack C（Editorial Airy）所有元素，保持明亮、低噪点、系列一致；不得影响文字可读性。
+This slide must include all elements from Motif Pack C (Editorial Airy). Keep them bright, low-noise, and series-consistent, and do not reduce text readability.
 ```

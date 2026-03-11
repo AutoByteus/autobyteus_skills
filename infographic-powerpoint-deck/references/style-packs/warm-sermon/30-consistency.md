@@ -1,7 +1,7 @@
 ```text
-Consistency Lock（warm-sermon）：
-- 全套保持暖色中高亮度，不可突变为冷暗调。
-- 标题、经文、应用要点层级固定，页间间距一致。
-- 图标统一细线风格，强调色只在关键点出现。
-- 画面氛围温和，避免戏剧化冲突光效。
+Consistency Lock (warm-sermon):
+- Keep the full deck warm-toned and medium-high in brightness. Do not drift into cold dark mood.
+- Keep hierarchy for title, scripture, and application points fixed, with consistent spacing between slides.
+- Use a unified thin-line icon style, with accent color appearing only on key points.
+- Keep the atmosphere gentle and avoid dramatic conflict lighting.
 ```

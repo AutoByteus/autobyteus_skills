@@ -1,6 +1,7 @@
 # Storyboard library (make the deck feel like a narrative)
 
-Use this to give the whole deck a “beginning → tension → climax → resolution” flow, even in teaching decks.
+Use this to give the whole deck a "beginning -> tension -> climax -> resolution" flow, even in teaching decks.
+The example beats below are faith-themed; keep the narrative structure and swap symbols/scenes to fit the user's actual domain.
 
 ## Default progression (12-slide deck)
 
@@ -19,13 +20,12 @@ Use this to give the whole deck a “beginning → tension → climax → resolu
 
 ## Prompt add-on lines (paste per slide)
 
-- “本页在整套叙事中的位置：第 [N] 幕（[Establishing/Warning/Climax/Resolution]）。画面必须体现对应情绪强度。”
-- “镜头：采用 [wide/medium/close-up/top-down/diagonal tension]；保持与前后页的连续性。”
+- "This slide's position in the overall narrative: Act [N] ([Establishing/Warning/Climax/Resolution]). The image must match that emotional intensity."
+- "Shot language: use [wide/medium/close-up/top-down/diagonal tension] and preserve continuity with the surrounding slides."
 
 ## Intensity ladder (keep viewers awake)
 
-- Slides 1–2: 低→中（引入、定位）
-- Slides 3–6: 中（建立对比与张力）
-- Slides 7–10: 中→高（警告与高潮）
-- Slides 11–12: 高→收束（情感与应用）
-
+- Slides 1-2: low -> medium (introduction and orientation)
+- Slides 3-6: medium (build contrast and tension)
+- Slides 7-10: medium -> high (warning and climax)
+- Slides 11-12: high -> resolution (emotion and application)

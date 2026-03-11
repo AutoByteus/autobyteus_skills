@@ -1,4 +1,4 @@
-# Chinese quote compression & splitting (long verses → readable slides)
+# Chinese quote compression & splitting (long passages -> readable slides)
 
 Goal: keep Chinese text **accurate** while preventing tiny fonts and wall-of-text slides.
 
@@ -11,9 +11,9 @@ Split into 2+ slides if any is true:
 
 ## Safe splitting patterns (no paraphrase)
 
-1) **Verse chunking** (recommended)
-- Slide A: verse chunk 1 + 2 bullets (why it matters)
-- Slide B: verse chunk 2 + 2 bullets (application)
+1) **Quote chunking** (recommended)
+- Slide A: quote chunk 1 + 2 bullets (why it matters)
+- Slide B: quote chunk 2 + 2 bullets (application)
 
 2) **Quote vs explanation**
 - Slide A: quote only (plus 1 key line)
@@ -26,10 +26,9 @@ Split into 2+ slides if any is true:
 ## Pasteable rules block
 
 ```text
-长经文排版规则（必须遵守）：
-- 不得改写经文：只能拆分显示，不能同义替换。
-- 若经文过长：必须拆成多页，每页引用不超过 3 行（以舒适大字号为准）。
-- 拆分时保持原句顺序；可用省略号“……”仅在原文已出现或用户允许时使用。
-- 若需要解释：优先把解释放到下一页，不要让一页同时塞满长引用+长要点。
+Chinese long-quote layout rules (required):
+- Do not rewrite the quoted text. You may split it across slides, but do not paraphrase or swap in synonyms.
+- If the quotation is too long, split it into multiple slides. Keep each quoted section to no more than 3 lines at a comfortable large font size.
+- Preserve the original sentence order when splitting. Use an ellipsis only if it already exists in the source text or the user explicitly allows it.
+- If explanation is needed, prefer moving the explanation to the next slide instead of cramming a long quote and long bullets onto one slide.
 ```
-

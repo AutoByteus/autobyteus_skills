@@ -1,6 +1,7 @@
-# Shot + mood library (v3 “镜头语言/时间天气/光影情绪”)
+# Shot + mood library (v3 shot language / time / weather / lighting)
 
-Goal: add “电影感” reliably without making slides messy.
+Goal: add cinematic energy reliably without making slides messy.
+The examples below are illustrative; map the same mood logic onto whatever subject the user is actually presenting.
 
 ## Quick recipe (per slide)
 
@@ -34,8 +35,8 @@ If the user asks for relaxed/bright style, prioritize daylight moods and avoid v
 - **Soft overcast day**: calm, neutral, low-glare readability for dense text pages.
 - **Bright interior daylight**: clean and focused; ideal for frameworks/checklists.
 - **Storm at sea**: crisis; use silhouettes and low contrast.
-- **Haze / mist**: spiritual ambiguity; great for “deception/another gospel” warnings.
-- **Candlelit interior**: discernment, Scripture, testing spirits; great for framework slides.
+- **Haze / mist**: ambiguity and uncertainty; great for deception or false-signal warnings.
+- **Candlelit interior**: discernment, close reading, and careful evaluation; great for framework slides.
 
 ---
 
@@ -61,3 +62,4 @@ If the user asks for relaxed/bright style, prioritize daylight moods and avoid v
 - **Care / burden**: night map + heart glow + gold connection lines.
 - **Calm explanation / onboarding**: daylight + soft overcast + top-down or medium shot + low-noise background.
 - **Hopeful call-to-action**: bright dawn/daylight + clean foreground symbol + gentle highlight edges.
+Keep the emotional logic and swap the symbols to match the user's domain.

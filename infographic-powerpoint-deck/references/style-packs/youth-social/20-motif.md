@@ -1,7 +1,7 @@
 ```text
-Motif（youth-social）：
-- 小面积渐变形状与动势箭头。
-- 表情化图标（简化线稿）和标签贴纸风元素。
-- 轻量噪点与柔焦光斑增强活力。
-- 关键短句区域可用色块底强调（但不遮字）。
+Motif (youth-social):
+- Small gradient shapes and directional arrows.
+- Expressive simplified icons and sticker-like label elements.
+- Light noise and soft-focus flares to boost energy.
+- Key short-phrase zones may use color blocks for emphasis, without covering text.
 ```

@@ -1,13 +1,15 @@
 # Text fidelity block (prevent typos / extra words)
 
-Paste this block into every slide prompt when exact Chinese text matters.
+Paste this block into every slide prompt when exact on-slide text matters in any language.
 
 ```text
-文字准确性硬约束（必须遵守）：
-- “必须出现文字”中的所有中文必须逐字准确：不得改写、不得同义替换、不得增删任何字、不得增删任何标点、不得增删任何空格、不得自动补全句子。
-- 禁止出现任何未在“必须出现文字”列表中的文字：
-  - 禁止未指定的英文、拼音、假字幕、logo、水印、随机字符、街牌文字、书页假文字。
-- 若背景出现书页/卷轴/地图：必须为“无文字纹理”，不得出现可读字母或中文。
-- 文字必须清晰锐利、无糊字、无重影、无乱码。
-- 若输出出现错别字/多余文字：必须重新生成该页，并进一步简化背景、提升文字面板不透明度、增大字号。
+Text fidelity hard constraints (required):
+- Every entry in `Must-appear text (verbatim)` must appear exactly as provided.
+- Preserve the original language, script, case, accents, punctuation, spacing, and intentional line breaks.
+- Do not rewrite, translate, paraphrase, autocomplete, or substitute synonyms unless the user explicitly asks.
+- Do not add any text that is not listed in `Must-appear text (verbatim)`.
+  - This includes extra words or glyphs in English, Chinese, German, pinyin, fake subtitles, logos, watermarks, random characters, street signs, book text, or poster text.
+- If the background includes books, scrolls, maps, or documents, they must use no-text texture only. Do not generate readable letters or words.
+- Text must be sharp, legible, and artifact-free. No blur, ghosting, garbling, or broken glyphs.
+- If the output contains wrong or extra text, regenerate the slide and simplify the background, increase panel opacity, enlarge text, or split the content across slides.
 ```
