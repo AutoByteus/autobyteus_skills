@@ -85,11 +85,15 @@ Describe visuals as a **scene** plus **infographic elements**:
 
 - Far background (very low contrast): `[location + time: harbor at dawn / city wall in daylight / bright study interior / wilderness at sunrise]`
 - Midground: `[main environment objects: wall, colonnade, waves, damaged boat, route line, scroll, stone path, crowd silhouettes]`
-- Foreground hero (right side): `[core symbolic object: cross, ring, shield, mask, scale, scissors, chain, basket]`
+- Foreground hero (right side): `[core symbolic object or protagonist figure: cross, ring, shield, mask, scale, scissors, chain, basket, mentor figure, founder figure, guide character]`
 
 Add 3–8 concrete objects/icons to reinforce meaning:
 - `[Icon 1]` (e.g., thin-line icon + subtle glow)
 - `[Icon 2]`
+
+If the slide needs a human or character figure:
+- Specify role, age range, silhouette, wardrobe, pose, facial expression, gaze direction, and whether the rendering should feel realistic, stylized cinematic, or stylized 3D animated.
+- Keep the figure composition readable and away from the main text panel.
 
 Depth + storytelling cues (optional but recommended):
 - Camera feel: `[wide shot / medium shot]` with gentle depth-of-field.

@@ -1,0 +1,5 @@
+id = "cinematic-light"
+display_name = "Cinematic Light"
+inherits = ["base-core"]
+intent_keywords = ["cinematic", "bright cinematic", "hopeful", "filmic", "daylight"]
+default_scene_tags = ["cinematic", "daylight", "hopeful", "open-space"]

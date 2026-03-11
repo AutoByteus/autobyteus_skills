@@ -17,6 +17,9 @@ Use this file only as a legacy alias table.
 Default remains: `editorial-light`.
 
 Additional direct packs (no legacy alias name required):
+- `cinematic-light`
+- `cinematic-editorial`
+- `animated-feature-bright`
 - `warm-sermon`
 - `neo-tech`
 - `youth-social`

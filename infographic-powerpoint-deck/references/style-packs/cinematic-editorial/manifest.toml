@@ -1,0 +1,5 @@
+id = "cinematic-editorial"
+display_name = "Cinematic Editorial"
+inherits = ["base-core"]
+intent_keywords = ["cinematic editorial", "premium", "cover-story", "magazine", "campaign"]
+default_scene_tags = ["cinematic", "editorial", "architectural", "refined"]

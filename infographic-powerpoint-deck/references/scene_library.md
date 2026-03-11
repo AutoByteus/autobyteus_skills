@@ -44,6 +44,22 @@ If style is light/relaxed, prioritize daylight or bright-interior locations firs
 - **Suffering montage**: waves + bars + road + gate + river + stones/rod silhouettes; keep low contrast.
 - **Concern + escape**: heart over dotted map (gold lines) + wall/window/rope/basket.
 
+## Figure-led protagonist mode (optional)
+
+Use this when the slide should feature a person or character rather than only symbolic objects.
+
+- Prefer **one clear hero figure** instead of a crowded group.
+- Specify:
+  - role or archetype (`mentor`, `founder`, `student`, `researcher`, `caregiver`, `guide`)
+  - age range
+  - wardrobe and silhouette
+  - pose and gesture
+  - expression and emotional tone
+  - gaze direction
+  - rendering treatment (`realistic cinematic`, `stylized cinematic`, `stylized 3D animated`)
+- Keep the figure on the right side or otherwise away from the main text panel.
+- If using an animated look, keep materials, facial proportions, and lighting consistent across the deck.
+
 ---
 
 ## Prop / icon buckets (choose 3–6)

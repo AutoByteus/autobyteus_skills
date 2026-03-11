@@ -19,6 +19,7 @@ If the user asks for relaxed/bright style, prioritize daylight moods and avoid v
 
 - **Wide establishing**: show location context (harbor, city wall, desert road) with a small hero symbol in foreground.
 - **Medium hero**: hero symbol dominates (mask / scale / shield), location becomes soft backdrop.
+- **Medium protagonist**: one clear human or character figure dominates, with the environment as supporting backdrop.
 - **Close-up detail**: focus on one prop (ring, wax seal, rope/basket, scissors cutting chain) with strong texture and shallow depth of field.
 - **Low angle (awe)**: hero symbol appears towering; use rim light (use sparingly).
 - **Top-down (analysis)**: best for frameworks/checklists: desk view, cards laid out, map with dotted nodes.

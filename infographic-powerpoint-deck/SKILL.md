@@ -1,6 +1,6 @@
 ---
 name: infographic-powerpoint-deck
-description: Create image-based PowerPoint decks by (1) designing a slide plan, (2) generating one 16:9 infographic slide image per slide with all text baked into the image (English by default; multilingual slide text supported), and (3) assembling an images-only .pptx that simply concatenates those images full-screen. Use when the user wants polished, consistent visuals with extensible style packs (cinematic, editorial, warm pastoral, tech, youth social, academic, corporate), prefers not to hand-layout PPT objects, or wants a repeatable prompt workflow to iterate over time.
+description: Create image-based PowerPoint decks by (1) designing a slide plan, (2) generating one 16:9 infographic slide image per slide with all text baked into the image (English by default; multilingual slide text supported), and (3) assembling an images-only .pptx that simply concatenates those images full-screen. Use when the user wants polished, consistent visuals with extensible style packs (cinematic dark, cinematic light, cinematic editorial, animated feature, editorial, warm pastoral, tech, youth social, academic, corporate), prefers not to hand-layout PPT objects, or wants a repeatable prompt workflow to iterate over time.
 ---
 
 # Infographic PowerPoint Deck

@@ -1,0 +1,5 @@
+id = "animated-feature-bright"
+display_name = "Animated Feature Bright"
+inherits = ["base-core"]
+intent_keywords = ["animated feature", "family animation", "stylized 3d", "character-led", "optimistic"]
+default_scene_tags = ["animated", "bright", "character", "optimistic"]

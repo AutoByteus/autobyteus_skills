@@ -5,9 +5,12 @@ Use this table to map user wording to one style pack ID.
 | Pack ID | Positioning | Trigger wording (examples) | Default scene tags |
 |---|---|---|---|
 | `cinematic-dark` | Dramatic, epic, tense | cinematic, epic, tension, warning | `dramatic,night,high-contrast-symbol` |
+| `cinematic-light` | Filmic, bright, uplifting | bright cinematic, hopeful cinematic, cinematic daylight, not dark | `cinematic,daylight,hopeful,open-space` |
+| `cinematic-editorial` | Premium, polished, magazine-like | cinematic editorial, premium keynote, campaign film, cover-story | `cinematic,editorial,architectural,refined` |
 | `editorial-light` | Bright, readable, balanced | bright, clear, shareable, not too dark | `daylight,clean,teaching` |
 | `airy-relaxed` | Soft, calm, low-pressure | relaxed, fresh, gentle, healing | `airy,calm,pastel,open-space` |
 | `clean-corporate` | Professional, report-like | corporate, training, briefing, professional | `corporate,minimal,diagram-friendly` |
+| `animated-feature-bright` | Stylized 3D family-animation energy | animated feature, family animation, stylized 3D, character-led | `animated,bright,character,optimistic` |
 | `warm-sermon` | Warm, pastoral, devotional | warm, pastoral, testimony, sermon, prayer gathering | `warm,heritage,pastoral,daylight` |
 | `neo-tech` | Futuristic, AI/startup, dynamic | AI, technology, futuristic, startup, growth | `tech,futuristic,network,data` |
 | `youth-social` | Vibrant, energetic, youth-oriented | youth, energetic, community, social, new-media | `vibrant,social,gradient,optimistic` |
@@ -21,7 +24,10 @@ If user intent is unclear, pick `editorial-light`.
 
 - If user says "not too dark" or "more relaxed", prefer `editorial-light` or `airy-relaxed`.
 - If user asks for maximum cinematic impact, use `cinematic-dark`.
+- If user asks for cinematic but bright, hopeful, or daylight-driven, use `cinematic-light`.
+- If user asks for a premium keynote, campaign-film, or cover-story feel, use `cinematic-editorial`.
 - If user needs meeting-room readability and structured delivery, use `clean-corporate`.
+- If user asks for Disney/Pixar-like energy, route to `animated-feature-bright` and rewrite the prompt with non-branded descriptors such as `stylized 3D family animated feature`, `expressive character-led composition`, and `soft cinematic global illumination`.
 - If user wants warm pastoral sharing, use `warm-sermon`.
 - If topic is AI/product/startup growth, use `neo-tech`.
 - If audience is students/youth/community groups, use `youth-social`.
