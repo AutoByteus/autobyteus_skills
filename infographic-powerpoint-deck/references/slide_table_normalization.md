@@ -13,7 +13,7 @@ If the table already has these columns, map them 1:1 into `slides_message_plan.m
 - optional `Supporting points / teaching moves`
 - optional `Notes on separation / pacing`
 
-## Legacy or underspecified table
+## Underspecified table
 
 If upstream only has a simpler mix such as:
 - `Headline (claim)`
@@ -53,7 +53,7 @@ After normalization, derive `slides_display_plan.md` separately:
 - preserve must-preserve lines
 - decide which lines remain speaker-only and which become visible text
 
-Legacy visual hints can still inform later visual planning, but they should move into `slides_visual_plan.md`, not remain inside the message plan.
+Visual hints from the source table can still inform later visual planning, but they should move into `slides_visual_plan.md`, not remain inside the message plan.
 
 ## Boundary QA checklist
 

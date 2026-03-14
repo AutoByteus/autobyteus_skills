@@ -6,12 +6,17 @@ Paste this block into every slide prompt to reduce “tiny text” and improve r
 Typography and spacing hard constraints (required):
 - Canvas: 16:9. Safe margins: at least 4% whitespace on every edge. No text touching the edge.
 - Text support zone: must match the selected layout and style pack. Split-panel layouts may use a defined panel. Full-bleed layouts must place text directly on the image with subtle local contrast support only, not an obvious card or box.
+- Typography attitude: specify the title/body/label relationship in the concrete prompt rather than relying on the style name alone.
+  - Examples: `editorial serif title + clean sans body`, `academic sans hierarchy`, `geometric sans labels + restrained serif headline`.
 - Title hierarchy:
   - Main title: very large, bold, ideally one line, maximum two lines, comfortable leading.
   - Section headers / subheads: use the style-pack accent color and remain clearly legible.
   - Quotes / supporting text: slightly smaller than bullets or on the same tier, but never tiny.
   - Bullets: maximum two lines each. Split into additional slides if needed.
   - Footer: small but still readable at presentation distance.
+- Label hierarchy:
+  - Diagram labels, module headers, captions, formulas, and footer references must share one disciplined system of weight, case, and spacing.
+  - No more than two distinct typography attitudes on a single slide unless the content truly requires a third.
 - Line length and spacing:
   - Latin-script languages (English, German, etc.): prefer roughly 6-12 words per line in dense text blocks.
   - CJK languages: prefer roughly 18-22 characters per line before wrapping.
@@ -23,6 +28,9 @@ Typography and spacing hard constraints (required):
 - Contrast hard constraints:
   - The text support zone and body text must maintain strong contrast (target roughly WCAG 4.5:1 or better).
   - If the background is bright, use dark body text. If the background is dark, use light body text.
+- Alignment discipline:
+  - Titles, subheads, bullets, labels, and footers should align to a clear shared grid or module rhythm.
+  - Dense didactic boards should align caption baselines and divider spacing consistently.
 - Forbidden:
   - No tiny text.
   - No decorative novelty fonts.

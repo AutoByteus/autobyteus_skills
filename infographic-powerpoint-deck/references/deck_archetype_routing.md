@@ -45,6 +45,7 @@ So the skill should first answer:
   - wants beauty without sacrificing readability
 - Default style direction:
   - `editorial-light`
+  - `illustrative-cinematic`
   - `warm-sermon`
   - `airy-relaxed`
 - Default layout bias:
@@ -132,8 +133,10 @@ So the skill should first answer:
   - wants the slide itself to carry the explanation, not just act as a visual prompt for a speaker
 - Default style direction:
   - `research-academic`
+  - `illustrative-cinematic`
   - `editorial-light`
   - `clean-corporate`
+  - `whiteboard-sketch`
 - Default layout bias:
   - `didactic`
 

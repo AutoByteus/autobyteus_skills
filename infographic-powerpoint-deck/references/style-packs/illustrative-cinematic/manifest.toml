@@ -1,0 +1,5 @@
+id = "illustrative-cinematic"
+display_name = "Illustrative Cinematic"
+inherits = ["base-core"]
+intent_keywords = ["illustrative", "illustrated", "cinematic", "teaching", "immersive", "explainer"]
+default_scene_tags = ["daylight", "illustrative", "cinematic", "teaching", "architectural"]

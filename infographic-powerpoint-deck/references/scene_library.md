@@ -11,8 +11,9 @@ Pick:
 3) **1 Hero symbol set** (what it means)
 4) **3–6 Props/icons** (supporting details)
 
-Rule: in split-panel layouts, keep the scene on the **right side** and **low-contrast** behind the text panel. In full-bleed layouts, shape the scene so one area stays calm enough for direct text-on-image placement. In didactic board layouts (`L9`, `L10`, `L11`), treat this file as optional and prefer clean board surfaces, explicit module structure, and diagram-friendly whitespace over cinematic location-building.
+Rule: in split-panel layouts, keep the scene on the **right side** and **low-contrast** behind the text panel. In full-bleed layouts, shape the scene so one area stays calm enough for direct text-on-image placement. In didactic board layouts (`L9`, `L10`, `L11`), treat this file as optional and prefer clean board surfaces, explicit module structure, and diagram-friendly whitespace. If the chosen pack is `illustrative-cinematic`, allow a calm illustrated environmental layer to support the board, but keep the teaching structure dominant over the scenery.
 If style is light/relaxed, prioritize daylight or bright-interior locations first.
+Do not stop at naming a location. In the final prompt, also specify material cues, contrast behavior, the text-safe zone, and how many props are actually visible.
 
 ---
 
@@ -30,6 +31,13 @@ If style is light/relaxed, prioritize daylight or bright-interior locations firs
 - **Desert road / wilderness**: signpost, distant mountains, wind-blown dust, sparse stars at dawn.
 - **Storm sea / shipwreck (silhouette)**: broken mast silhouette, heavy waves, spray, moonlight glints (no violence).
 - **Prison bars (symbolic)**: iron bars silhouette, cold light slice, chain links (no blood, no torture depiction).
+
+For higher fidelity, expand the chosen location into:
+- architecture or environment class
+- surface materials near the text
+- where the quiet negative space sits
+- one to three dominant background objects
+- what should stay blurred or low contrast
 
 ---
 
@@ -92,7 +100,7 @@ Use this when the slide should feature a person or character rather than only sy
   - parchment grain overlay
   - harbor/city-wall silhouette in far background
 - Keep icon stroke width consistent (thin-line).
-- Keep the same text-support treatment across the deck: split-panel slides may reuse a stable panel style, while full-bleed slides should reuse stable direct-overlay behavior without obvious caption boxes.
+- Keep the same text-support treatment across the deck: split-panel slides may reuse a stable structured reading zone, while full-bleed slides should reuse stable direct-overlay behavior without obvious caption boxes.
 
 ---
 

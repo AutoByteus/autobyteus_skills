@@ -65,8 +65,9 @@ def main() -> int:
         """```text
 Style Pack: <pack-id> (<display name>)
 - Layout behavior: preferred layout families (direct-overlay-first / split-panel / mixed), plus split-panel proportions only if relevant. If the pack is cinematic/editorial/warm/story-led, describe split-panel as a fallback rather than a default.
+- Composition attitude: whether structure should feel explicit, implied, board-like, whiteboard-like, cinematic, or otherwise; note whether grouping usually comes from visible containers or from spacing/alignment/arrows.
 - Color palette: primary background, body text, accent color.
-- Text treatment: if split-panel fallback is used, describe that panel style; also describe full-bleed direct-overlay behavior with no obvious caption box by default.
+- Text treatment: if split-panel fallback is used, describe that structured reading-zone behavior; also describe full-bleed direct-overlay behavior with no obvious caption box by default.
 - Lighting: brightness, contrast, and whether vignette is allowed.
 - Background bias: preferred visual semantics or scene classes.
 ```""",
@@ -88,6 +89,7 @@ Consistency Lock (<pack-id>):
 - Cross-slide layout consistency rules.
 - Type hierarchy and sizing consistency rules.
 - Icon and color consistency rules.
+- Note whether consistency should come from explicit containers or from softer rhythm such as spacing, divider weight, and connector language.
 - Readability hard constraints and forbidden elements.
 ```""",
     )

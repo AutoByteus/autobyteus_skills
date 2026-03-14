@@ -1,6 +1,6 @@
 ---
 name: infographic-powerpoint-deck
-description: Create image-based PowerPoint decks by (1) turning raw article content or notes into a detailed per-slide message plan when needed, (2) turning that message plan into a slide display plan and then a visual-production plan, (3) generating one 16:9 slide image per slide with all displayed text baked into the image (English by default; multilingual slide text supported), and (4) assembling an images-only .pptx that simply concatenates those images full-screen. Use when the user wants polished, consistent visuals with extensible style packs (cinematic dark, cinematic light, cinematic editorial, animated feature, editorial, warm pastoral, tech, youth social, academic, corporate), prefers not to hand-layout PPT objects, or wants a repeatable prompt workflow to iterate over time.
+description: Create image-based PowerPoint decks by (1) turning raw article content or notes into a detailed per-slide message plan when needed, (2) turning that message plan into a slide display plan and then a visual-production plan, (3) generating one 16:9 slide image per slide with all displayed text baked into the image (English by default; multilingual slide text supported), and (4) assembling an images-only .pptx that simply concatenates those images full-screen. Use when the user wants polished, consistent visuals with extensible style packs (cinematic dark, cinematic light, cinematic editorial, illustrative cinematic, animated feature, editorial, warm pastoral, tech, youth social, academic, corporate, whiteboard sketch), prefers not to hand-layout PPT objects, or wants a repeatable prompt workflow to iterate over time.
 ---
 
 # Infographic PowerPoint Deck
@@ -17,9 +17,6 @@ If the user provides a full article, sermon, report, or long notes:
 5. Write one image prompt per slide and generate the deck.
 
 If the user already provides `slides_message_plan.md` or an equivalent content-first slide table, you can skip the article-intake step and use that directly.
-
-Legacy compatibility:
-- If an older workflow still hands you `slides_content_plan.md`, treat it as the nearest equivalent to `slides_message_plan.md`, then explicitly derive `slides_display_plan.md` before prompt writing.
 
 If the user provides one or more reference slides/screenshots, use `references/reference_slide_intake.md` to extract the reusable visual grammar before writing prompts.
 
@@ -80,6 +77,7 @@ Use three distinct planning artifacts:
    - Paste exact required on-slide text from `slides_display_plan.md` in the user-specified language(s).
    - Add slide-specific scene layer details and icons using the visual plan.
    - Keep internal routing IDs such as `L1` or `L10` in planning metadata only. Translate the routed layout into plain composition language inside the concrete image prompt.
+   - If using a reference image or edit-style tool call, keep that mechanic in the tool call. The concrete prompt should still read as result-oriented art direction such as `Using the provided image as the compositional base...`, not tool language such as `edit this image`.
 9. Generate each slide as one **16:9 image**.
    - Allowed slide-creation modes in this skill are **image generation** and **image editing/reference** only.
    - In the slide prompt text, explicitly include a ratio lock sentence (e.g., `Hard canvas constraint: 16:9 widescreen. Do not generate a square image.`).
@@ -106,7 +104,6 @@ For higher-quality multi-step workflows, you may start from either a raw article
 - If the upstream artifact is already `slides_message_plan.md`, preserve it as the message source of truth.
 - If the upstream artifact already decides deck length, section coverage, or which beats must stay on separate slides, treat that as the controlling message plan unless the user explicitly asks for further compression or expansion.
 - If the upstream content table is simple or underspecified, normalize it into `slides_message_plan.md` using `references/slide_table_normalization.md` before display planning.
-- If the upstream workflow still uses the old `slides_content_plan.md` name, interpret it as a legacy message-plan artifact and derive `slides_display_plan.md` before visual planning.
 
 ## Prompt stack (minimal vs full)
 
@@ -117,6 +114,7 @@ For higher-quality multi-step workflows, you may start from either a raw article
   - `references/style-pack-system.md` (load order + composition rules)
   - `references/layout_routing_policy.md` (auto-route layouts by default)
   - `references/prompt_example_library.md` (use examples and anti-examples to avoid panel drift)
+  - `references/high_fidelity_prompt_playbook.md` (when the user wants a more precise prompt)
   - `references/reference_slide_intake.md` (when user wants the deck to learn from a reference slide)
   - `references/style-packs/<pack-id>/` (pack-local blocks)
   - `references/typography_spacing_lock.md`
@@ -148,7 +146,7 @@ Note: despite the Bible-themed examples, this workflow works for any topic. Swap
 - **Display plan** = audience-facing text model: what short text, labels, verse fragments, bullets, captions, and module headers should actually appear on the slide.
 - **Deck archetype** = deck-level viewing model: what kind of visual presentation best fits the approved message plan.
 - **Style pack** = deck-level visual language: palette, lighting, texture, typography attitude, scene bias.
-- **Layout** = slide-level composition: split-panel, framework, comparison, warning, didactic teaching board, or full-bleed overlay. It should normally be auto-routed during visual planning.
+- **Layout** = slide-level composition grammar: split-panel, framework, comparison, warning, didactic teaching board, or full-bleed overlay. It should normally be auto-routed during visual planning. The best result may feel highly organized without looking like a rigid template.
 - **Scene ID / visual scene** = slide-level depiction choice chosen during visual planning.
 - **Text budget** = production constraint describing how much copy the chosen layout needs to carry.
 
@@ -205,6 +203,7 @@ Read `references/prompt_template.md` and fill it per slide. Keep it extremely ex
 - Treat split-panel wording as explicit layout instructions, not as generic presentation language. If the user prefers text directly on the image, route away from `L1` before writing the prompt.
 - Treat `L1`-`L11` as internal routing handles, not model-facing prompt text. The image model should receive composition instructions such as `use a mirrored two-zone teaching board with a central divider`, not `use layout L9`.
 - Treat style-pack files the same way: they are internal guidance material, not literal prompt fragments. The final prompt should read like direct art-direction and display instructions, not like serialized metadata.
+- Treat input-image and edit mechanics the same way: they are tool-side mechanics, not prompt-side prose. The final prompt should describe the desired finished slide, not the fact that an edit tool is being used.
 - If the final prompt still sounds generic after removing the metadata, enrich it rather than shortening it. High-fidelity prompts normally need explicit visual specificity, not just raw content and one style label.
 - For full-bleed layouts, default to direct text on the image itself with composition-based readability support. Do not ask for visible rounded rectangles, frosted cards, or caption boxes unless the user explicitly wants that treatment.
 - Do not ask the user for per-slide layouts by default. Route layouts internally from slide role, text budget, display density, and overall deck style. Only use explicit `Layout hint` when the user or `slides_visual_plan.md` provides one.
@@ -218,6 +217,7 @@ If you need copy-ready visual scene blocks, read `references/scene-preset-librar
 If you need fast, reliable infographic compositions or full-bleed title-card layouts, read `references/layout_library.md`.
 If you need automatic routing rules for when to use each layout, read `references/layout_routing_policy.md`.
 If you need concrete good/bad prompt examples before writing prompts, read `references/prompt_example_library.md`.
+If you need a higher-precision checklist for turning style/layout/scene choices into a concrete prompt, read `references/high_fidelity_prompt_playbook.md`.
 If the user gives a screenshot or example slide and wants the skill to learn from it, read `references/reference_slide_intake.md`.
 If you need shot-language / time-of-day / weather / lighting presets, read `references/shot_mood_library.md`.
 If you need style modularity, read `references/style-pack-system.md` and use `scripts/compose_style_pack_blocks.py`.
@@ -317,8 +317,8 @@ python3 scripts/build_images_only_pptx.py --images-dir /path/to/slides --out /pa
 - Read `references/layout_library.md` to choose a layout that matches your text density (so slides stay readable).
 - Read `references/layout_routing_policy.md` to auto-route layouts when the user does not explicitly request them.
 - Read `references/shot_mood_library.md` for cinematic shot + lighting + time-of-day presets.
-- Read `references/motif_pack.md` to make the whole deck feel like a single cohesive series.
-- Read `references/deck_consistency_block.md` to lock margins/light direction/texture/icon style across the whole deck.
+- Read `references/motif_pack.md` when you want optional recurring motif guidance for stronger deck cohesion.
+- Read `references/deck_consistency_block.md` when you want optional cross-slide consistency locks for light direction, rhythm, and texture behavior.
 - Read `references/typography_spacing_lock.md` to prevent tiny text and keep spacing consistent.
 - Read `references/text_fidelity_block.md` to reduce text errors and forbid any extra words in any language.
 - Read `references/negative_prompt_block.md` to avoid common generator artifacts (watermarks/unspecified text/UI).

@@ -8,6 +8,7 @@ Copy the structure and wording pattern, not the exact content.
 - If your prompt says `text panel`, `left panel`, `card`, `caption box`, `rounded rectangle`, or `frosted panel`, you are explicitly asking the model to create a panel-based layout.
 - Do not use those words for `L4`, `L5`, or `L6`.
 - Internal layout labels such as `L1`, `L4`, `L9`, or `L10` are for the skill, not for the image model. Prefer composition wording in the concrete prompt.
+- For didactic boards, a good prompt may still be highly structured without asking for visible boxes. Structure can come from zones, dividers, arrows, alignment, and spacing rhythm.
 - For cinematic, editorial, warm, airy, animated, and youth packs, start from a direct-overlay example first and only fall back to a split-panel example when the text is too dense.
 
 ## Anti-example: this wording causes a panel
@@ -39,6 +40,29 @@ Why this is weak:
 - it names style and layout, but does not tell the model what geometry to build
 - it gives no palette, material, divider, typography, or module instructions
 - it leaves too much room for generic output
+
+## Anti-example: this wording leaks tool mechanics into the prompt
+
+Do not write prompts like this:
+
+```text
+Edit this image and replace the placeholder text.
+Use the input image as an edit target.
+I know you may not be able to edit images, but try to keep the same layout.
+```
+
+Why this is weak:
+- it talks like a tool API instead of art direction
+- it invites the model to respond at the capability layer instead of the visual-result layer
+- it wastes prompt budget on mechanics the tool call already handles
+
+Better:
+
+```text
+Using the provided image as the compositional base, keep the same overall board geometry and rebuild the slide as a finished teaching board.
+Preserve the current module structure and imagery zones.
+Replace all placeholder text with the exact required text and remove every stray label or extra symbol.
+```
 
 ## Example A: cinematic-light context slide with direct overlay
 
@@ -172,6 +196,64 @@ Below it, create a 2x2 or 2x3 teaching grid with thin dividers and generous whit
 Each module may contain one short header, one or two descriptor lines, and a mini diagram or icon.
 Keep the background almost white and highly readable.
 Every visible module label must be included in the required on-slide text.
+```
+
+## Example H: reference-guided board refinement
+
+Use when:
+- a prior generated base image already has the right overall structure
+- the final slide should preserve the composition but improve text fidelity or cleanliness
+
+```text
+Using the provided image as the compositional base, keep the same board geometry, divider placement, and overall bright editorial teaching style.
+Preserve the upper hero diagram zone and the lower analytical blocks.
+Rebuild the slide as a clean finished teaching board with exact readable text and no placeholder chrome.
+Render only the required title, section text, and footer reference.
+Remove every stray label, lorem ipsum fragment, arrow stub, dot cluster, watermark, and extra symbol.
+```
+
+## Example I: whiteboard-sketch technical explainer
+
+Use when:
+- the user wants a hand-drawn teaching feel
+- the slide needs technical detail but should still feel approachable
+- diagrams, arrows, and UI/process modules are part of the teaching style
+
+```text
+Create a bright whiteboard-sketch explainer slide on a warm paper-white surface with faint sketchbook texture.
+Use a large clean bold title, crisp readable body text, and blue marker-like arrows and accent strokes.
+Build the slide as a concept board with one strong title row, one central diagram or UI sketch module, and one right-side or lower-side explanation block.
+Keep the text typed and readable, but let the arrows, boxes, and icons feel hand-drawn.
+Use rounded sketch-outline boxes, thin blue connector lines, and restrained doodled technical callouts.
+Keep the slide bright, friendly, and self-contained with no cinematic shading and no corporate gloss.
+```
+
+Better when the reference feels organized but not boxed:
+
+```text
+Create a bright whiteboard-sketch explainer slide on a warm paper-white surface with faint sketchbook texture.
+Let the slide feel carefully choreographed rather than templated.
+Use one strong title row, one central teaching diagram, and surrounding explanation zones arranged by spacing, curved arrows, and alignment rather than heavy card containers.
+Keep the text typed and readable, but let the connectors, dividers, and emphasis strokes feel hand-drawn in blue marker.
+Use only light separator strokes or soft implied lanes where needed; avoid turning every section into a visible rectangle.
+Keep the slide bright, technical, and self-contained with no cinematic shading and no corporate gloss.
+```
+
+## Example J: illustrative-cinematic teaching board
+
+Use when:
+- the user wants immersive illustrative atmosphere without sketch-note roughness
+- the slide should feel scene-rich and cinematic, but still teach clearly
+- the deck needs more information than a sparse keynote slide
+
+```text
+Create a bright illustrative-cinematic teaching slide on a warm ivory board with subtle vellum or plaster-like texture.
+Build the slide as an immersive concept board rather than a visible template.
+Place one strong title row across the top with generous breathing room.
+Let the background carry a polished illustrated environment with soft spatial depth, such as an atrium, archive, bridge, city threshold, or symbolic interior that supports the teaching theme.
+In the main teaching area, arrange one hero diagram, object grouping, or figure cluster with surrounding explanatory modules choreographed by spacing, divider rhythm, and elegant arrows rather than heavy card boxes.
+Use dark slate text, muted deep-blue structure lines, and restrained soft-gold emphasis accents.
+Keep the information richer than a keynote slide but cleaner than a textbook scan: readable labels, calm hierarchy, and no scratchy strokes, no doodle marks, and no visible whiteboard feel.
 ```
 
 ## Density note

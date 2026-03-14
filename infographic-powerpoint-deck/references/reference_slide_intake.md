@@ -18,13 +18,16 @@ This is not model training. It is a reusable extraction workflow:
 
 For each strong example, capture:
 
-1. Layout family
-- direct overlay or split-panel
+1. Composition grammar
+- direct overlay or split-panel when those are truly present
 - didactic board / teaching poster / catalog grid when relevant
+- whether the structure is explicit or mostly implied
+- whether the slide feels freeform, hand-arranged, whiteboard-like, or softly modular
 - title-safe zone
 - text anchor area
 - whether the text sits on architecture/sky/light or inside a deliberate panel
 - text density tolerance
+- whether the slide feels highly organized without obvious boxes
 
 2. Visual language
 - palette
@@ -117,6 +120,10 @@ Do:
 - add one concrete wording pattern in `references/prompt_example_library.md`
 - if the pattern changes deck-level behavior, add or refine an archetype in `references/deck_archetype_routing.md`
 
+Important:
+- many strong reference slides do not look like they are using a rigid template
+- if the main signal is `clear information choreography without obvious boxes`, capture that as composition grammar rather than forcing it into a panel/card interpretation
+
 ## Reuse rule
 
 When learning from a reference slide:
@@ -143,4 +150,5 @@ If a reference slide is provided, add a short section near the top of `slides_vi
 - If the user says `use this exact feel` and the slide is mostly one good composition idea, update `prompt_example_library.md`.
 - If the user says `we will use this kind of look again and again`, refine or add a style pack.
 - If the user’s example is mainly a new way of organizing information, add or refine a layout family and routing rule instead of forcing it into an unrelated existing layout.
+- If the example feels structured but not boxed, describe it as a freeform composition grammar, not as a missing panel layout.
 - If the user only wants the current deck to resemble it, keep it local to the deck and use reference-derived prompt notes.

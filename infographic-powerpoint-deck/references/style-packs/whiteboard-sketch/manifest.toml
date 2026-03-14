@@ -1,0 +1,5 @@
+id = "whiteboard-sketch"
+display_name = "Whiteboard Sketch"
+inherits = ["base-core"]
+intent_keywords = ["whiteboard", "sketch", "doodle", "hand-drawn", "technical explainer", "visual notes"]
+default_scene_tags = ["bright", "sketch", "diagram", "teaching"]

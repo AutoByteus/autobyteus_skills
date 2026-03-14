@@ -1,6 +1,7 @@
 # Scene catalog (IDs + tags)
 
 Use scene IDs in `slides_visual_plan.md` so scene selection is explicit and reusable.
+Scene IDs are shorthand only. The final prompt should translate the chosen ID into plain location, material, contrast, and text-zone instructions.
 
 | Scene ID | Scene summary | Suggested tags |
 |---|---|---|
@@ -51,7 +52,7 @@ Use scene IDs in `slides_visual_plan.md` so scene selection is explicit and reus
 
 - Pick one primary scene ID per slide.
 - For dense text slides, prefer lower-noise IDs (e.g., `sunlit-library-day`, `atrium-morning`, `scribe-desk-candle`).
-- For `L9`, `L10`, or `L11`, prefer board-oriented IDs such as `didactic-board-bright`, `mirrored-comparison-board`, `concept-board-neutral`, or `catalog-grid-clean` rather than scenic location IDs.
+- For `L9`, `L10`, or `L11`, usually prefer board-oriented IDs such as `didactic-board-bright`, `mirrored-comparison-board`, `concept-board-neutral`, or `catalog-grid-clean`. If the chosen style pack is `illustrative-cinematic`, a calm architectural or symbolic scene ID can also work when it still preserves clear board structure and readable teaching modules.
 - For warning/climax slides, use higher-tension IDs sparingly.
 - Use scene tags to match style packs:
   - `editorial-light`/`airy-relaxed`: `daylight`, `clean`, `calm`, `open-space`
@@ -59,3 +60,5 @@ Use scene IDs in `slides_visual_plan.md` so scene selection is explicit and reus
   - `neo-tech`: `tech`, `data`, `network`, `startup`
   - `youth-social`: `youth`, `social`, `vibrant`
   - `research-academic`: `academic`, `neutral`, `structured`, `evidence`
+  - `whiteboard-sketch`: `bright`, `sketch`, `diagram`, `teaching`
+  - `illustrative-cinematic`: `illustrative`, `cinematic`, `daylight`, `architectural`, `teaching`

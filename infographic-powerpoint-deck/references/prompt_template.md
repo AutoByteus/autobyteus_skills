@@ -30,6 +30,29 @@ If the concrete prompt could plausibly fit many unrelated slides after changing 
 - If output still is not 16:9, regenerate the same slide with stricter ratio wording in prompt and ratio config in tool call.
 - If deck consistency needs reinforcement, you may supply a previous approved slide or background exploration image as an input/edit reference. The image tool must still render the final full slide image.
 
+## 0c) Reference / edit wording boundary (required when using an input image)
+
+- The image tool call may use input images or edit mode, but the **model-facing prompt must still read like art direction**, not like an API instruction.
+- Do **not** write tool-like lines such as:
+  - `edit this image`
+  - `replace the text in this image`
+  - `I know you cannot edit images, but`
+  - `use edit mode`
+  - `input image: ...`
+- Instead, describe the desired result while assuming the provided image is already available to the model through the tool call.
+- Good patterns:
+  - `Using the provided image as the compositional base, produce a cleaner didactic board with ...`
+  - `Based on the provided image, keep the same overall geometry and rebuild the slide so that ...`
+  - `Keep the existing board structure and turn it into a finished teaching slide with ...`
+  - `Preserve the current scene composition, but render the final slide with ...`
+- When a reference image is present, the prompt should usually specify:
+  - what geometry or composition must stay,
+  - what imagery should remain,
+  - what visible text must appear exactly,
+  - what placeholder, stray, or unwanted elements must disappear.
+- The prompt should never talk about the model's capabilities or lack of capabilities.
+- Keep tool mechanics in the tool call. Keep the concrete prompt as plain result-oriented visual instruction prose.
+
 ## 1) Global style profile (required: select one style block first)
 
 Use style-pack composition:
@@ -38,7 +61,7 @@ Use style-pack composition:
 - Optional: list all packs using `python3 scripts/compose_style_pack_blocks.py --list`.
 - Compose blocks from `references/style-packs/` using:
   - `python3 scripts/compose_style_pack_blocks.py --pack-id <id>`
-- The default output is prompt-ready raw style text.
+- The default output is helper style text for prompt authoring, not a finished concrete prompt.
 - If you need debugging headers like pack names and source paths, use `--annotated` instead.
 - Use the composed output as prompt material, but flatten it into plain instructions inside the final concrete prompt rather than preserving helper headings.
 - If user does not specify style, infer it from the deck archetype first. If the fit is still unclear, default to `editorial-light`.
@@ -62,6 +85,7 @@ Optional (for stronger narrative): `references/storyboard_library.md`
 Optional (for long Chinese passages): `references/chinese_quote_compression.md`
 Optional (recommended for Chinese decks): `references/chinese_text_rendering_playbook.md`
 Optional (recommended for routing + wording calibration): `references/prompt_example_library.md`
+Optional (recommended for premium / high-fidelity prompt writing): `references/high_fidelity_prompt_playbook.md`
 
 ## 2) Slide-specific content (fill in)
 
@@ -82,7 +106,6 @@ Include **everything** that must appear on the slide, verbatim:
 
 Rules:
 - If content comes from an upstream `slides_display_plan.md`, copy from that first.
-- If the workflow still uses the legacy `slides_content_plan.md` name, treat it as a message-plan artifact, not as final slide copy, and derive the display text explicitly before writing the prompt.
 - If content comes from a raw article intake workflow, do not jump directly from the article to final display text. Derive a message plan first, then a display plan, then copy this block from the display plan.
 - Keep quote blocks short; if too long, split into 2 slides.
 - If the slide is a didactic infographic or teaching-poster layout, include every visible section header, label, formula caption, module title, and diagram annotation here. Do not expect the model to invent accurate labels on its own.
@@ -120,6 +143,8 @@ Translate those into concrete visual instructions the model can actually render.
 - If `slides_visual_plan.md` or the user provides `Layout hint`, treat it as an override.
 - Keep internal routed layout IDs such as `L1`, `L4`, or `L10` out of the concrete image prompt.
 - Instead, translate the chosen layout into plain composition language the image model can actually use.
+- Treat the chosen layout as reading-order and grouping logic, not as a requirement to draw obvious containers.
+- A strong slide can feel highly structured while still looking natural, open, and unboxed.
 - If you need to record the internal route for human traceability, keep it outside the concrete prompt body in planning metadata or `prompts.md` notes.
 - Never use panel wording unless you actually chose a panel-based layout. The words `text panel`, `left panel`, `card`, `caption box`, `rounded rectangle`, and `frosted panel` are instructions, not harmless descriptions.
 - For cinematic, editorial, warm, airy, animated, and youth packs, try a direct-overlay composition first for slides that only need 1 title plus up to 4 short lines.
@@ -134,14 +159,16 @@ Translate those into concrete visual instructions the model can actually render.
   - `L6`: describe a full-bleed lower-third or side-edge overlay with text directly on the image.
   - `L7`: describe a comparison slide with one text zone and two large comparison modules.
   - `L8`: describe a warning poster with a text zone and one cautionary hero image.
-  - `L9`: describe a mirrored two-zone teaching board with a central divider.
-  - `L10`: describe a concept explainer board with a title row, upper hero/diagram band, and lower analytical blocks.
-  - `L11`: describe a catalog or teaching grid with 2x2 or 2x3 repeated modules.
+  - `L9`: describe a mirrored two-zone teaching board with a central divider or a strong implied center axis.
+  - `L10`: describe a concept explainer board with a title row, an upper hero/diagram zone, and lower analytical zones.
+  - `L11`: describe a catalog or teaching grid with 2x2 or 2x3 repeated modules, using dividers or implied alignment as needed.
 - If using panel-based or board-style layouts (`L1`, `L2`, `L3`, `L7`, `L8`, `L9`, `L10`, `L11`):
   - Put title at top-left or upper-left.
   - Put the quote / insight / bullet / label sections inside the text panel or information zones with clear section headers.
   - Keep the main hero visual or diagram modules away from the densest text zones.
-  - For `L9`, `L10`, or `L11`, use thin dividers, repeated module structure, and bright clean surfaces rather than cinematic scenery.
+  - For `L9`, `L10`, or `L11`, use thin dividers, repeated module structure, and bright board-friendly surfaces. When the chosen pack is `illustrative-cinematic`, a calm atmospheric illustrated context may sit behind or around the board modules as long as readability and structure stay dominant.
+  - For `L9`, `L10`, or `L11`, module boundaries may be explicit or implied. Use spacing, alignment, arrows, local captions, and gentle separator strokes before reaching for boxed cards.
+  - For `whiteboard-sketch` and similar didactic packs, prefer freeform board choreography, floating labeled modules, curved arrows, and hand-drawn grouping over rigid panel geometry unless clarity genuinely needs harder containers.
 - If using full-bleed layouts (`L4`, `L5`, `L6`):
   - Let the image fill the full slide.
   - Place text directly on the image.
@@ -206,10 +233,12 @@ Describe the slide as a **clean teaching surface** plus **explicit diagram modul
 Rules for didactic boards:
 - Keep the surface bright, quiet, and diagram-friendly rather than scenic.
 - Use clean module structure and repeated geometry instead of environmental depth.
+- The structure can be explicit or implied. Good didactic slides often rely on reading rhythm, alignment, and arrows more than visible boxes.
 - Treat labels, formulas, and annotations as explicit display text, not decorative texture.
 - If a portrait or object appears, it should sit inside the board composition, not as a cinematic hero shot competing with the text.
 - Make module geometry explicit in the concrete prompt: top band height, number of lower modules, where dividers sit, and which module holds the hero diagram.
 - If the slide depends on disciplined academic or editorial tone, specify the typography attitude and divider/accent behavior directly instead of assuming the style pack will imply it strongly enough.
+- If the reference or chosen pack suggests a whiteboard or sketch-note feel, say so directly and describe the freeform grouping system: floating modules, curved connectors, implied lanes, soft paper surface, and hand-drawn separators.
 
 ## 4) Final checklist (paste)
 

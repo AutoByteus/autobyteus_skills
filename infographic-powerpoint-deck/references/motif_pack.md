@@ -1,11 +1,15 @@
 # Recurring motif packs (deck cohesion booster)
 
-Legacy component library. Preferred flow is style-pack composition (`references/style-packs/`).
+Optional helper library. Preferred flow is style-pack composition (`references/style-packs/`).
 Use this file when manually mixing motif and consistency blocks.
+Motifs improve cohesion, but they do not replace concrete geometry, palette, typography, or scene instructions in the final prompt.
+They also should not force visible boxes or rigid template shapes unless that is part of the actual deck family.
 
 Use a motif pack to make a deck feel like a single cohesive series. Keep motifs **subtle**, mostly on the right side / far background, and never behind the main text in a way that hurts readability.
 
 Tip: for even stronger cohesion (margins/light direction/texture consistency), combine with `references/deck_consistency_block.md` and paste one lock block into every slide prompt.
+For high-fidelity decks, pair motif choices with explicit surface/material, divider, and typography instructions rather than relying on motifs alone.
+For whiteboard or didactic decks, let motifs reinforce reading rhythm, arrows, separator strokes, and accent behavior rather than turning the slide into decorative clutter.
 
 ## Motif Pack A (Keynote Cinematic)
 
@@ -58,6 +62,24 @@ Avoid:
 - Any vignette or heavy shadow treatment.
 - Overdecorating with too many pattern elements.
 
+## Motif Pack D (Illustrative Cinematic) — immersive + polished teaching
+
+Include these on every slide (controlled, elegant):
+- **Illustrated architectural depth**: one recurring class of calm architectural or symbolic depth cue, such as an atrium edge, archive shelf rhythm, bridge rail, or civic interior silhouette.
+- **Deep-blue structure language**: thin connector rules, elegant process arrows, or module dividers in a consistent muted deep-blue.
+- **Soft-gold emphasis**: restrained hairline rules or one small highlight accent, never large metallic decoration.
+- **Warm ivory surface**: subtle vellum, plaster, or paper-like surface feel with almost no visible grain.
+- **Polished icon halo**: faint soft separation around key icons or hero objects so they feel integrated and readable.
+
+Do:
+- Keep the motifs polished and low-noise.
+- Let the atmospheric layer support the teaching structure rather than dominate it.
+
+Avoid:
+- Scratchy strokes, notebook doodles, or marker textures.
+- Dark cinematic drama that reduces readability.
+- Heavy card boxes that make the slide feel templated instead of composed.
+
 ## How to apply (pasteable blocks)
 
 When writing slide prompts, add one of these (depending on which pack you chose):
@@ -75,4 +97,9 @@ This slide must include all elements from Motif Pack B (Movie Poster Epic). Keep
 ### Pack C pasteable block
 ```text
 This slide must include all elements from Motif Pack C (Editorial Airy). Keep them bright, low-noise, and series-consistent, and do not reduce text readability.
+```
+
+### Pack D pasteable block
+```text
+This slide must include all elements from Motif Pack D (Illustrative Cinematic). Keep them polished, scene-rich, and series-consistent, and do not reduce text readability.
 ```

@@ -2,6 +2,7 @@
 
 Goal: add cinematic energy reliably without making slides messy.
 The examples below are illustrative; map the same mood logic onto whatever subject the user is actually presenting.
+This file only handles one layer of the final prompt. It does not replace geometry, palette, typography, surface, or module instructions.
 
 ## Quick recipe (per slide)
 
@@ -9,6 +10,8 @@ Pick:
 - 1 **Shot** (camera feel)
 - 1 **Time/Weather** (mood)
 - 1–2 **Lighting** tricks (right side only)
+- 1 **Surface/material cue** if the slide is scene-led
+- 1 **Restraint rule** describing what must stay calm for readability
 
 Keep these effects subtle; readability always wins.
 If the user asks for relaxed/bright style, prioritize daylight moods and avoid vignette-heavy lighting.

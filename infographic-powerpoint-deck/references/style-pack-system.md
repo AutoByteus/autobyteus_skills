@@ -70,7 +70,7 @@ Never mix blocks from different style packs in one deck unless explicitly reques
 - IDs: lowercase + hyphen only (e.g., `calm-minimal`, `warm-editorial`).
 - Block files use numeric prefix to enforce stable load order.
 - Keep each block narrowly scoped:
-  - `10`: palette/text-treatment/light/layout-family compatibility, including whether the pack can support didactic board layouts
+  - `10`: palette/text-treatment/light/typography/material/composition attitude/layout-family compatibility, including whether the pack can support didactic board layouts and whether grouping is usually explicit or implied
   - `20`: recurring motif language
   - `30`: deck-level consistency locks
   - `40`: scene selection bias and exclusions
