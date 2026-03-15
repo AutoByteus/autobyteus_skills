@@ -39,10 +39,12 @@
 ## Solution Sketch (Required For `Small`, Optional Otherwise)
 
 - Use Cases In Scope:
+- Spine Inventory In Scope:
+- Primary Owners / Main Domain Subjects:
 - Requirement Coverage Guarantee (all requirements mapped to at least one use case):
 - Design-Risk Use Cases (if any, with risk/objective):
 - Target Architecture Shape (for `Small`, mandatory):
-- New Layers/Modules/Boundary Interfaces To Introduce:
+- New Owners/Modules/Boundary Interfaces To Introduce:
 - Touched Files/Modules:
 - API/Behavior Delta:
 - Key Assumptions:
@@ -72,20 +74,21 @@
 
 - Bottom-up: implement dependencies before dependents.
 - Test-driven: write unit tests and integration tests alongside implementation.
+- Spine-led implementation rule: sequence work by spine and owner first; file/module order is derived from that structure.
 - Mandatory modernization rule: no backward-compatibility shims or legacy branches.
-- Mandatory decoupling rule: preserve clear module boundaries and one-way dependency direction; avoid adding tight coupling/cycles.
+- Mandatory ownership/decoupling/SoC rule: preserve clear module boundaries, one-way dependency direction, and scope-appropriate file responsibilities; avoid adding tight coupling/cycles or mixed-concern files.
 - Mandatory module/file placement rule: keep each touched file in the folder/boundary that owns its concern; plan explicit moves when current placement is misleading.
 - Choose the proper structural change for architecture integrity; do not prefer local hacks just because they are smaller.
 - One file at a time is the default; use limited parallel work only when dependency edges require it.
 - Update progress after each meaningful status change (file state, test state, blocker state, or design follow-up state).
 
-## Dependency And Sequencing Map
+## Spine-Led Dependency And Sequencing Map
 
-| Order | File/Module | Depends On | Why This Order |
-| --- | --- | --- | --- |
-| 1 |  |  |  |
-| 2 |  |  |  |
-| 3 |  |  |  |
+| Order | Spine ID | Owner | Task / File / Module | Depends On | Why This Order |
+| --- | --- | --- | --- | --- | --- |
+| 1 |  |  |  |  |  |
+| 2 |  |  |  |  |  |
+| 3 |  |  |  |  |  |
 
 ## Module/File Placement Plan (Mandatory)
 
@@ -93,17 +96,17 @@
 | --- | --- | --- | --- | --- | --- |
 |  |  |  |  |  |  |
 
-## Requirement And Design Traceability
+## Requirement, Spine, And Design Traceability
 
-| Requirement | Acceptance Criteria ID(s) | Design Section | Use Case / Call Stack | Planned Task ID(s) | Stage 6 Verification (Unit/Integration) | Stage 7 Scenario ID(s) |
-| --- | --- | --- | --- | --- | --- | --- |
-| R-001 | AC-001 |  | UC-001 |  | Unit/Integration | AV-001 |
+| Requirement | Acceptance Criteria ID(s) | Spine ID(s) | Design Section | Use Case / Call Stack | Planned Task ID(s) | Stage 6 Verification (Unit/Integration) | Stage 7 Scenario ID(s) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| R-001 | AC-001 | DS-001 |  | UC-001 |  | Unit/Integration | AV-001 |
 
 ## Acceptance Criteria To Stage 7 Mapping (Mandatory)
 
-| Acceptance Criteria ID | Requirement ID | Expected Outcome | Stage 7 Scenario ID(s) | Test Level (`API`/`E2E`) | Initial Status (`Planned`/`Blocked`) |
-| --- | --- | --- | --- | --- | --- |
-| AC-001 | R-001 |  | AV-001 | API | Planned |
+| Acceptance Criteria ID | Requirement ID | Spine ID(s) | Expected Outcome | Stage 7 Scenario ID(s) | Test Level (`API`/`E2E`) | Initial Status (`Planned`/`Blocked`) |
+| --- | --- | --- | --- | --- | --- | --- |
+| AC-001 | R-001 | DS-001 |  | AV-001 | API | Planned |
 
 ## Design Delta Traceability (Required For `Medium/Large`)
 
@@ -148,7 +151,7 @@
 - Hard-limit handling details in `code-review.md` (required re-entry path and split/refactor plan):
 - module/file placement review approach (how wrong-folder placements will be detected and corrected):
 
-| File | Current Line Count | Adds/Expands Functionality (`Yes`/`No`) | SoC Risk (`Low`/`Medium`/`High`) | Required Action (`Keep`/`Split`/`Move`/`Refactor`) | Expected Review Classification if not addressed |
+| File | Current Line Count | Adds/Expands Functionality (`Yes`/`No`) | Ownership/SoC Risk (`Low`/`Medium`/`High`) | Required Action (`Keep`/`Split`/`Move`/`Refactor`) | Expected Review Classification if not addressed |
 | --- | --- | --- | --- | --- | --- |
 |  |  |  |  |  |  |
 
@@ -165,13 +168,14 @@
 - Stage 8 handoff notes for code review:
   - predicted design-impact hotspots:
   - predicted module/file placement hotspots:
-  - files likely to exceed size/SoC thresholds:
+  - predicted interface/API/query/command/service-method boundary hotspots:
+  - files likely to exceed size/ownership/SoC thresholds:
 
 ## API/E2E Testing Scenario Catalog (Stage 7 Input)
 
-| Scenario ID | Source Type (`Requirement`/`Design-Risk`) | Acceptance Criteria ID(s) | Requirement ID(s) | Use Case ID(s) | Test Level (`API`/`E2E`) | Expected Outcome |
-| --- | --- | --- | --- | --- | --- | --- |
-| AV-001 | Requirement | AC-001 | R-001 | UC-001 | API |  |
+| Scenario ID | Spine ID(s) | Source Type (`Requirement`/`Design-Risk`) | Acceptance Criteria ID(s) | Requirement ID(s) | Use Case ID(s) | Test Level (`API`/`E2E`) | Expected Outcome |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| AV-001 | DS-001 | Requirement | AC-001 | R-001 | UC-001 | API |  |
 
 ## API/E2E Testing Escalation Policy (Stage 7 Guardrail)
 

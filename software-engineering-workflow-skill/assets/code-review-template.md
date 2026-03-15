@@ -11,6 +11,9 @@ This gate enforces structure quality, source-file maintainability, and mandatory
 - Workflow state source: `tickets/in-progress/<ticket-name>/workflow-state.md`
 - Design basis artifact:
 - Runtime call stack artifact:
+- Shared Design Principles: `assets/design-principles.md`
+- Common Design Practices: `assets/common-design-practices.md`
+- Code Review Principles: `assets/code-review-principles.md`
 
 ## Scope
 
@@ -19,9 +22,9 @@ This gate enforces structure quality, source-file maintainability, and mandatory
 
 ## Source File Size And Structure Audit (Mandatory)
 
-| File | Effective Non-Empty Line Count | Adds/Expands Functionality (`Yes`/`No`) | `>500` Hard-Limit Check | `>220` Changed-Line Delta Gate | Module/File Placement Check (`Pass`/`Fail`) | Preliminary Classification (`N/A`/`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`) | Required Action (`Keep`/`Split`/`Move`/`Refactor`) |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-|  |  |  | Pass/Fail/N/A | Pass/Fail/N/A | Pass/Fail |  |  |
+| File | Effective Non-Empty Line Count | Adds/Expands Functionality (`Yes`/`No`) | `>500` Hard-Limit Check | `>220` Changed-Line Delta Gate | Scope-Appropriate SoC Check (`Pass`/`Fail`) | Module/File Placement Check (`Pass`/`Fail`) | Preliminary Classification (`N/A`/`Local Fix`/`Validation Gap`/`Design Impact`/`Requirement Gap`/`Unclear`) | Required Action (`Keep`/`Split`/`Move`/`Refactor`) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|  |  |  | Pass/Fail/N/A | Pass/Fail/N/A | Pass/Fail | Pass/Fail |  |  |
 
 Rules:
 - Use explicit measurement commands per changed source file:
@@ -33,6 +36,7 @@ Rules:
 - For `>500` hard-limit cases, do not continue by default; apply re-entry mapping first.
 - No soft middle band (`501-700`) and no default exception path in this workflow.
 - Delta gate: if a single changed source file has `>220` changed lines in current diff, record a design-impact assessment even if file size is `<=500`.
+- SoC rule: if a changed file mixes unrelated responsibilities or hides multiple owners in one boundary, mark `Scope-Appropriate SoC Check = Fail` and require `Split`/`Refactor`.
 - Module/file placement rule: if a file path/folder obscures the owning concern or puts platform-specific code in an unrelated location, mark `Module/File Placement Check = Fail` and record the required `Move`/`Split` action.
 - During Stage 8, `workflow-state.md` should show `Current Stage = 8` and `Code Edit Permission = Locked`.
 
@@ -40,11 +44,16 @@ Rules:
 
 | Check | Result (`Pass`/`Fail`) | Evidence | Required Action |
 | --- | --- | --- | --- |
-| Shared-principles alignment check (`SoC` cause, emergent layering, decoupling directionality) |  |  |  |
-| Layering extraction check (repeated coordination policy extracted into orchestration/registry/manager boundary where needed) |  |  |  |
-| Anti-overlayering check (no unjustified pass-through-only layer) |  |  |  |
-| Decoupling check (low coupling, clear dependency direction, no unjustified cycles) |  |  |  |
+| Data-flow spine inventory preservation against design basis |  |  |  |
+| Ownership boundary preservation and clarity |  |  |  |
+| Support structure clarity (support branches serve clear owners and stay off the main line) |  |  |  |
+| Scope-appropriate separation of concerns and file responsibility clarity |  |  |  |
+| Repeated coordination ownership check (policy has a clear owner where needed) |  |  |  |
+| Empty indirection check (no pass-through-only boundary) |  |  |  |
+| Ownership-driven dependency check (no forbidden shortcuts or unjustified cycles) |  |  |  |
 | Module/file placement check (file/folder path matches owning concern or explicitly justified shared boundary) |  |  |  |
+| Interface/API/query/command/service-method boundary clarity (one subject, one responsibility, explicit identity shape) |  |  |  |
+| Validation evidence sufficiency for the changed flow |  |  |  |
 | No backward-compatibility mechanisms (no compatibility wrappers/dual-path behavior) |  |  |  |
 | No legacy code retention for old behavior |  |  |  |
 
@@ -52,14 +61,15 @@ Rules:
 
 - If none, write `None`.
 - Otherwise:
-  - `[CR-001] File: ... | Type: SoC/Decoupling/Layering/Placement/Naming/Duplication/Legacy/BackwardCompat/FileSize/Complexity | Severity: Blocker/Major/Minor | Evidence: ... | Required update: ...`
+  - `[CR-001] File: ... | Type: Spine/Ownership/SupportStructure/SoC/Dependency/Placement/InterfaceBoundary/Naming/Duplication/Legacy/BackwardCompat/FileSize/Complexity/ValidationGap | Severity: Blocker/Major/Minor | Evidence: ... | Required update: ...`
 
 ## Re-Entry Declaration (Mandatory On `Fail`)
 
 - Trigger Stage:
-- Classification (`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`):
+- Classification (`Local Fix`/`Validation Gap`/`Design Impact`/`Requirement Gap`/`Unclear`):
 - Required Return Path:
   - `Local Fix` -> update implementation artifacts first -> code fix -> rerun `Stage 6 -> Stage 7 -> Stage 8`
+  - `Validation Gap` -> update Stage 7 validation coverage/evidence and rerun `Stage 7 -> Stage 8`
   - `Design Impact` -> `Stage 1 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7 -> Stage 8`
   - `Requirement Gap` -> `Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7 -> Stage 8`
   - `Unclear`/cross-cutting -> `Stage 0 -> Stage 1 -> Stage 2 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7 -> Stage 8`
@@ -77,13 +87,18 @@ Rules:
 - Mandatory pass checks:
   - All changed source files have effective non-empty line count `<=500`
   - Required `>220` changed-line delta-gate assessments are recorded for all applicable changed source files
-  - Shared-principles alignment check = `Pass`
-  - Layering extraction check = `Pass`
-  - Anti-overlayering check = `Pass`
-  - Decoupling check = `Pass`
+  - Data-flow spine inventory preservation = `Pass`
+  - Ownership boundary preservation = `Pass`
+  - Support structure clarity = `Pass`
+  - Scope-appropriate separation of concerns and file responsibility clarity = `Pass`
+  - Repeated coordination ownership check = `Pass`
+  - Empty indirection check = `Pass`
+  - Ownership-driven dependency check = `Pass`
   - Module/file placement check = `Pass`
+  - Interface/API/query/command/service-method boundary clarity = `Pass`
+  - Validation evidence sufficiency = `Pass`
   - No backward-compatibility mechanisms = `Pass`
   - No legacy code retention = `Pass`
-- Classification rule: if any mandatory pass check fails, do not classify as `Local Fix` by default; classify as `Design Impact` unless clear requirement ambiguity is the primary cause.
+- Classification rule: if the main issue is insufficient validation evidence, classify as `Validation Gap` and return to `Stage 7`; otherwise, if any mandatory structural pass check fails, do not classify as `Local Fix` by default and classify as `Design Impact` unless clear requirement ambiguity is the primary cause.
 - Wrong-location files are structural failures when the path makes ownership unclear; require explicit `Move`/`Split` or a justified shared-boundary decision.
 - Notes:

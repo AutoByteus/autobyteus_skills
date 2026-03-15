@@ -23,6 +23,8 @@ This review validates alignment with target (`to-be`) design behavior, not parit
 - Source Design Basis:
   - `Small`: `tickets/in-progress/<ticket-name>/implementation-plan.md` (solution sketch)
   - `Medium/Large`: `tickets/in-progress/<ticket-name>/proposed-design.md`
+- Shared Design Principles: `assets/design-principles.md`
+- Common Design Practices: `assets/common-design-practices.md`
 - Artifact Versions In This Round:
   - Requirements Status:
   - Design Version:
@@ -33,14 +35,15 @@ This review validates alignment with target (`to-be`) design behavior, not parit
 
 - Primary check: Is the future-state runtime call stack a coherent and implementable future-state model?
 - Not a pass criterion: matching current-code call paths exactly.
-- Shared-principles rule: review uses the same architecture principles as design (`SoC` is cause, `layering` is an emergent result, `decoupling` enforces one-way replaceable boundaries).
-- Not a required action: adding/removing layers by default; `Keep` can pass when layering is coherent and boundary placement is clear.
-- Layering extraction trigger rule: if coordination policy repeats across callers (provider selection/fallback/retry/aggregation/routing/fan-out), review should require orchestration/registry/manager extraction.
-- Anti-overlayering rule: fail a new layer that is only pass-through and owns no policy/boundary concern.
-- Local-fix-is-not-enough rule: if a fix works functionally but degrades architecture/layering/responsibility boundaries, mark `Fail` and require architectural artifact updates via classified re-entry.
+- Shared-principles rule: review uses the same design principles as Stage 3 (`data-flow spine clarity`, `ownership clarity`, `support structure around the spine`, and ownership-driven dependency validation).
+- Spine inventory rule: review must verify that all relevant spines are explicitly listed in the design basis, including bounded local spines when a loop, worker cycle, state machine, or dispatcher materially affects behavior.
+- Not a required action: adding/removing layers by default; describe layering only if it actually adds clarity for this scope.
+- Repeated-coordination trigger rule: if coordination policy repeats across callers (provider selection/fallback/retry/aggregation/routing/fan-out), review should require a clearer owner.
+- Empty-indirection rule: fail a new boundary that is only pass-through and owns no policy, translation, or boundary concern.
+- Local-fix-is-not-enough rule: if a fix works functionally but degrades the spine, ownership, or support structure, mark `Fail` and require architectural artifact updates via classified re-entry.
 - Any finding with a required design/call-stack update is blocking.
 - No-backward-compat review rule: if future-state behavior keeps compatibility wrappers, dual-path logic, or legacy fallback branches for old flows, mark `Fail`.
-- Decoupling review rule: if future-state behavior introduces tight coupling, bidirectional dependency tangles, or unjustified cycles, mark `Fail`.
+- Ownership-dependency review rule: if future-state behavior introduces tight coupling, bidirectional dependency tangles, or unjustified cycles, mark `Fail`.
 
 ## Round History
 
@@ -84,15 +87,15 @@ Rule:
 
 ## Per-Use-Case Review
 
-| Use Case | Architecture Fit (`Pass`/`Fail`) | Shared-Principles Alignment (`Pass`/`Fail`) | Layering Fitness (`Pass`/`Fail`) | Boundary Placement (`Pass`/`Fail`) | Decoupling Check (`Pass`/`Fail`) | Module/File Placement Alignment (`Pass`/`Fail`) | Existing-Structure Bias Check (`Pass`/`Fail`) | Anti-Hack Check (`Pass`/`Fail`) | Local-Fix Degradation Check (`Pass`/`Fail`) | Terminology & Concept Naturalness (`Pass`/`Fail`) | File/API Naming Clarity (`Pass`/`Fail`) | Name-to-Responsibility Alignment Under Scope Drift (`Pass`/`Fail`) | Future-State Alignment With Design Basis (`Pass`/`Fail`) | Use-Case Coverage Completeness (`Pass`/`Fail`) | Use-Case Source Traceability (`Pass`/`Fail`) | Design-Risk Justification Quality (`Pass`/`Fail`/`N/A`) | Business Flow Completeness (`Pass`/`Fail`) | Layer-Appropriate SoC Check (`Pass`/`Fail`) | Dependency Flow Smells | Redundancy/Duplication Check (`Pass`/`Fail`) | Simplification Opportunity Check (`Pass`/`Fail`) | Remove/Decommission Completeness (`Pass`/`Fail`/`N/A`) | Legacy Retention Removed (`Pass`/`Fail`) | No Compatibility Wrappers/Dual Paths (`Pass`/`Fail`) | Verdict (`Pass`/`Fail`) |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| UC-001 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| Use Case | Spine ID(s) | Architecture Fit (`Pass`/`Fail`) | Data-Flow Spine Clarity (`Pass`/`Fail`) | Spine Inventory Completeness (`Pass`/`Fail`) | Ownership Clarity (`Pass`/`Fail`) | Support Structure Clarity (`Pass`/`Fail`) | Ownership-Driven Dependency Check (`Pass`/`Fail`) | Module/File Placement Alignment (`Pass`/`Fail`) | Interface/API/Method Boundary Clarity (`Pass`/`Fail`) | Existing-Structure Bias Check (`Pass`/`Fail`) | Anti-Hack Check (`Pass`/`Fail`) | Local-Fix Degradation Check (`Pass`/`Fail`) | Terminology & Concept Naturalness (`Pass`/`Fail`) | File/API Naming Clarity (`Pass`/`Fail`) | Name-to-Responsibility Alignment Under Scope Drift (`Pass`/`Fail`) | Future-State Alignment With Design Basis (`Pass`/`Fail`) | Use-Case Coverage Completeness (`Pass`/`Fail`) | Use-Case Source Traceability (`Pass`/`Fail`) | Design-Risk Justification Quality (`Pass`/`Fail`/`N/A`) | Business Flow Completeness (`Pass`/`Fail`) | Scope-Appropriate SoC Check (`Pass`/`Fail`) | Dependency Flow Smells | Redundancy/Duplication Check (`Pass`/`Fail`) | Simplification Opportunity Check (`Pass`/`Fail`) | Remove/Decommission Completeness (`Pass`/`Fail`/`N/A`) | Legacy Retention Removed (`Pass`/`Fail`) | No Compatibility Wrappers/Dual Paths (`Pass`/`Fail`) | Verdict (`Pass`/`Fail`) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| UC-001 | DS-001 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 
 ## Findings
 
 - If no findings, write `None`.
 - Otherwise list only actionable findings:
-  - `[F-001] Use case: ... | Type: Architecture/Layering/Decoupling/Placement/Hack/LocalFixDegradation/Vocabulary/Naming/MissingUseCase/Gap/Structure/Dependency/Redundancy/Simplification/Legacy/BackwardCompat/Decommission | Severity: Blocker/Major/Minor | Confidence: High/Medium/Low | Evidence: ... | Required update: ... | Classification: Design Impact/Requirement Gap/Unclear`
+  - `[F-001] Use case: ... | Type: Architecture/Spine/Ownership/SupportStructure/Placement/InterfaceBoundary/Hack/LocalFixDegradation/Vocabulary/Naming/MissingUseCase/Gap/Structure/Dependency/Redundancy/Simplification/Legacy/BackwardCompat/Decommission | Severity: Blocker/Major/Minor | Confidence: High/Medium/Low | Evidence: ... | Required update: ... | Classification: Design Impact/Requirement Gap/Unclear`
 
 Rule:
 - Any finding with a `Required update` is blocking and must be resolved in a later review round before implementation can start.
@@ -108,11 +111,13 @@ Rule:
 - Clean-review streak at end of this round:
 - Gate rule checks (all must be `Yes` for `Implementation can start = Yes`):
   - Architecture fit is `Pass` for all in-scope use cases:
-  - Shared-principles alignment (`SoC` cause + emergent layering + decoupling directionality) is `Pass` for all in-scope use cases:
-  - Layering fitness is `Pass` for all in-scope use cases:
-  - Boundary placement is `Pass` for all in-scope use cases:
-  - Decoupling check is `Pass` for all in-scope use cases:
+  - Data-flow spine clarity is `Pass` for all in-scope use cases:
+  - Spine inventory completeness is `Pass` for the design basis:
+  - Ownership clarity is `Pass` for all in-scope use cases:
+  - Support structure clarity is `Pass` for all in-scope use cases:
+  - Ownership-driven dependency check is `Pass` for all in-scope use cases:
   - Module/file placement alignment is `Pass` for all in-scope use cases:
+  - interface/API/method boundary clarity is `Pass` for all in-scope use cases:
   - Existing-structure bias check is `Pass` for all in-scope use cases:
   - Anti-hack check is `Pass` for all in-scope use cases:
   - Local-fix degradation check is `Pass` for all in-scope use cases:
@@ -120,7 +125,7 @@ Rule:
   - File/API naming clarity is `Pass` across in-scope use cases:
   - Name-to-responsibility alignment under scope drift is `Pass` across in-scope use cases:
   - Future-state alignment with target design basis is `Pass` for all in-scope use cases:
-  - Layer-appropriate structure and separation of concerns is `Pass` for all in-scope use cases:
+  - Scope-appropriate separation of concerns is `Pass` for all in-scope use cases:
   - Use-case coverage completeness is `Pass` for all in-scope use cases:
   - Use-case source traceability is `Pass` for all in-scope use cases:
   - Requirement coverage closure is `Pass` (all requirements map to at least one use case):

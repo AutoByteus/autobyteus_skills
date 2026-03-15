@@ -28,22 +28,27 @@ Do not treat this document as an as-is trace of current code behavior.
   - `Medium/Large`: `tickets/in-progress/<ticket-name>/proposed-design.md`
 - Source Design Version: `v1` / `v2` / ...
 - Referenced Sections:
+  - Spine inventory sections:
+  - Ownership sections:
 
 ## Future-State Modeling Rule (Mandatory)
 
 - Model target design behavior even when current code diverges.
 - If migration from as-is to to-be requires transition logic, describe that logic in `Transition Notes`; do not replace the to-be call stack with current flow.
+- Every use case must declare which spine(s) it exercises from the approved design basis.
+- If a use case primarily validates a bounded local spine (for example an event loop, worker cycle, state-machine transition flow, or dispatcher flow), state that explicitly instead of hiding it inside a generic end-to-end stack.
 
 ## Use Case Index (Stable IDs)
 
-| use_case_id | Source Type (`Requirement`/`Design-Risk`) | Requirement ID(s) | Design-Risk Objective (if source=`Design-Risk`) | Use Case Name | Coverage Target (Primary/Fallback/Error) |
-| --- | --- | --- | --- | --- | --- |
-| UC-001 | Requirement | R-001 | N/A |  | Yes/Yes/Yes |
-| UC-002 | Design-Risk | R-002 | Queue retry/idempotency risk |  | Yes/N/A/Yes |
+| use_case_id | Spine ID(s) | Spine Scope (`Primary End-to-End`/`Return-Event`/`Bounded Local`) | Governing Owner | Source Type (`Requirement`/`Design-Risk`) | Requirement ID(s) | Design-Risk Objective (if source=`Design-Risk`) | Use Case Name | Coverage Target (Primary/Fallback/Error) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| UC-001 | DS-001 | Primary End-to-End |  | Requirement | R-001 | N/A |  | Yes/Yes/Yes |
+| UC-002 | DS-002 | Bounded Local |  | Design-Risk | R-002 | Queue retry/idempotency risk |  | Yes/N/A/Yes |
 
 Rules:
 - Every in-scope requirement must map to at least one use case in this index.
 - `Design-Risk` use cases are allowed only when the technical objective/risk is explicit and testable.
+- Every use case must map to at least one spine from the approved spine inventory.
 
 ## Transition Notes
 
@@ -51,6 +56,13 @@ Rules:
 - Retirement plan for temporary logic (if any):
 
 ## Use Case: UC-001 [Name]
+
+### Spine Context
+
+- Spine ID(s):
+- Spine Scope:
+- Governing Owner:
+- Why This Use Case Matters To This Spine:
 
 ### Goal
 
@@ -114,6 +126,13 @@ module/e.ts:persist(...)
 - Error Path: `Covered` / `Missing` / `N/A`
 
 ## Use Case: UC-002 [Name]
+
+### Spine Context
+
+- Spine ID(s):
+- Spine Scope:
+- Governing Owner:
+- Why This Use Case Matters To This Spine:
 
 ### Goal
 

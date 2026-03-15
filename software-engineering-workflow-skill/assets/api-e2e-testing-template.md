@@ -18,6 +18,7 @@ Stage 7 starts after Stage 6 implementation (source + unit/integration) is compl
 - Every critical requirement must map to at least one scenario.
 - Every in-scope acceptance criterion (`AC-*`) must map to at least one executable scenario.
 - Every in-scope use case must map to at least one scenario, or explicitly `N/A` with rationale.
+- Every relevant spine from the approved design basis must map to at least one scenario, or explicitly `N/A` with rationale.
 - `Design-Risk` scenarios must include explicit technical objective/risk and expected outcome.
 - Use stable scenario IDs with `AV-` prefix (for example: `AV-001`).
 - Manual testing is not part of the default workflow.
@@ -31,11 +32,17 @@ Stage 7 starts after Stage 6 implementation (source + unit/integration) is compl
 | --- | --- | --- | --- | --- | --- |
 | AC-001 | R-001 |  | AV-001 | Not Run | YYYY-MM-DD |
 
+## Spine Coverage Matrix (Mandatory)
+
+| Spine ID | Spine Scope (`Primary End-to-End`/`Return-Event`/`Bounded Local`) | Governing Owner | Scenario ID(s) | Coverage Status (`Unmapped`/`Planned`/`Passed`/`Failed`/`Blocked`/`N/A`) | Notes |
+| --- | --- | --- | --- | --- | --- |
+| DS-001 |  |  | AV-001 | Planned |  |
+
 ## Scenario Catalog
 
-| Scenario ID | Source Type (`Requirement`/`Design-Risk`) | Acceptance Criteria ID(s) | Requirement ID(s) | Use Case ID(s) | Level (`API`/`E2E`) | Objective/Risk | Expected Outcome | Command/Harness | Status (`Not Started`/`In Progress`/`Passed`/`Failed`/`Blocked`/`N/A`) |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| AV-001 | Requirement | AC-001 | R-001 | UC-001 | API | N/A |  |  | Not Started |
+| Scenario ID | Spine ID(s) | Source Type (`Requirement`/`Design-Risk`) | Acceptance Criteria ID(s) | Requirement ID(s) | Use Case ID(s) | Level (`API`/`E2E`) | Objective/Risk | Expected Outcome | Command/Harness | Status (`Not Started`/`In Progress`/`Passed`/`Failed`/`Blocked`/`N/A`) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| AV-001 | DS-001 | Requirement | AC-001 | R-001 | UC-001 | API | N/A |  |  | Not Started |
 
 ## Failure Escalation Log
 
@@ -72,7 +79,9 @@ Rules:
 
 - Stage 7 complete: `Yes` / `No`
 - All in-scope acceptance criteria mapped to scenarios: `Yes` / `No`
+- All relevant spines mapped to scenarios: `Yes` / `No`
 - All executable in-scope acceptance criteria status = `Passed`: `Yes` / `No`
+- All executable relevant spines status = `Passed`: `Yes` / `No` / `N/A`
 - Critical executable scenarios passed: `Yes` / `No`
 - Any infeasible acceptance criteria: `Yes` / `No`
 - Explicit user waiver recorded for each infeasible acceptance criterion (if any): `Yes` / `No` / `N/A`

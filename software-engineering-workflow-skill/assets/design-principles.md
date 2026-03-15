@@ -1,0 +1,71 @@
+# Design Principles
+
+Use these principles for Stage 3 design work and Stage 5 future-state review.
+They are the shared design language for this workflow.
+
+## Core Principles
+
+### 1. Data-Flow Spine Clarity
+
+- Identify the primary end-to-end spine for each in-scope use case.
+- Enumerate all relevant spines explicitly, not only the biggest one:
+  - primary end-to-end spines,
+  - return/event spines,
+  - bounded local spines inside one owner when a loop, worker cycle, state machine, or dispatcher materially affects the design.
+- For each spine, state its start, end, owner, and why it exists.
+- Keep only true main-line nodes on each spine.
+- If the main line or bounded local spines are hard to draw, the design is probably fragmented.
+
+### 2. Ownership Clarity
+
+- Each main-line node must own something concrete:
+  - state
+  - lifecycle
+  - invariants
+  - sequencing
+  - contracts
+  - transformations
+- Ownership is the concrete form of separation of concerns.
+- Main domain subject nodes on the spine should stay coherent; do not force one node to absorb every nearby responsibility just because it is on the main line.
+- When additional responsibilities are needed to make one node work, split them into clear supporting concerns around that owner instead of creating hidden mixed-concern blobs.
+- If a concern has no clear owner, the boundary is wrong.
+
+### 3. Support Structure Around The Spine
+
+- Supporting branches should serve a clear owner on the spine.
+- Keep support branches off the main line unless they truly own core sequencing.
+- Support branches may resolve, persist, adapt, map, publish, observe, or translate, but they should not compete with the spine.
+
+## Derived Checks
+
+- Separation of concerns is still mandatory, and it should get stronger as the spine and ownership model become clearer. It is derived from the spine, main subject nodes, and ownership boundaries rather than treated as the starting point.
+- Dependency direction follows ownership; name allowed directions and forbidden shortcuts explicitly.
+- Module/file placement must follow ownership; move or split files when their paths no longer match their real concern.
+- Interfaces, APIs, queries, commands, and reused service methods must also follow ownership and separation of concerns: one boundary, one subject, one responsibility, explicit identity shape.
+- The design document should read spine-first, not file-first. Files/modules are a derived implementation mapping, not the primary structure of the architecture story.
+- Layering is optional explanatory output only. Do not use layering as a first principle.
+
+## Required Design Questions
+
+- What are the primary execution/data-flow spines for the in-scope use cases?
+- Which bounded local/internal spines exist inside owned nodes, and where do they start and end?
+- What are the main domain subject nodes on each spine?
+- What does each node own?
+- What are the return/event spines, if the change is async or event-driven?
+- Which support branches serve which owner on the spine?
+- Which dependencies are allowed, and which shortcuts are forbidden?
+- Which modules/files should own the target structure?
+- Which interface boundaries exist, what subject does each one own, and what identity shape or selector shape does each one accept?
+- What is the migration path from current state to target state?
+
+## Design Smells
+
+- Many peer coordinators with no obvious main line
+- Important spines are left implicit instead of being named
+- Event loops or state machines materially affect the behavior, but no bounded local spine is described
+- Shared helpers that quietly own business behavior
+- Support services sitting on the main line without owning sequencing
+- Generic interface boundaries, list/query surfaces, or service methods that accept one ambiguous ID or selector and then guess what subject it belongs to
+- Names that do not describe the actual owner or role
+- Misplaced files whose paths hide the real concern
+- Empty indirection layers that only pass through work

@@ -11,7 +11,7 @@ Stage movement is controlled by this file's Stage Transition Contract + Transiti
 - Next Stage:
 - Code Edit Permission: `Locked` / `Unlocked`
 - Active Re-Entry: `No` / `Yes`
-- Re-Entry Classification (`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`): `N/A`
+- Re-Entry Classification (`Local Fix`/`Validation Gap`/`Design Impact`/`Requirement Gap`/`Unclear`): `N/A`
 - Last Transition ID:
 - Last Updated:
 
@@ -25,9 +25,9 @@ Stage movement is controlled by this file's Stage Transition Contract + Transiti
 | 3 Design Basis | Not Started | Design basis updated for scope (`implementation-plan.md` sketch or `proposed-design.md`) |  |
 | 4 Runtime Modeling | Not Started | `future-state-runtime-call-stack.md` current |  |
 | 5 Review Gate | Not Started | Runtime review `Go Confirmed` (two clean rounds, no blockers/persisted updates/new use cases) |  |
-| 6 Implementation | Not Started | Plan/progress current + source + unit/integration verification complete + no backward-compat/legacy retention + decoupling preserved + touched-file placement preserved/corrected |  |
-| 7 API/E2E Testing | Not Started | API/E2E test implementation complete + AC scenario gate complete |  |
-| 8 Code Review | Not Started | Code review gate `Pass`/`Fail` recorded + all changed source files `<=500` effective non-empty lines + `>220` delta-gate assessments recorded + shared-principles/layering + decoupling + module/file placement + no-backward-compat/no-legacy checks satisfied for `Pass` |  |
+| 6 Implementation | Not Started | Plan/progress current + source + unit/integration verification complete + no backward-compat/legacy retention + ownership-driven dependencies preserved + touched-file placement preserved/corrected |  |
+| 7 API/E2E Testing | Not Started | API/E2E test implementation complete + acceptance-criteria and spine scenario gates complete |  |
+| 8 Code Review | Not Started | Code review gate `Pass`/`Fail` recorded + all changed source files `<=500` effective non-empty lines + `>220` delta-gate assessments recorded + data-flow spine inventory/ownership/support-structure + scope-appropriate separation of concerns + module/file placement + interface/API/query/command/service-method boundary clarity + validation-evidence sufficiency + no-backward-compat/no-legacy checks satisfied for `Pass` |  |
 | 9 Docs Sync | Not Started | Docs updated or no-impact rationale recorded |  |
 | 10 Handoff / Ticket State | Not Started | Final handoff ready + explicit user verification received + ticket moved to `done` + git finalization/release complete when git repo + ticket state decision recorded |  |
 
@@ -41,9 +41,9 @@ Stage movement is controlled by this file's Stage Transition Contract + Transiti
 | 3 | Design basis current for scope | stay in `3` |
 | 4 | Runtime call stack current | stay in `4` |
 | 5 | Runtime review `Go Confirmed` (two clean rounds with no blockers/no required persisted artifact updates/no newly discovered use cases) | classified re-entry then rerun (`Design Impact`: `3 -> 4 -> 5`, `Requirement Gap`: `2 -> 3 -> 4 -> 5`, `Unclear`: `1 -> 2 -> 3 -> 4 -> 5`) |
-| 6 | Source + required unit/integration verification complete, no backward-compatibility/legacy-retention paths remain in scope, decoupling boundaries remain valid (no new unjustified cycles/tight coupling), and touched files have correct module/file placement | local issues: stay in `6`; otherwise classified re-entry (`Design Impact`: `1 -> 3 -> 4 -> 5 -> 6`, `Requirement Gap`: `2 -> 3 -> 4 -> 5 -> 6`, `Unclear`: `0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6`) |
-| 7 | API/E2E gate closes all executable mapped acceptance criteria (`Passed` or explicit user `Waived`) | `Blocked` on infeasible/no waiver; otherwise classified re-entry |
-| 8 | Code review gate decision is `Pass` with all changed source files `<=500` effective non-empty lines, required `>220` delta-gate assessments recorded, and shared-principles/layering + decoupling + module/file placement + no-backward-compat/no-legacy checks satisfied | classified re-entry then rerun |
+| 6 | Source + required unit/integration verification complete, no backward-compatibility/legacy-retention paths remain in scope, ownership-driven dependencies remain valid (no new unjustified cycles/tight coupling), and touched files have correct module/file placement | local issues: stay in `6`; otherwise classified re-entry (`Design Impact`: `1 -> 3 -> 4 -> 5 -> 6`, `Requirement Gap`: `2 -> 3 -> 4 -> 5 -> 6`, `Unclear`: `0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6`) |
+| 7 | API/E2E gate closes all executable mapped acceptance criteria (`Passed` or explicit user `Waived`) and all relevant executable spines have passing scenario evidence (or explicit `N/A` rationale) | `Blocked` on infeasible/no waiver; otherwise classified re-entry |
+| 8 | Code review gate decision is `Pass` with all changed source files `<=500` effective non-empty lines, required `>220` delta-gate assessments recorded, and data-flow spine inventory/ownership/support-structure + scope-appropriate separation of concerns + module/file placement + interface/API/query/command/service-method boundary clarity + validation-evidence sufficiency + no-backward-compat/no-legacy checks satisfied | classified re-entry then rerun |
 | 9 | Docs updated or no-impact rationale recorded | stay in `9` |
 | 10 | Final handoff is complete, explicit user completion/verification is received, the ticket is moved to `tickets/done/<ticket-name>/`, and, when git repo, ticket-branch commit/push + latest-personal-branch update + merge + push + release are complete | stay in `10` |
 
@@ -65,6 +65,7 @@ Stage movement is controlled by this file's Stage Transition Contract + Transiti
 | Stage 7 failure (`Unclear`/cross-cutting root cause) | `0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7` | Fail |
 | Stage 7 infeasible criteria without explicit user waiver | stay in `7` | Blocked |
 | Stage 8 failure (`Local Fix`) | `6 -> 7 -> 8` | Fail |
+| Stage 8 failure (`Validation Gap`) | `7 -> 8` | Fail |
 | Stage 8 failure (`Design Impact`) | `1 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8` | Fail |
 | Stage 8 failure (`Requirement Gap`) | `2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8` | Fail |
 | Stage 8 failure (`Unclear`/cross-cutting root cause) | `0 -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8` | Fail |
@@ -88,7 +89,7 @@ Note:
 ## Re-Entry Declaration
 
 - Trigger Stage (`5`/`6`/`7`/`8`):
-- Classification (`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`):
+- Classification (`Local Fix`/`Validation Gap`/`Design Impact`/`Requirement Gap`/`Unclear`):
 - Required Return Path:
 - Required Upstream Artifacts To Update Before Code Edits:
 - Resume Condition:
@@ -96,6 +97,7 @@ Note:
 Note:
 - Stage 5 re-entry normally uses `Design Impact` / `Requirement Gap` / `Unclear` only (not `Local Fix`).
 - Stage 6 re-entry uses `Local Fix` (stay in `6`) or non-local classified return path (`Design Impact`/`Requirement Gap`/`Unclear`) before further source edits.
+- Stage 8 may use `Validation Gap` when the main issue is insufficient Stage 7 coverage/evidence rather than code or design drift.
 
 ## Transition Log (Append-Only)
 

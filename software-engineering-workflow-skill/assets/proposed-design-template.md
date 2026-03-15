@@ -15,10 +15,19 @@
 - Investigation Notes: `tickets/in-progress/<ticket-name>/investigation-notes.md`
 - Requirements: `tickets/in-progress/<ticket-name>/requirements.md`
 - Requirements Status: `Design-ready` / `Refined`
+- Shared Design Principles: `assets/design-principles.md`
+- Common Design Practices: `assets/common-design-practices.md`
+
+## Reading Rule
+
+- This document must be organized around the data-flow spine inventory first.
+- Main domain subject nodes and ownership boundaries are the primary design story.
+- Support branches are described in relation to the spine they serve.
+- Modules/files are secondary and should appear as derived implementation mapping, not as the main structure of the document.
 
 ## Summary
 
-## Goals
+## Goal / Intended Change
 
 ## Legacy Removal Policy (Mandatory)
 
@@ -32,45 +41,120 @@
 | --- | --- | --- | --- | --- |
 | R-001 |  | AC-001 |  | UC-001 |
 
-## Codebase Understanding Snapshot (Pre-Design Mandatory)
+## Current-State Read
 
 | Area | Findings | Evidence (files/functions) | Open Unknowns |
 | --- | --- | --- | --- |
-| Entrypoints / Boundaries |  |  |  |
-| Current Naming Conventions |  |  |  |
-| Impacted Modules / Responsibilities |  |  |  |
-| Data / Persistence / External IO |  |  |  |
+| Entrypoints / Current Spine Or Fragmented Flow |  |  |  |
+| Current Ownership Boundaries |  |  |  |
+| Current Coupling / Fragmentation Problems |  |  |  |
+| Existing Constraints / Compatibility Facts |  |  |  |
+| Relevant Files / Components |  |  |  |
 
 ## Current State (As-Is)
 
-## Target State (To-Be)
+## Data-Flow Spine Inventory
 
-## Shared Architecture Principles (Design + Review, Mandatory)
+List every relevant spine that matters to understanding the design.
 
-- Principle alignment statement (design and review use the same rules):
-- SoC cause statement (how concerns are split and owned):
-- Layering result statement (how layering emerges from SoC + dependency direction for this scope):
-- Decoupling rule statement (one-way, replaceable boundaries; no unjustified cycles):
-- Module/file placement rule statement (file path/folder must match owning concern or explicitly justified shared boundary):
+| Spine ID | Scope (`Primary End-to-End`/`Return-Event`/`Bounded Local`) | Start | End | Owning Node / Governing Owner | Why It Matters |
+| --- | --- | --- | --- | --- | --- |
+| DS-001 |  |  |  |  |  |
+
+Rule:
+- If a loop, worker cycle, state machine, or dispatcher materially shapes behavior inside one owner, add a `Bounded Local` spine for it instead of leaving it implicit.
+
+## Primary Execution / Data-Flow Spine(s)
+
+Write each primary end-to-end line as a short arrow chain.
+
+Examples:
+- `Frontend -> API -> Service -> Repository -> Database`
+- `Input -> RunManager -> Run -> RunBackend -> Runtime -> Provider`
+
+## Spine Actors / Main-Line Nodes
+
+| Node | Role In Spine | What It Advances |
+| --- | --- | --- |
+|  |  |  |
+
+## Spine Narratives (Mandatory)
+
+For each important spine, describe the end-to-end motion in prose so a reader can understand the design by following the flow instead of reconstructing it from file names.
+
+| Spine ID | Short Narrative | Main Domain Subject Nodes | Governing Owner | Key Support Branches |
+| --- | --- | --- | --- | --- |
+|  |  |  |  |  |
+
+## Ownership Map
+
+| Node / Owner | Owns | Must Not Own | Notes |
+| --- | --- | --- | --- |
+|  |  |  |  |
+
+## Return / Event Spine(s) (If Applicable)
+
+Write each return/event line using the same approach as the execution spine.
+
+## Bounded Local / Internal Spines (If Applicable)
+
+Use this section for important internal flows inside one owner, such as:
+- event loop / worker loop flow,
+- state-machine transition flow,
+- queue dispatch flow,
+- runtime callback/dispatch flow.
+
+For each one, write:
+- parent owner,
+- start and end,
+- short arrow chain,
+- why it must be explicit in the design.
+
+## Support Structure Around The Spine
+
+| Support Branch / Service | Serves Which Owner | Responsibility | Must Stay Off Main Line? (`Yes`/`No`) |
+| --- | --- | --- | --- |
+|  |  |  |  |
+
+## Spine-To-Support Mapping
+
+| Spine ID | Support Branch / Service | Why It Exists | Contribution To Spine | Risk If Misplaced On Main Line |
+| --- | --- | --- | --- | --- |
+|  |  |  |  |  |
+
+## Ownership-Driven Dependency Rules
+
+- Allowed dependency directions:
+- Forbidden shortcuts:
+- Temporary exceptions and removal plan:
 
 ## Architecture Direction Decision (Mandatory)
 
 - Chosen direction:
 - Rationale (`complexity`, `testability`, `operability`, `evolution cost`):
-- Layering fitness assessment (are current layering and interactions still coherent under emergent-layering rules?): `Yes` / `No`
-- Decoupling assessment (are boundaries low-coupled with clear one-way dependency directions?): `Yes` / `No`
-- Module/file placement assessment (do file paths/folders match owning concerns for this scope?): `Yes` / `No`
+- Data-flow spine clarity assessment: `Yes` / `No`
+- Spine inventory completeness assessment: `Yes` / `No`
+- Ownership clarity assessment: `Yes` / `No`
+- Support structure clarity assessment: `Yes` / `No`
+- Module/file placement assessment: `Yes` / `No`
 - Outcome (`Keep`/`Add`/`Split`/`Merge`/`Move`/`Remove`):
-- Note: `Keep` is valid when layering and boundary interactions are already coherent.
+- Note: `Keep` is valid only when the current spine, ownership boundaries, support structure, and file placement are already coherent for the in-scope behavior.
 
-## Layering Emergence And Extraction Checks (Mandatory)
+## Common Design Practices Applied (If Any)
+
+| Practice / Pattern | Where Used | Why It Helps Here | Owner / Support Branch | Notes |
+| --- | --- | --- | --- | --- |
+|  |  |  |  |  |
+
+## Ownership And Structure Checks (Mandatory)
 
 | Check | Result (`Yes`/`No`) | Evidence | Decision |
 | --- | --- | --- | --- |
-| Repeated coordination policy across callers (provider selection/fallback/retry/aggregation/routing/fan-out) exists |  |  | Extract orchestration boundary / Keep |
-| Responsibility overload exists in one file/module (multiple concerns mixed) |  |  | Split + lift coordination / Keep |
-| Proposed new layer owns concrete coordination policy (not pass-through only) |  |  | Keep layer / Remove layer |
-| Current layering can remain unchanged without SoC/decoupling degradation |  |  | Keep / Change |
+| Repeated coordination policy across callers exists and needs a clearer owner |  |  | Extract clear owner / Keep |
+| Responsibility overload exists in one file/module |  |  | Split / Keep |
+| Proposed indirection owns real policy, translation, or boundary concern |  |  | Keep / Remove |
+| Every support branch has a clear owner on the spine |  |  | Fix / Keep |
+| Current structure can remain unchanged without spine/ownership degradation |  |  | Keep / Change |
 
 ### Optional Alternatives (Use For Non-Trivial Or Uncertain Changes)
 
@@ -85,17 +169,20 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | C-001 |  |  |  |  |  |  |
 
+## Derived Implementation Mapping (Secondary)
+
+This section exists to map the spine-and-ownership design into concrete implementation locations.
+It must not replace the spine-first explanation above.
+
+| Target File / Module | Change Type | Mapped Spine ID | Owner / Support Branch | Responsibility | Key APIs / Interfaces | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |  |
+
 ## Module/File Placement And Ownership Check (Mandatory)
 
 | File/Module | Current Path | Target Path | Owning Concern / Platform | Path Matches Concern? (`Yes`/`No`) | Action (`Keep`/`Move`/`Split`/`Promote Shared`) | Rationale |
 | --- | --- | --- | --- | --- | --- | --- |
 |  |  |  |  |  |  |  |
-
-## Target Architecture Shape And Boundaries (Mandatory)
-
-| Layer/Boundary | Purpose | Owns | Must Not Own | Notes |
-| --- | --- | --- | --- | --- |
-|  |  |  |  |  |
 
 ## Backward-Compatibility Rejection Log (Mandatory)
 
@@ -103,20 +190,31 @@
 | --- | --- | --- | --- |
 |  |  |  |  |
 
-## File And Module Breakdown
+## Derived Interface Boundary Mapping
 
-| File/Module | Change Type | Layer / Boundary | Concern / Responsibility | Public APIs | Inputs/Outputs | Dependencies |
-| --- | --- | --- | --- | --- | --- | --- |
-|  |  |  |  |  |  |  |
+| File/Module | Mapped Spine ID | Owner / Support Branch | Subject Owned | Concern / Responsibility | Interfaces / APIs / Methods | Accepted Identity Shape(s) | Inputs/Outputs | Dependencies |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |  |  |  |
 
-## Layer-Appropriate Separation Of Concerns Check
+Rule:
+- Do not use one generic interface/API/query/command/service method when the subject or identity shape differs. Split boundaries by subject or require an explicit compound identity shape.
+
+## Scope-Appropriate Separation Of Concerns Check
 
 - UI/frontend scope: responsibility is clear at view/component/store boundaries.
 - Non-UI scope: responsibility is clear at file/module/service boundaries.
 - Integration/infrastructure scope: each adapter/module owns one integration concern with clear contracts.
-- Layering note: layering should emerge from SoC + coordination needs, not forced fixed-tier naming.
-- Decoupling check: dependencies follow allowed direction, avoid tight cross-module coupling, and avoid unjustified cycles.
-- Module/file placement check: folder/path should make the owning concern obvious; platform-specific files should not live in unrelated or ambiguous locations.
+- Ownership note: separation of concerns should follow ownership and support structure, not precede them.
+- Module/file placement note: folder/path should make the owning concern obvious; platform-specific files should not live in unrelated or ambiguous locations.
+
+## Interface Boundary Check (Mandatory)
+
+| Interface / API / Query / Command / Method | Subject Owned | Responsibility Is Singular? (`Yes`/`No`) | Identity Shape Is Explicit? (`Yes`/`No`) | Ambiguous-ID Or Generic-Selector Risk (`Low`/`Medium`/`High`) | Corrective Action |
+| --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |
+
+Rule:
+- If one interface accepts a generic ID or selector and must guess what kind of subject that input represents, or exposes a generic mixed-subject list surface, the design is not clean enough yet.
 
 ## Naming Decisions (Natural And Implementation-Friendly)
 
@@ -146,18 +244,13 @@ Rule:
 |  | Low/Medium/High |  |  |  |
 
 Rule:
-- A functionally working local fix is still invalid here if it degrades layering or responsibility boundaries.
+- A functionally working local fix is still invalid here if it degrades the data-flow spine, ownership boundaries, or support structure.
 
 ## Dependency Flow And Cross-Reference Risk
 
 | Module/File | Upstream Dependencies | Downstream Dependents | Cross-Reference Risk | Mitigation / Boundary Strategy |
 | --- | --- | --- | --- | --- |
 |  |  |  | Low/Medium/High |  |
-
-## Allowed Dependency Direction (Mandatory)
-
-- Allowed direction rules (example: `API -> Application -> Domain -> Infra`):
-- Temporary boundary violations and cleanup deadline:
 
 ## Decommission / Cleanup Plan
 
@@ -174,8 +267,6 @@ Rule:
 | use_case_id | Requirement | Use Case | Primary Path Covered (`Yes`/`No`) | Fallback Path Covered (`Yes`/`No`/`N/A`) | Error Path Covered (`Yes`/`No`/`N/A`) | Runtime Call Stack Section |
 | --- | --- | --- | --- | --- | --- | --- |
 | UC-001 | R-001 |  |  |  |  |  |
-
-## Performance / Security Considerations
 
 ## Migration / Rollout (If Needed)
 

@@ -31,7 +31,8 @@ This document tracks implementation and testing progress in real time, including
 - API/E2E Test Status: `Not Started`, `In Progress`, `Passed`, `Failed`, `Blocked`, `N/A`
 - Code Review Status: `Not Started`, `In Progress`, `Pass`, `Fail`
 - Acceptance Criteria Coverage Status: `Unmapped`, `Not Run`, `Passed`, `Failed`, `Blocked`, `Waived`
-- Failure Classification: `Local Fix`, `Design Impact`, `Requirement Gap`, `Unclear`, `N/A`
+- Spine Coverage Status: `Unmapped`, `Planned`, `Passed`, `Failed`, `Blocked`, `N/A`
+- Failure Classification: `Local Fix`, `Validation Gap`, `Design Impact`, `Requirement Gap`, `Unclear`, `N/A`
 - Investigation Required: `Yes`, `No`, `N/A`
 - Design Follow-Up: `Not Needed`, `Needed`, `In Progress`, `Updated`
 - Requirement Follow-Up: `Not Needed`, `Needed`, `In Progress`, `Updated`
@@ -48,17 +49,17 @@ This document tracks implementation and testing progress in real time, including
 
 ## File-Level Progress Table (Stage 6)
 
-| Change ID | Change Type | File | Depends On | File Status | Unit Test File | Unit Test Status | Integration Test File | Integration Test Status | Last Failure Classification | Last Failure Investigation Required | Cross-Reference Smell | Design Follow-Up | Requirement Follow-Up | Last Verified | Verification Command | Notes |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| C-001 | Modify | `src/example-a.ts` | `src/example-core.ts` | Blocked | `tests/unit/example-a.test.ts` | Blocked | `tests/integration/example-a.integration.test.ts` | Failed | Design Impact | Yes | `src/example-a.ts <-> src/example-core.ts` | Needed | Not Needed | YYYY-MM-DD | `pnpm exec vitest --run tests/unit/example-a.test.ts` | Waiting for boundary refactor. |
-| C-002 | Add | `src/example-core.ts` | N/A | In Progress | `tests/unit/example-core.test.ts` | In Progress | N/A | N/A | N/A | N/A | None | Not Needed | Not Needed | YYYY-MM-DD | `pnpm exec vitest --run tests/unit/example-core.test.ts` | Implementing base interfaces. |
-| C-003 | Remove | `src/example-util.ts` | N/A | Completed | N/A | N/A | N/A | N/A | N/A | N/A | None | Not Needed | Not Needed | YYYY-MM-DD | `rg -n "example-util" src tests` | Utility removed and references cleaned. |
+| Change ID | Change Type | Spine ID(s) | Owner | File | Depends On | File Status | Unit Test File | Unit Test Status | Integration Test File | Integration Test Status | Last Failure Classification | Last Failure Investigation Required | Cross-Reference Smell | Design Follow-Up | Requirement Follow-Up | Last Verified | Verification Command | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| C-001 | Modify | DS-001 | ExampleOwner | `src/example-a.ts` | `src/example-core.ts` | Blocked | `tests/unit/example-a.test.ts` | Blocked | `tests/integration/example-a.integration.test.ts` | Failed | Design Impact | Yes | `src/example-a.ts <-> src/example-core.ts` | Needed | Not Needed | YYYY-MM-DD | `pnpm exec vitest --run tests/unit/example-a.test.ts` | Waiting for boundary refactor. |
+| C-002 | Add | DS-001 | ExampleOwner | `src/example-core.ts` | N/A | In Progress | `tests/unit/example-core.test.ts` | In Progress | N/A | N/A | N/A | N/A | None | Not Needed | Not Needed | YYYY-MM-DD | `pnpm exec vitest --run tests/unit/example-core.test.ts` | Implementing base interfaces. |
+| C-003 | Remove | DS-003 | LegacyCleanupOwner | `src/example-util.ts` | N/A | Completed | N/A | N/A | N/A | N/A | N/A | N/A | None | Not Needed | Not Needed | YYYY-MM-DD | `rg -n "example-util" src tests` | Utility removed and references cleaned. |
 
 ## API/E2E Testing Scenario Log (Stage 7)
 
-| Date | Scenario ID | Source Type (`Requirement`/`Design-Risk`) | Acceptance Criteria ID(s) | Requirement ID(s) | Use Case ID(s) | Level (`API`/`E2E`) | Status | Failure Summary | Investigation Required (`Yes`/`No`) | Classification (`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`) | Action Path Taken | `investigation-notes.md` Updated | Requirements Updated | Design Updated | Call Stack Regenerated | Resume Condition Met |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| YYYY-MM-DD | AV-001 | Requirement | AC-001 | R-001 | UC-001 | API | Failed | Missing flow branch for fallback path | Yes | Design Impact | Re-entered `Stage 1 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7` before retry | Yes | No | Yes | Yes | Yes |
+| Date | Scenario ID | Spine ID(s) | Governing Owner | Source Type (`Requirement`/`Design-Risk`) | Acceptance Criteria ID(s) | Requirement ID(s) | Use Case ID(s) | Level (`API`/`E2E`) | Status | Failure Summary | Investigation Required (`Yes`/`No`) | Classification (`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`) | Action Path Taken | `investigation-notes.md` Updated | Requirements Updated | Design Updated | Call Stack Regenerated | Resume Condition Met |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| YYYY-MM-DD | AV-001 | DS-001 | ExampleOwner | Requirement | AC-001 | R-001 | UC-001 | API | Failed | Missing flow branch for fallback path | Yes | Design Impact | Re-entered `Stage 1 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7` before retry | Yes | No | Yes | Yes | Yes |
 
 Rules:
 - Stage 6 failure classification (before Stage 7):
@@ -86,6 +87,16 @@ Rules:
 - Any row not at `Passed` or `Waived` keeps Stage 7 open and requires re-entry before retry.
 - Stage 7 cannot be marked complete while any row is `Unmapped`, `Not Run`, `Failed`, or `Blocked` unless explicitly marked `Waived` by user decision for infeasible cases.
 
+## Spine Coverage Matrix (Stage 7 Gate)
+
+| Date | Spine ID | Spine Scope (`Primary End-to-End`/`Return-Event`/`Bounded Local`) | Governing Owner | Scenario ID(s) | Coverage Status (`Unmapped`/`Planned`/`Passed`/`Failed`/`Blocked`/`N/A`) | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| YYYY-MM-DD | DS-001 | Primary End-to-End | ExampleOwner | AV-001 | Failed | Fallback branch on this spine is still missing. |
+
+Rules:
+- Every relevant spine from the approved design basis must appear in this matrix.
+- Any relevant executable spine not at `Passed` keeps Stage 7 open unless explicitly `N/A` with rationale.
+
 ## API/E2E Feasibility Record
 
 - API/E2E scenarios feasible in current environment: `Yes` / `No`
@@ -98,9 +109,9 @@ Rules:
 
 ## Code Review Log (Stage 8)
 
-| Date | Review Round | File | Effective Non-Empty Lines | Adds/Expands Functionality (`Yes`/`No`) | `>500` Hard-Limit Check | `>220` Changed-Line Delta Gate | Module/File Placement Check (`Pass`/`Fail`) | Classification (`Local Fix`/`Design Impact`/`Requirement Gap`/`Unclear`) | Re-Entry Declaration Recorded | Upstream Artifacts Updated Before Code Edit | Decision (`Pass`/`Fail`) | Notes |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| YYYY-MM-DD | 1 | `src/example-a.ts` | 615 | Yes | Fail | Fail | Pass | Design Impact | Yes | Yes | Fail | Exceeded `>500` hard limit; returned to `Stage 1 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7 -> Stage 8` before further edits. |
+| Date | Review Round | File | Effective Non-Empty Lines | Adds/Expands Functionality (`Yes`/`No`) | `>500` Hard-Limit Check | `>220` Changed-Line Delta Gate | Data-Flow Spine Inventory Preservation (`Pass`/`Fail`) | Scope-Appropriate SoC Check (`Pass`/`Fail`) | Module/File Placement Check (`Pass`/`Fail`) | Validation Evidence Sufficiency (`Pass`/`Fail`) | Classification (`Local Fix`/`Validation Gap`/`Design Impact`/`Requirement Gap`/`Unclear`) | Re-Entry Declaration Recorded | Upstream Artifacts Updated Before Code Edit | Decision (`Pass`/`Fail`) | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| YYYY-MM-DD | 1 | `src/example-a.ts` | 615 | Yes | Fail | Fail | Pass | Fail | Pass | Pass | Design Impact | Yes | Yes | Fail | Exceeded `>500` hard limit and mixed too much responsibility in one file; returned to `Stage 1 -> Stage 3 -> Stage 4 -> Stage 5 -> Stage 6 -> Stage 7 -> Stage 8` before further edits. |
 
 Rules:
 - Include source and test files in review scope.
@@ -113,7 +124,9 @@ Rules:
 - No soft middle band (`501-700`) and no default exception path in this workflow.
 - If a single changed source file has `>220` changed lines in current diff, record a design-impact assessment even when effective file size is `<=500`.
 - For `Fail`, do not proceed to `Stage 9`; apply re-entry mapping first and rerun `Stage 6 -> Stage 7 -> Stage 8`.
-- Any decoupling failure (tight coupling or unjustified cycle) is blocking and requires classified re-entry before further source edits.
+- If the main issue is insufficient Stage 7 coverage/evidence rather than code/design drift, classify as `Validation Gap` and rerun `Stage 7 -> Stage 8`.
+- Any scope-appropriate separation-of-concerns failure (mixed unrelated responsibility in one file/module) is blocking and requires classified re-entry before further source edits.
+- Any ownership-dependency/decoupling failure (tight coupling or unjustified cycle) is blocking and requires classified re-entry before further source edits.
 - Any module/file placement failure (wrong concern folder or unjustified shared placement) is blocking and requires classified re-entry before further source edits.
 - Any backward-compatibility mechanism or legacy-retention finding is blocking and requires classified re-entry before further source edits.
 
@@ -149,16 +162,18 @@ Rules:
   - implementation plan scope is delivered (or deviations are documented),
   - required unit/integration tests pass,
   - no backward-compatibility shims or legacy old-behavior branches remain in scope,
-  - decoupling-impact checks show no new unjustified tight coupling/cycles,
+  - ownership-dependency/decoupling checks show no new unjustified tight coupling/cycles,
   - touched files have correct module/file placement or an explicit move/split has been completed.
 - Mark Stage 7 API/E2E testing complete only when:
   - every executable in-scope acceptance criterion in the closure matrix is `Passed`,
+  - every executable relevant spine in the spine coverage matrix is `Passed`,
   - critical executable API/E2E scenarios pass,
   - any infeasible acceptance criterion has explicit user waiver + documented constraints + compensating evidence + residual risk,
   - required escalation actions (`Local Fix`/`Design Impact`/`Requirement Gap`) are resolved and logged.
 - Mark Stage 8 code review complete only when:
   - `code-review.md` exists and gate decision is recorded,
   - `<=500` hard-limit checks and required `>220` delta-gate assessments are recorded for all changed source files,
+  - data-flow spine inventory preservation checks, scope-appropriate separation-of-concerns checks, interface/API/query/command/service-method boundary clarity checks, and validation-evidence sufficiency checks are recorded,
   - module/file placement checks are recorded for all changed source files,
   - if gate decision is `Fail`, re-entry declaration and target stage path are recorded.
 - Mark Stage 9 docs sync complete only when docs synchronization result is recorded (`Updated` or `No impact` with rationale).
